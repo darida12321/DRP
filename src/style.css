@@ -1,5 +1,42 @@
+:root {
+    --blue-0: #0646AD;
+    --blue-1: #15448E;
+    --blue-2: #2C4770;
+    --blue-3: #354153;
+    --blue-4: #303236;
+
+    --red-0: #FD0006;
+    --red-1: #D50D12;
+    --red-2: #A8383B;
+    --red-3: #7C4B4C;
+    --red-4: #504647;
+
+    --green-0: #0AD100;
+    --green-1: #13AE0B;
+    --green-2: #328A2E;
+    --green-3: #3F663D;
+    --green-4: #3A4239;
+
+    --yellow-0: #FFA200;
+    --yellow-1: #D68D0D;
+    --yellow-2: #AA8139;
+    --yellow-3: #7E6C4C;
+    --yellow-4: #514D47;
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    background: red;
 }
+
+.box {
+    width: 100px;
+    height: 20px;
+    border: 1px solid black;
+}
+
+.g0 { background: var(--green-0); }
+.g1 { background: var(--green-1); }
+.g2 { background: var(--green-2); }
+.g3 { background: var(--green-3); }
+.g4 { background: var(--green-4); }
