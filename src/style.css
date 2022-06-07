@@ -29,14 +29,3 @@ html, body {
     padding: 0;
 }
 
-.box {
-    width: 100px;
-    height: 20px;
-    border: 1px solid black;
-}
-
-.g0 { background: var(--green-0); }
-.g1 { background: var(--green-1); }
-.g2 { background: var(--green-2); }
-.g3 { background: var(--green-3); }
-.g4 { background: var(--green-4); }
