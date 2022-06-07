@@ -1,4 +1,5 @@
 import React from 'react';
+import img from './images/user-icon.svg'
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <div className="g2 box"></div>
       <div className="g3 box"></div>
       <div className="g4 box"></div>
+      <img src={img} alt="user"/>
     </div>
   );
 }
