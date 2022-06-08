@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChapterSelect = () => {
+const ChapterView = () => {
   return (
     <div className="chapter">
       <h1>Chapter 1:</h1>
@@ -31,9 +31,8 @@ const ChapterSelect = () => {
           <p>Final test</p>
         </div>
       </div>
-
     </div>
   );
 }
 
-export default ChapterSelect;
+export default ChapterView;
