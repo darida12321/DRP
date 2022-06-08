@@ -184,7 +184,7 @@ nav > div > h1 {
     line-height: 10rem;
 }
 
-.editor {
+.editor-container {
     background: #232323;
     width: 80rem;
     max-width: 90%;

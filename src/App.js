@@ -1,9 +1,20 @@
-import React from 'react';
 import gearImg from './images/gear-icon.svg'
 import houseImg from './images/house-icon.svg'
 import keyboardImg from './images/keyboard-icon.svg'
 import moonImg from './images/moon-icon.svg'
 import userImg from './images/user-icon.svg'
+
+import React from 'react'
+import { render } from 'react-dom'
+import AceEditor from 'react-ace'
+
+import 'ace-builds/src-noconflict/mode-java'
+import 'ace-builds/src-noconflict/theme-github'
+import 'ace-builds/src-noconflict/ext-language_tools'
+
+function onChange(newValue) {
+  console.log('Editor changed', newValue)
+}
 
 function App() {
   return (
@@ -65,7 +76,14 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="editor"></div>
+        <div className="editor-container">
+          <AceEditor
+            mode='java'
+            theme='github'
+            onChange={onChange}
+            name='editor'
+          />
+        </div>
       </div>
     </div>
   );
