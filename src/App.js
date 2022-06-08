@@ -22,11 +22,10 @@ function App() {
           <img src={userImg} class="icon" alt="" />
         </div>
       </nav>
-      <div className="content">
-        <div className="chapter">
-          <h1>Chapter 1:</h1>
-          <h3>Basic motions</h3>
-
+      <div className="chapter">
+        <h1>Chapter 1:</h1>
+        <h3>Basic motions</h3>
+        <div>
           <div>
             <div className="lesson-marker"></div>
             <p>Introduction to vim</p>
@@ -51,18 +50,23 @@ function App() {
             <div className="lesson-marker"></div>
             <p>Final test</p>
           </div>
+        </div>
 
-        </div>
-        <div className="tutorial">
-          <div className="textbox">
-            <div>
-              <h1>Lesson 3: Moving a word back.</h1>
-              <p>Use b to go back an entire word.</p>
-            </div>
-            <div className="marker">1/5</div>
+      </div>
+      <div className="tutorial">
+        <div className="textbox">
+          <div>
+            <h1>Lesson 3: Moving one word back.
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci provident rerum consectetur nulla ad. Recusandae tenetur quos ullam perspiciatis, culpa optio libero itaque, maxime error asperiores sapiente molestiae quaerat dolorem ut qui velit excepturi? Optio, ipsa quas esse eligendi, magni adipisci cupiditate quasi, maxime iure cum eos? Officia, sapiente consequuntur!</h1>
+            <p>Use b to go back an entire word.</p>
           </div>
-          <div className="editor"></div>
+          <div>
+            <div className="marker">
+              1/5
+            </div>
+          </div>
         </div>
+        <div className="editor"></div>
       </div>
     </div>
   );
