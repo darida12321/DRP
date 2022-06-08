@@ -163,6 +163,10 @@ nav > div > h1 {
 .textbox > div:last-child {
     height: 100%;
     margin-right: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-sizing: border-box;
+    border: 1px solid red;
     float: right;
     display: flex;
     justify-content: center;
