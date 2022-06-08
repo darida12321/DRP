@@ -1,16 +1,17 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import NavBar from './components/NavBar'
-import ChapterView from './components/ChapterView'
-import TutorialWindow from './components/TutorialWindow'
+import Tutorial from './components/Tutorial'
 
 function App() {
   return (
-    <div class="container">
-      <NavBar />
-      <ChapterView />
-      <TutorialWindow />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/vim/:chapter/:lesson' element={<Tutorial />}/>
+        <Route path='*' element={<h1>404 not found</h1>}/>
+      </Routes>
+
+    </BrowserRouter>
   );
 }
 
