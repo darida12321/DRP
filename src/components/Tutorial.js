@@ -7,13 +7,12 @@ import TutorialWindow from './TutorialWindow'
 
 function Tutorial() {
   const { chapter, lesson } = useParams();
-  console.log(chapter, lesson)
 
   return (
     <div className="container">
       <NavBar />
-      <ChapterView />
-      <TutorialWindow />
+      <ChapterView chapter={chapter}/>
+      <TutorialWindow chapter={chapter} lesson={lesson}/>
     </div>
   );
 }

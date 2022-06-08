@@ -1,34 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-// TODO make this return data from server
-function getLessonData() {
-  return {
-    chapter: 1,
-    title: 'Basic Motions',
-    lessons: [
-      'Introduction to Vim',
-      'Moving a Word Forward',
-      'Moving a Word Backward',
-      'word v. Word',
-      'Move to the end of word',
-      'Final Test'
-    ],
-  }
-}
+function ChapterView(props) {
+  const [lessons, setLessons] = useState({})
 
-function ChapterView() {
-  const lesson = getLessonData();
+  useEffect(() => {
+    setLessons({
+      chapter: 1,
+      title: 'Basic Motions',
+      lessons: [
+        { id: 1, lesson: 'Introduction to Vim' },
+        { id: 2, lesson: 'Moving a Word Forward' },
+        { id: 3, lesson: 'Moving a Word Backward' },
+        { id: 4, lesson: 'word v. Word' },
+        { id: 5, lesson: 'Move to the end of word' },
+        { id: 6, lesson: 'Final Test '}
+      ]
+    })
+  }, [])
 
   return (
     <div className="chapter">
-      <h1>Chapter {lesson.chapter}:</h1>
-      <h3>{lesson.title}</h3>
+      <h1>Chapter {lessons.chapter && lessons.chapter}:</h1>
+      <h3>{lessons.title && lessons.title}</h3>
       <div>
         {
-          lesson.lessons.map((l) => (
-            <div>
+          lessons.lessons && lessons.lessons.map((l) => (
+            <div key={l.id}>
               <div className="lesson-marker"></div>
-              <p>{l}</p>
+              <p>{l.lesson}</p>
             </div>
           ))
         }
