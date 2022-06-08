@@ -56,8 +56,7 @@ function App() {
       <div className="tutorial">
         <div className="textbox">
           <div>
-            <h1>Lesson 3: Moving one word back.
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci provident rerum consectetur nulla ad. Recusandae tenetur quos ullam perspiciatis, culpa optio libero itaque, maxime error asperiores sapiente molestiae quaerat dolorem ut qui velit excepturi? Optio, ipsa quas esse eligendi, magni adipisci cupiditate quasi, maxime iure cum eos? Officia, sapiente consequuntur!</h1>
+            <h1>Lesson 3: Moving a word backwards</h1>
             <p>Use b to go back an entire word.</p>
           </div>
           <div>
