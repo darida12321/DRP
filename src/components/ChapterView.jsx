@@ -1,5 +1,21 @@
 import React from 'react';
 
+// TODO make this return data from server
+function getLessonData() {
+  return {
+    chapter: 1,
+    title: 'Basic Motions',
+    lessons: [
+      'Introduction to Vim',
+      'Moving a Word Forward',
+      'Moving a Word Backward',
+      'word v. Word',
+      'Move to the end of word',
+      'Final Test'
+    ],
+  }
+}
+
 function ChapterView() {
   return (
     <div className="chapter">
