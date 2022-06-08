@@ -1,16 +1,11 @@
-import gearImg from './images/gear-icon.svg'
-import houseImg from './images/house-icon.svg'
-import keyboardImg from './images/keyboard-icon.svg'
-import moonImg from './images/moon-icon.svg'
-import userImg from './images/user-icon.svg'
-
 import React from 'react'
-import { render } from 'react-dom'
 import AceEditor from 'react-ace'
 
 import 'ace-builds/src-noconflict/mode-java'
 import 'ace-builds/src-noconflict/theme-github'
 import 'ace-builds/src-noconflict/ext-language_tools'
+import NavBar from './components/NavBar'
+import ChapterSelect from './components/ChapterSelect'
 
 function onChange(newValue) {
   console.log('Editor changed', newValue)
@@ -19,51 +14,8 @@ function onChange(newValue) {
 function App() {
   return (
     <div class="container">
-      <nav>
-        <div>
-          <img src={houseImg} class="icon" alt="" />
-        </div>
-        <div>
-          <img src={keyboardImg} class="icon" alt="" />
-          <h1>Website name</h1>
-        </div>
-        <div>
-          <img src={moonImg} class="icon" alt="" />
-          <img src={gearImg} class="icon" alt="" />
-          <img src={userImg} class="icon" alt="" />
-        </div>
-      </nav>
-      <div className="chapter">
-        <h1>Chapter 1:</h1>
-        <h3>Basic motions</h3>
-        <div>
-          <div>
-            <div className="lesson-marker"></div>
-            <p>Introduction to vim</p>
-          </div>
-          <div>
-            <div className="lesson-marker"></div>
-            <p>Moving a word forward</p>
-          </div>
-          <div>
-            <div className="lesson-marker"></div>
-            <p>Moving a word backward</p>
-          </div>
-          <div>
-            <div className="lesson-marker"></div>
-            <p>WORD vs. word</p>
-          </div>
-          <div>
-            <div className="lesson-marker"></div>
-            <p>Move to end of word</p>
-          </div>
-          <div>
-            <div className="lesson-marker"></div>
-            <p>Final test</p>
-          </div>
-        </div>
-
-      </div>
+      <NavBar />
+      <ChapterSelect />
       <div className="tutorial">
         <div className="textbox">
           <div>
