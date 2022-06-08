@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChapterView = () => {
+function ChapterView() {
   return (
     <div className="chapter">
       <h1>Chapter 1:</h1>
