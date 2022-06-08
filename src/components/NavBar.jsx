@@ -6,7 +6,7 @@ import keyboardImg from '../images/keyboard-icon.svg'
 import moonImg from '../images/moon-icon.svg'
 import userImg from '../images/user-icon.svg'
 
-const NavBar = () => {
+function NavBar() {
   return (
     <nav>
       <div>
