@@ -1,5 +1,7 @@
 import React from 'react';
 
+import '../styles/homePage.css';
+
 function signUpClicked() {
   console.log('pressed sign up button');
 }
@@ -11,7 +13,7 @@ function signInClicked() {
 function HomePage() {
   return (
     <div className = "main">
-      <div className="banner">
+      <div className = "banner">
         <h1>Website Name</h1>
         <div className = "loginBoxes">
           <button onClick = {signUpClicked}>Sign Up</button>

@@ -1,0 +1,21 @@
+#root {
+  background: white;
+  color: black;
+}
+
+.banner {
+  background-color: #404040;
+  position: fixed;
+  height: 30rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.banner > h1 {
+  color: white;
+  margin: 20px;
+  font-size: 10rem;
+}
+
