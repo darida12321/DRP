@@ -10,16 +10,16 @@ const NavBar = () => {
   return (
     <nav>
       <div>
-        <img src={houseImg} class="icon" alt="" />
+        <img src={houseImg} className="icon" alt="" />
       </div>
       <div>
-        <img src={keyboardImg} class="icon" alt="" />
+        <img src={keyboardImg} className="icon" alt="" />
         <h1>Website name</h1>
       </div>
       <div>
-        <img src={moonImg} class="icon" alt="" />
-        <img src={gearImg} class="icon" alt="" />
-        <img src={userImg} class="icon" alt="" />
+        <img src={moonImg} className="icon" alt="" />
+        <img src={gearImg} className="icon" alt="" />
+        <img src={userImg} className="icon" alt="" />
       </div>
     </nav>
   );
