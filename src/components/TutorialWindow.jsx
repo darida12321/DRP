@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { db } from "../firebase.js";
 import { collection, doc, getDoc, addDoc, setDoc, getDocs } from "firebase/firestore";
 
@@ -138,12 +138,12 @@ class CodeChecker {
 }
 
 function TutorialWindow() {
-  const [lesson, setLesson] = React.useState({})
-  const [exampleNum, setExampleNum] = React.useState(0)
-  const [complete, setComplete] = React.useState(false)
+  const [lesson, setLesson] = useState({})
+  const [exampleNum, setExampleNum] = useState(0)
+  const [complete, setComplete] = useState(false)
   var codeChecker = useRef(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       const data = await getLessonData();
       setLesson(data.lesson);
