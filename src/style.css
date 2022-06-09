@@ -184,10 +184,13 @@ nav > div > h1 {
     line-height: 10rem;
 }
 
-.editor-container {
-    background: #232323;
+#editor {
     width: 80rem;
     max-width: 90%;
     height: 100%;
-    border-radius: 15px;
+    border-radius: 10px;
+}
+
+.ace_cursor {
+    color: blue;
 }
