@@ -37,7 +37,7 @@ function getLessonData() {
         },
         expected: {
           cLine: 0,
-          cPos: 10
+          cPos: 13
         }
       }
     ]
@@ -112,7 +112,7 @@ class CodeChecker {
         pos: this.examples[this.exampleNum].expected.cPos
       })
     } else {
-      console.log('FINISHED  LESSON')
+      this.callback()
     }
   }
 }
@@ -161,7 +161,7 @@ function TutorialWindow() {
 
   function onCursorChange(selection){
     if(editing){ return; }
-    codeChecker.current.codeUpdated()
+    setExampleNum(codeChecker.current.codeUpdated())
   }
 
   return (
