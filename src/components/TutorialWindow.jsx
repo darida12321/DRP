@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { db } from "../firebase.js";
-import { collection, doc, getDoc, addDoc, setDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
@@ -164,6 +164,7 @@ function TutorialWindow() {
         setComplete(true);
       });
     }
+    fetchData();
   }, []);
 
   // Get style variables from style.css
