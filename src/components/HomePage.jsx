@@ -2,12 +2,8 @@ import React from 'react';
 
 import '../styles/homePage.css';
 
-function signUpClicked() {
-  console.log('pressed sign up button');
-}
-
-function signInClicked() {
-  console.log('pressed sign in button');
+function startUpClicked() {
+  console.log('pressed start up button');
 }
 
 function HomePage() {
@@ -16,9 +12,11 @@ function HomePage() {
       <div className = "banner">
         <h1>Website Name</h1>
         <div className = "loginBoxes">
-          <button onClick = {signUpClicked}>Sign Up</button>
-          <button onClick = {signInClicked}>Sign In</button>
+          <button onClick = {startUpClicked}>Get Started</button>
         </div>
+      </div>
+      <div className = 'body'>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum exercitationem maxime magni impedit aperiam. Dolores et consectetur reiciendis velit hic sit, voluptatum consequatur necessitatibus cum laborum obcaecati aliquam exercitationem deserunt.</p>
       </div>
     </div>
   );
