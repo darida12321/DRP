@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { db } from "../firebase.js";
-import { collection, doc, getDoc, addDoc, setDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
@@ -12,53 +12,56 @@ import ace from "ace-builds/src-noconflict/ace";
 // TODO fetch data from a backend
 async function getLessonData() {
   const querySnapshot = await getDocs(collection(db, "vim/chapter1/lessons"));
+  let lessonData = [];
   querySnapshot.forEach((doc) => {
     console.log(doc.data());
+    lessonData.push(doc.data());
   });
+  return lessonData;
 
-  return {
-    lesson: {
-      num: 1,
-      title: "Moving with hjkl",
-      desc: "Use the H, J, K and L keys to move to the target.\n'H' - left, 'J' - down, 'K' - up, 'L' - right",
-      exampleCount: 3,
-    },
-    examples: [
-      {
-        initial: {
-          code: "                      |\n  Move here: --> <--  |\n                |",
-          cLine: 0,
-          cPos: 0,
-        },
-        expected: {
-          cLine: 1,
-          cPos: 14,
-        },
-      },
-      {
-        initial: {
-          code: "       Now here: > <   |\n                       |\n                       |",
-          cLine: 1,
-          cPos: 14
-        },
-        expected: {
-          cLine: 0,
-          cPos: 18,
-        },
-      },
-      {
-        initial: {
-          code: "                          |\n                          |\n   > < and finally, there |",
-          cLine: 0,
-          cPos: 18,
-        },
-        expected: {
-          cLine: 2,
-          cPos: 4,
-        },
-      },
-    ],
-  };
+  // return {
+  //   lesson: {
+  //     num: 1,
+  //     title: "Moving with hjkl",
+  //     desc: "Use the H, J, K and L keys to move to the target.\n'H' - left, 'J' - down, 'K' - up, 'L' - right",
+  //     exampleCount: 3,
+  //   },
+  //   examples: [
+  //     {
+  //       initial: {
+  //         code: "                      |\n  Move here: --> <--  |\n                |",
+  //         cLine: 0,
+  //         cPos: 0,
+  //       },
+  //       expected: {
+  //         cLine: 1,
+  //         cPos: 14,
+  //       },
+  //     },
+  //     {
+  //       initial: {
+  //         code: "       Now here: > <   |\n                       |\n                       |",
+  //         cLine: 1,
+  //         cPos: 14
+  //       },
+  //       expected: {
+  //         cLine: 0,
+  //         cPos: 18,
+  //       },
+  //     },
+  //     {
+  //       initial: {
+  //         code: "                          |\n                          |\n   > < and finally, there |",
+  //         cLine: 0,
+  //         cPos: 18,
+  //       },
+  //       expected: {
+  //         cLine: 2,
+  //         cPos: 4,
+  //       },
+  //     },
+  //   ],
+  // };
 }
 
 class CodeChecker {
@@ -119,7 +122,9 @@ class CodeChecker {
   }
 
   incrementExample() {
-    if(this.exampleNum >= this.exampleCount){ return; }
+    if (this.exampleNum >= this.exampleCount) {
+      return;
+    }
     this.exampleNum += 1;
     if (this.exampleNum < this.exampleCount) {
       this.setDesiredState({
@@ -138,31 +143,36 @@ class CodeChecker {
 }
 
 function TutorialWindow() {
-  const [lesson, setLesson] = React.useState({})
-  const [exampleNum, setExampleNum] = React.useState(0)
-  const [complete, setComplete] = React.useState(false)
-  var codeChecker = useRef(null)
+  const [lesson, setLesson] = React.useState({});
+  const [exampleNum, setExampleNum] = React.useState(0);
+  const [complete, setComplete] = React.useState(false);
+  var codeChecker = useRef(null);
 
   React.useEffect(() => {
     async function fetchData() {
       const data = await getLessonData();
-      setLesson(data.lesson);
-      codeChecker.current = new CodeChecker(data.lesson.exampleCount);
+      setLesson({
+        num: data[0].num,
+        title: data[0].title,
+        desc: data[0].desc,
+        exampleCount: data[0].exampleCount,
+      });
+      codeChecker.current = new CodeChecker(data[0].exampleCount);
       codeChecker.current.setEditor(ace.edit("editor"));
-      codeChecker.current.setExamples(data.examples);
+      codeChecker.current.setExamples(data[0].examples);
 
       codeChecker.current.setEditorState({
-        code: data.examples[0].initial.code,
-        cLine: data.examples[0].initial.cLine,
-        cPos: data.examples[0].initial.cPos,
+        code: data[0].examples[0].initial.code,
+        cLine: data[0].examples[0].initial.cLine,
+        cPos: data[0].examples[0].initial.cPos,
       });
 
       codeChecker.current.setCallback(() => {
-        console.log("Lesson done!!!!")
-        setComplete(true)
-      })
+        console.log("Lesson done!!!!");
+        setComplete(true);
+      });
     }
-    fetchData()
+    fetchData();
   }, []);
 
   // Get style variables from style.css
