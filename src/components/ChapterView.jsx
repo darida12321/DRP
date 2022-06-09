@@ -11,7 +11,7 @@ function ChapterView(props) {
         { id: 1, lesson: 'Introduction to Vim' },
         { id: 2, lesson: 'Moving a Word Forward' },
         { id: 3, lesson: 'Moving a Word Backward' },
-        { id: 4, lesson: 'word v. Word' },
+        { id: 4, lesson: 'word vs. Word' },
         { id: 5, lesson: 'Move to the end of word' },
         { id: 6, lesson: 'Final Test '}
       ]
