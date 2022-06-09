@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { db } from "../firebase.js";
-import { collection, doc, getDoc, addDoc, setDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
@@ -12,62 +12,71 @@ import ace from "ace-builds/src-noconflict/ace";
 // TODO fetch data from a backend
 async function getLessonData() {
   const querySnapshot = await getDocs(collection(db, "vim/chapter1/lessons"));
+  let lessonData = [];
   querySnapshot.forEach((doc) => {
     console.log(doc.data());
+    lessonData.push(doc.data());
   });
+  return lessonData;
 
-  return {
-    lesson: {
-      num: 1,
-      title: "Moving with hjkl",
-      desc: "Use the H, J, K and L keys to move to the target.\n'H' - left, 'J' - down, 'K' - up, 'L' - right",
-      exampleCount: 3,
-    },
-    examples: [
-      {
-        initial: {
-          code: "                      |\n  Move here: --> <--  |\n                |",
-          cLine: 0,
-          cPos: 0,
-        },
-        expected: {
-          cLine: 1,
-          cPos: 14,
-        },
-      },
-      {
-        initial: {
-          code: "       Now here: > <   |\n                       |\n                       |",
-          cLine: 1,
-          cPos: 14
-        },
-        expected: {
-          cLine: 0,
-          cPos: 18,
-        },
-      },
-      {
-        initial: {
-          code: "                          |\n                          |\n   > < and finally, there |",
-          cLine: 0,
-          cPos: 18,
-        },
-        expected: {
-          cLine: 2,
-          cPos: 4,
-        },
-      },
-    ],
-  };
+  // return {
+  //   lesson: {
+  //     num: 1,
+  //     title: "Moving with hjkl",
+  //     desc: "Use the H, J, K and L keys to move to the target.\n'H' - left, 'J' - down, 'K' - up, 'L' - right",
+  //     exampleCount: 3,
+  //   },
+  //   examples: [
+  //     {
+  //       initial: {
+  //         code: "                      |\n  Move here: --> <--  |\n                |",
+  //         cLine: 0,
+  //         cPos: 0,
+  //       },
+  //       expected: {
+  //         cLine: 1,
+  //         cPos: 14,
+  //       },
+  //     },
+  //     {
+  //       initial: {
+  //         code: "       Now here: > <   |\n                       |\n                       |",
+  //         cLine: 1,
+  //         cPos: 14
+  //       },
+  //       expected: {
+  //         cLine: 0,
+  //         cPos: 18,
+  //       },
+  //     },
+  //     {
+  //       initial: {
+  //         code: "                          |\n                          |\n   > < and finally, there |",
+  //         cLine: 0,
+  //         cPos: 18,
+  //       },
+  //       expected: {
+  //         cLine: 2,
+  //         cPos: 4,
+  //       },
+  //     },
+  //   ],
+  // };
 }
 
 class CodeChecker {
+  // Constructor defining the parameters
+  // TODO: pass parameters in here (editor, examples, callback)
+  // TODO: set the editor to examples[0] setup
   constructor(exampleCount) {
     this.editor = null;
+
     this.desiredState = null;
+
     this.examples = [];
     this.exampleNum = 0;
     this.exampleCount = exampleCount;
+
     this.callback = null;
   }
 
@@ -75,6 +84,7 @@ class CodeChecker {
     this.editor = editor;
   }
 
+  // TODO: Use official Lesson json format
   setEditorState(state) {
     this.editor.setValue(state.code);
     this.editor.moveCursorTo(state.cLine, state.cPos);
@@ -93,6 +103,7 @@ class CodeChecker {
     this.callback = f;
   }
 
+  // TODO use official lessonData Json format
   getEditorState() {
     if (!this.editor) {
       return null;
@@ -102,6 +113,7 @@ class CodeChecker {
     return { code: code, line: cursor.row, pos: cursor.column };
   }
 
+  // Use example instead of desired state
   goalReached() {
     if (this.desiredState === null) {
       return false;
@@ -111,6 +123,7 @@ class CodeChecker {
     return state.line === this.desiredState.line && state.pos === this.desiredState.pos;
   }
 
+  // Use callback for current excersize
   codeUpdated() {
     if (this.callback && this.goalReached()) {
       this.incrementExample();
@@ -118,8 +131,11 @@ class CodeChecker {
     return this.exampleNum;
   }
 
+  // Use correct json format
   incrementExample() {
-    if(this.exampleNum >= this.exampleCount){ return; }
+    if (this.exampleNum >= this.exampleCount) {
+      return;
+    }
     this.exampleNum += 1;
     if (this.exampleNum < this.exampleCount) {
       this.setDesiredState({
@@ -138,31 +154,36 @@ class CodeChecker {
 }
 
 function TutorialWindow() {
-  const [lesson, setLesson] = React.useState({})
-  const [exampleNum, setExampleNum] = React.useState(0)
-  const [complete, setComplete] = React.useState(false)
+  const [lesson, setLesson] = useState({})
+  const [exampleNum, setExampleNum] = useState(0)
+  const [complete, setComplete] = useState(false)
   var codeChecker = useRef(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       const data = await getLessonData();
-      setLesson(data.lesson);
-      codeChecker.current = new CodeChecker(data.lesson.exampleCount);
+      setLesson({
+        num: data[0].num,
+        title: data[0].title,
+        desc: data[0].desc,
+        exampleCount: data[0].exampleCount,
+      });
+      codeChecker.current = new CodeChecker(data[0].exampleCount);
       codeChecker.current.setEditor(ace.edit("editor"));
-      codeChecker.current.setExamples(data.examples);
+      codeChecker.current.setExamples(data[0].examples);
 
       codeChecker.current.setEditorState({
-        code: data.examples[0].initial.code,
-        cLine: data.examples[0].initial.cLine,
-        cPos: data.examples[0].initial.cPos,
+        code: data[0].examples[0].initial.code,
+        cLine: data[0].examples[0].initial.cLine,
+        cPos: data[0].examples[0].initial.cPos,
       });
 
       codeChecker.current.setCallback(() => {
-        console.log("Lesson done!!!!")
-        setComplete(true)
-      })
+        console.log("Lesson done!!!!");
+        setComplete(true);
+      });
     }
-    fetchData()
+    fetchData();
   }, []);
 
   // Get style variables from style.css
