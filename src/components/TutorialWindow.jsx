@@ -2,158 +2,169 @@ import React, { useEffect, useRef } from "react";
 import { db } from "../firebase.js";
 import { collection, doc, getDoc, addDoc, setDoc, getDocs } from "firebase/firestore";
 
-import AceEditor from 'react-ace'
-import 'ace-builds/src-noconflict/mode-java'
-import 'ace-builds/src-noconflict/theme-chaos'
-import 'ace-builds/src-noconflict/ext-language_tools'
-import 'ace-builds/src-noconflict/keybinding-vim'
-import ace from 'ace-builds/src-noconflict/ace'
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/theme-chaos";
+import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/keybinding-vim";
+import ace from "ace-builds/src-noconflict/ace";
 
 // TODO fetch data from a backend
-function getLessonData() {
-  return{
+async function getLessonData() {
+  const querySnapshot = await getDocs(collection(db, "vim/chapter1/lessons"));
+  querySnapshot.forEach((doc) => {
+    console.log(doc.data());
+  });
+
+  return {
     lesson: {
       num: 1,
-      title: 'Moving with hjkl',
-      desc: 'Use the h,j,k and l keys to move around.\n\'h\'-left, \'j\'-down, \'k\'-up, \'l\'- right',
-      exampleCount: 3
+      title: "Moving with hjkl",
+      desc: "Use the H, J, K and L keys to move to the target.\n'H' - left, 'J' - down, 'K' - up, 'L' - right",
+      exampleCount: 3,
     },
     examples: [
       {
         initial: {
-          code: '                  |\n  Move here: > <  |\n                  |',
+          code: "                      |\n  Move here: --> <--  |\n                |",
           cLine: 0,
-          cPos: 0
+          cPos: 0,
         },
         expected: {
           cLine: 1,
-          cPos: 14
-        }
+          cPos: 14,
+        },
       },
       {
         initial: {
-          code: '       Now here: > <   |\n                       |\n                       |',
+          code: "       Now here: > <   |\n                       |\n                       |",
           cLine: 1,
-          cPos: 13
+          cPos: 13,
         },
         expected: {
           cLine: 0,
-          cPos: 18
-        }
+          cPos: 18,
+        },
       },
       {
         initial: {
-          code: '                          |\n                          |\n   > < and finally, there |',
+          code: "                          |\n                          |\n   > < and finally, there |",
           cLine: 0,
-          cPos: 18
+          cPos: 18,
         },
         expected: {
           cLine: 2,
-          cPos: 4
-        }
-      }
-    ]
+          cPos: 4,
+        },
+      },
+    ],
   };
 }
 
 class CodeChecker {
-  constructor(exampleCount){
-    this.editor = null
-    this.desiredState = null
-    this.examples = []
-    this.exampleNum = 0
-    this.exampleCount = exampleCount
-    this.callback = null
+  constructor(exampleCount) {
+    this.editor = null;
+    this.desiredState = null;
+    this.examples = [];
+    this.exampleNum = 0;
+    this.exampleCount = exampleCount;
+    this.callback = null;
   }
 
-  setEditor(editor){
-    this.editor = editor
+  setEditor(editor) {
+    this.editor = editor;
   }
 
-  setEditorState(state){
-    this.editor.setValue(state.code)
+  setEditorState(state) {
+    this.editor.setValue(state.code);
     this.editor.moveCursorTo(state.cLine, state.cPos);
-    this.editor.session.selection.clearSelection()
+    this.editor.session.selection.clearSelection();
   }
 
-  setExamples(examples){
-    this.examples = examples
+  setExamples(examples) {
+    this.examples = examples;
   }
 
-  setDesiredState(desired){
-    this.desiredState = desired
+  setDesiredState(desired) {
+    this.desiredState = desired;
   }
 
-  setCallback(f){
-    this.callback = f
+  setCallback(f) {
+    this.callback = f;
   }
 
-  getEditorState(){
-    if(!this.editor){ return null }
-    const code = this.editor.getValue()
-    const cursor = this.editor.getCursorPosition()
-    return { code: code, line: cursor.row, pos: cursor.column }
+  getEditorState() {
+    if (!this.editor) {
+      return null;
+    }
+    const code = this.editor.getValue();
+    const cursor = this.editor.getCursorPosition();
+    return { code: code, line: cursor.row, pos: cursor.column };
   }
 
   goalReached() {
-    if(this.desiredState === null){ return false; }
-    const state = this.getEditorState()
+    if (this.desiredState === null) {
+      return false;
+    }
+    const state = this.getEditorState();
 
-    return (state.line === this.desiredState.line &&
-            state.pos  === this.desiredState.pos)
+    return state.line === this.desiredState.line && state.pos === this.desiredState.pos;
   }
 
   codeUpdated() {
-    if(this.callback && this.goalReached()){
-      this.incrementExample()
+    if (this.callback && this.goalReached()) {
+      this.incrementExample();
     }
-    return this.exampleNum
+    return this.exampleNum;
   }
 
   incrementExample() {
     this.exampleNum += 1;
-    if(this.exampleNum < this.exampleCount){
+    if (this.exampleNum < this.exampleCount) {
       this.setDesiredState({
         line: this.examples[this.exampleNum].expected.cLine,
-        pos: this.examples[this.exampleNum].expected.cPos
-      })
+        pos: this.examples[this.exampleNum].expected.cPos,
+      });
       this.setEditorState({
         code: this.examples[this.exampleNum].initial.code,
         cLine: this.examples[this.exampleNum].initial.cLine,
-        cPos: this.examples[this.exampleNum].initial.cPos
-      })
+        cPos: this.examples[this.exampleNum].initial.cPos,
+      });
     } else {
-      this.callback()
+      this.callback();
     }
   }
 }
 
 function TutorialWindow() {
-  const [lesson, setLesson] = React.useState({})
-  const [exampleNum, setExampleNum] = React.useState(0)
-  var codeChecker = useRef(null)
+  const [lesson, setLesson] = React.useState({});
+  const [exampleNum, setExampleNum] = React.useState(0);
+  var codeChecker = useRef(null);
 
   React.useEffect(() => {
-    const data = getLessonData()
-    setLesson(data.lesson)
-    codeChecker.current = new CodeChecker(data.lesson.exampleCount)
-    codeChecker.current.setEditor(ace.edit('editor'))
-    codeChecker.current.setExamples(data.examples)
-    
-    codeChecker.current.setEditorState({
-      code: data.examples[0].initial.code,
-      cLine: data.examples[0].initial.cLine,
-      cPos: data.examples[0].initial.cPos
-    })
+    async function fetchData() {
+      const data = await getLessonData();
+      setLesson(data.lesson);
+      codeChecker.current = new CodeChecker(data.lesson.exampleCount);
+      codeChecker.current.setEditor(ace.edit("editor"));
+      codeChecker.current.setExamples(data.examples);
 
-    codeChecker.current.setDesiredState({
-      line: data.examples[0].expected.cLine,
-      pos: data.examples[0].expected.cPos
-    })
+      codeChecker.current.setEditorState({
+        code: data.examples[0].initial.code,
+        cLine: data.examples[0].initial.cLine,
+        cPos: data.examples[0].initial.cPos,
+      });
 
-    codeChecker.current.setCallback(() => {
-      console.log("Lesson done!!!!")
-    })
+      codeChecker.current.setDesiredState({
+        line: data.examples[0].expected.cLine,
+        pos: data.examples[0].expected.cPos,
+      });
+
+      codeChecker.current.setCallback(() => {
+        console.log("Lesson done!!!!");
+      });
+    }
+    fetchData();
   }, []);
 
   let complete = true;
@@ -164,20 +175,24 @@ function TutorialWindow() {
   const boxShadowComplete = style.getPropertyValue("--green-0");
 
   var editing = false;
-  function onChange(newContent){
-    if(editing){ return; }
+  function onChange(newContent) {
+    if (editing) {
+      return;
+    }
     editing = true;
-    var currentPosition = ace.edit('editor').selection.getCursor();
-    const edited = newContent.replace("\t", "    ")
-    ace.edit('editor').setValue(edited);
-    ace.edit('editor').clearSelection()
-    ace.edit('editor').moveCursorTo(currentPosition.row, currentPosition.column);
+    var currentPosition = ace.edit("editor").selection.getCursor();
+    const edited = newContent.replace("\t", "    ");
+    ace.edit("editor").setValue(edited);
+    ace.edit("editor").clearSelection();
+    ace.edit("editor").moveCursorTo(currentPosition.row, currentPosition.column);
     editing = false;
   }
 
-  function onCursorChange(selection){
-    if(editing){ return; }
-    setExampleNum(codeChecker.current.codeUpdated())
+  function onCursorChange(selection) {
+    if (editing) {
+      return;
+    }
+    setExampleNum(codeChecker.current.codeUpdated());
   }
 
   return (
@@ -187,7 +202,9 @@ function TutorialWindow() {
         style={{ boxShadow: "inset 20px 0" + (complete ? boxShadowDefault : boxShadowComplete) }}
       >
         <div>
-          <h1>Lesson {lesson.num}: {lesson.title}</h1>
+          <h1>
+            Lesson {lesson.num}: {lesson.title}
+          </h1>
           <p>{lesson.desc}</p>
         </div>
         <div>
@@ -196,18 +213,18 @@ function TutorialWindow() {
           </div>
         </div>
       </div>
-        <AceEditor
-          id='editor'
-          mode='java'
-          theme='chaos'
-          name='editor'
-          keyboardHandler='vim'
-          style={{width: '80rem', height: '100%'}}
-          fontSize={20}
-          showPrintMargin={false}
-          onChange={onChange}
-          onCursorChange={onCursorChange}
-        />
+      <AceEditor
+        id="editor"
+        mode="java"
+        theme="chaos"
+        name="editor"
+        keyboardHandler="vim"
+        style={{ width: "80rem", height: "100%" }}
+        fontSize={20}
+        showPrintMargin={false}
+        onChange={onChange}
+        onCursorChange={onCursorChange}
+      />
     </div>
   );
 }
