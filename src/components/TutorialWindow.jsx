@@ -157,10 +157,12 @@ function TutorialWindow() {
         cPos: data.examples[0].initial.cPos,
       });
 
-    codeChecker.current.setCallback(() => {
-      console.log("Lesson done!!!!")
-      setComplete(true)
-    })
+      codeChecker.current.setCallback(() => {
+        console.log("Lesson done!!!!")
+        setComplete(true)
+      })
+    }
+    fetchData()
   }, []);
 
   // Get style variables from style.css
