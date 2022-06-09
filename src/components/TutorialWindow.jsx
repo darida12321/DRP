@@ -1,4 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from "react";
+import { db } from "../firebase.js";
+import { collection, doc, getDoc, addDoc, setDoc, getDocs } from "firebase/firestore";
 
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-java'
@@ -6,7 +8,6 @@ import 'ace-builds/src-noconflict/theme-chaos'
 import 'ace-builds/src-noconflict/ext-language_tools'
 import 'ace-builds/src-noconflict/keybinding-vim'
 import ace from 'ace-builds/src-noconflict/ace'
-
 
 // TODO fetch data from a backend
 function getLessonData() {
@@ -127,7 +128,6 @@ class CodeChecker {
   }
 }
 
-
 function TutorialWindow() {
   const [lesson, setLesson] = React.useState({})
   const [exampleNum, setExampleNum] = React.useState(0)
@@ -156,6 +156,12 @@ function TutorialWindow() {
     })
   }, []);
 
+  let complete = true;
+
+  // Get style variables from style.css
+  var style = getComputedStyle(document.body);
+  const boxShadowDefault = style.getPropertyValue("--blue-0");
+  const boxShadowComplete = style.getPropertyValue("--green-0");
 
   var editing = false;
   function onChange(newContent){
@@ -176,7 +182,10 @@ function TutorialWindow() {
 
   return (
     <div className="tutorial">
-      <div className="textbox">
+      <div
+        className="textbox"
+        style={{ boxShadow: "inset 20px 0" + (complete ? boxShadowDefault : boxShadowComplete) }}
+      >
         <div>
           <h1>Lesson {lesson.num}: {lesson.title}</h1>
           <p>{lesson.desc}</p>
