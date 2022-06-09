@@ -39,7 +39,7 @@ async function getLessonData() {
         initial: {
           code: "       Now here: > <   |\n                       |\n                       |",
           cLine: 1,
-          cPos: 14
+          cPos: 14,
         },
         expected: {
           cLine: 0,
@@ -119,7 +119,9 @@ class CodeChecker {
   }
 
   incrementExample() {
-    if(this.exampleNum >= this.exampleCount){ return; }
+    if (this.exampleNum >= this.exampleCount) {
+      return;
+    }
     this.exampleNum += 1;
     if (this.exampleNum < this.exampleCount) {
       this.setDesiredState({
@@ -138,10 +140,10 @@ class CodeChecker {
 }
 
 function TutorialWindow() {
-  const [lesson, setLesson] = React.useState({})
-  const [exampleNum, setExampleNum] = React.useState(0)
-  const [complete, setComplete] = React.useState(false)
-  var codeChecker = useRef(null)
+  const [lesson, setLesson] = React.useState({});
+  const [exampleNum, setExampleNum] = React.useState(0);
+  const [complete, setComplete] = React.useState(false);
+  var codeChecker = useRef(null);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -157,10 +159,11 @@ function TutorialWindow() {
         cPos: data.examples[0].initial.cPos,
       });
 
-    codeChecker.current.setCallback(() => {
-      console.log("Lesson done!!!!")
-      setComplete(true)
-    })
+      codeChecker.current.setCallback(() => {
+        console.log("Lesson done!!!!");
+        setComplete(true);
+      });
+    }
   }, []);
 
   // Get style variables from style.css
