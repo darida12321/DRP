@@ -15,7 +15,9 @@ function HomePage() {
         <h1>Website Name</h1>
         <div className = "loginBoxes">
           <Link to='/vim/1/1'>
-            <button onClick = {startUpClicked}>Get Started</button>
+            <button onClick = {startUpClicked}>
+              <p>Get Started</p>
+            </button>
           </Link>
         </div>
       </div>

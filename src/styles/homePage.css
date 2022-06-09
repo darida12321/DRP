@@ -39,7 +39,7 @@
 
 .loginBoxes button:hover {
   cursor: pointer;
-  text-decoration: underline;
+  text-shadow: black;
 }
 
 .body {
