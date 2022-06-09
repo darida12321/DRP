@@ -62,12 +62,18 @@ async function getLessonData() {
 }
 
 class CodeChecker {
+  // Constructor defining the parameters
+  // TODO: pass parameters in here (editor, examples, callback)
+  // TODO: set the editor to examples[0] setup
   constructor(exampleCount) {
     this.editor = null;
+
     this.desiredState = null;
+
     this.examples = [];
     this.exampleNum = 0;
     this.exampleCount = exampleCount;
+
     this.callback = null;
   }
 
@@ -75,6 +81,7 @@ class CodeChecker {
     this.editor = editor;
   }
 
+  // TODO: Use official Lesson json format
   setEditorState(state) {
     this.editor.setValue(state.code);
     this.editor.moveCursorTo(state.cLine, state.cPos);
@@ -93,6 +100,7 @@ class CodeChecker {
     this.callback = f;
   }
 
+  // TODO use official lessonData Json format
   getEditorState() {
     if (!this.editor) {
       return null;
@@ -102,6 +110,7 @@ class CodeChecker {
     return { code: code, line: cursor.row, pos: cursor.column };
   }
 
+  // Use example instead of desired state
   goalReached() {
     if (this.desiredState === null) {
       return false;
@@ -111,6 +120,7 @@ class CodeChecker {
     return state.line === this.desiredState.line && state.pos === this.desiredState.pos;
   }
 
+  // Use callback for current excersize
   codeUpdated() {
     if (this.callback && this.goalReached()) {
       this.incrementExample();
@@ -118,6 +128,7 @@ class CodeChecker {
     return this.exampleNum;
   }
 
+  // Use correct json format
   incrementExample() {
     if(this.exampleNum >= this.exampleCount){ return; }
     this.exampleNum += 1;
