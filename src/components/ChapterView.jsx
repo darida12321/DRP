@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function ChapterView(props) {
   const [lessons, setLessons] = useState({})
@@ -22,12 +23,14 @@ function ChapterView(props) {
     <div className="chapter">
       <h1>Chapter {lessons.chapter && lessons.chapter}:</h1>
       <h3>{lessons.title && lessons.title}</h3>
-      <div>
+      <div className='lessons-view'>
         {
           lessons.lessons && lessons.lessons.map((l) => (
             <div key={l.id}>
               <div className="lesson-marker"></div>
-              <p>{l.lesson}</p>
+              <Link to={`/vim/${lessons.chapter}/${l.id}`}>
+                <p>{l.lesson}</p>
+              </Link>
             </div>
           ))
         }

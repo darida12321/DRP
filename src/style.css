@@ -118,6 +118,11 @@ nav > div > h1 {
   z-index: 2;
 }
 
+.lessons-view * {
+  color: white;
+  text-decoration: none;
+}
+
 *:not(:last-child) > .lesson-marker::after {
   content: "";
   display: block;
