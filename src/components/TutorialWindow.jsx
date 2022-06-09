@@ -34,7 +34,24 @@ function TutorialWindow() {
     ace.edit('editor').setValue(data.initial.code)
     ace.edit('editor').moveCursorTo(data.initial.cLine, data.initial.cPos);
     ace.edit('editor').session.selection.clearSelection()
+    ace.edit('editor').setShowInvisibles(true)
   }, []);
+
+  var editing = false;
+  function onChange(newContent){
+    if(editing){ return; }
+    editing = true;
+    var currentPosition = ace.edit('editor').selection.getCursor();
+    const edited = newContent.replace("\t", "    ")
+    ace.edit('editor').setValue(edited);
+    ace.edit('editor').clearSelection()
+    ace.edit('editor').moveCursorTo(currentPosition.row, currentPosition.column);
+    editing = false;
+  }
+
+  function onCursorChange(selection){
+    console.log(selection.cursor.row, selection.cursor.column)
+  }
 
   return (
     <div className="tutorial">
@@ -58,6 +75,8 @@ function TutorialWindow() {
           style={{width: '80rem', height: '100%'}}
           fontSize={20}
           showPrintMargin={false}
+          onChange={onChange}
+          onCursorChange={onCursorChange}
         />
     </div>
   );
