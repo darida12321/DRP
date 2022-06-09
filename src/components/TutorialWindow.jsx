@@ -15,7 +15,7 @@ function getLessonData() {
       num: 1,
       title: 'Moving with hjkl',
       desc: 'Use the h,j,k and l keys to move around.\n\'h\'-left, \'j\'-down, \'k\'-up, \'l\'- right',
-      exampleCount: 2
+      exampleCount: 3
     },
     examples: [
       {
@@ -31,13 +31,24 @@ function getLessonData() {
       },
       {
         initial: {
-          code: '  Now here: > <   |\n                  |\n                  |',
+          code: '       Now here: > <   |\n                       |\n                       |',
           cLine: 1,
           cPos: 13
         },
         expected: {
           cLine: 0,
-          cPos: 13
+          cPos: 18
+        }
+      },
+      {
+        initial: {
+          code: '                          |\n                          |\n   > < and finally, there |',
+          cLine: 0,
+          cPos: 18
+        },
+        expected: {
+          cLine: 2,
+          cPos: 4
         }
       }
     ]
@@ -99,17 +110,16 @@ class CodeChecker {
   }
 
   incrementExample() {
-    console.log('Done example', this.exampleNum+1, this.exampleCount)
     this.exampleNum += 1;
     if(this.exampleNum < this.exampleCount){
+      this.setDesiredState({
+        line: this.examples[this.exampleNum].expected.cLine,
+        pos: this.examples[this.exampleNum].expected.cPos
+      })
       this.setEditorState({
         code: this.examples[this.exampleNum].initial.code,
         cLine: this.examples[this.exampleNum].initial.cLine,
         cPos: this.examples[this.exampleNum].initial.cPos
-      })
-      this.setDesiredState({
-        line: this.examples[this.exampleNum].expected.cLine,
-        pos: this.examples[this.exampleNum].expected.cPos
       })
     } else {
       this.callback()
