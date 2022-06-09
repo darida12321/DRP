@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import AceEditor from 'react-ace'
 import 'ace-builds/src-noconflict/mode-java'
@@ -12,30 +12,140 @@ import ace from 'ace-builds/src-noconflict/ace'
 function getLessonData() {
   return{
     lesson: {
-      num: 3,
-      title: 'Moving one word back',
-      desc: 'Use \'b\' to move the cursor back one word.',
+      num: 1,
+      title: 'Moving with hjkl',
+      desc: 'Use the h,j,k and l keys to move around.\n\'h\'-left, \'j\'-down, \'k\'-up, \'l\'- right',
+      exampleCount: 2
     },
-    initial: {
-      code: 'int addNumbers(int a, int b){\n\treturn a+b;\n}',
-      cLine: 0,
-      cPos: 15
-    }
+    examples: [
+      {
+        initial: {
+          code: '                  |\n  Move here: > <  |\n                  |',
+          cLine: 0,
+          cPos: 0
+        },
+        expected: {
+          cLine: 1,
+          cPos: 14
+        }
+      },
+      {
+        initial: {
+          code: '  Now here: > <   |\n                  |\n                  |',
+          cLine: 1,
+          cPos: 13
+        },
+        expected: {
+          cLine: 0,
+          cPos: 10
+        }
+      }
+    ]
   };
 }
 
+class CodeChecker {
+  constructor(exampleCount){
+    this.editor = null
+    this.desiredState = null
+    this.examples = []
+    this.exampleNum = 0
+    this.exampleCount = exampleCount
+    this.callback = null
+  }
+
+  setEditor(editor){
+    this.editor = editor
+  }
+
+  setEditorState(state){
+    this.editor.setValue(state.code)
+    this.editor.moveCursorTo(state.cLine, state.cPos);
+    this.editor.session.selection.clearSelection()
+  }
+
+  setExamples(examples){
+    this.examples = examples
+  }
+
+  setDesiredState(desired){
+    this.desiredState = desired
+  }
+
+  setCallback(f){
+    this.callback = f
+  }
+
+  getEditorState(){
+    if(!this.editor){ return null }
+    const code = this.editor.getValue()
+    const cursor = this.editor.getCursorPosition()
+    return { code: code, line: cursor.row, pos: cursor.column }
+  }
+
+  goalReached() {
+    if(this.desiredState === null){ return false; }
+    const state = this.getEditorState()
+
+    return (state.line === this.desiredState.line &&
+            state.pos  === this.desiredState.pos)
+  }
+
+  codeUpdated() {
+    if(this.callback && this.goalReached()){
+      this.incrementExample()
+    }
+    return this.exampleNum
+  }
+
+  incrementExample() {
+    console.log('Done example', this.exampleNum+1, this.exampleCount)
+    this.exampleNum += 1;
+    if(this.exampleNum < this.exampleCount){
+      this.setEditorState({
+        code: this.examples[this.exampleNum].initial.code,
+        cLine: this.examples[this.exampleNum].initial.cLine,
+        cPos: this.examples[this.exampleNum].initial.cPos
+      })
+      this.setDesiredState({
+        line: this.examples[this.exampleNum].expected.cLine,
+        pos: this.examples[this.exampleNum].expected.cPos
+      })
+    } else {
+      console.log('FINISHED  LESSON')
+    }
+  }
+}
+
+
 function TutorialWindow() {
-  const [lesson, setLesson] = React.useState({});
+  const [lesson, setLesson] = React.useState({})
+  const [exampleNum, setExampleNum] = React.useState(0)
+  var codeChecker = useRef(null)
 
   React.useEffect(() => {
-    const data = getLessonData();
-    setLesson(data.lesson);
+    const data = getLessonData()
+    setLesson(data.lesson)
+    codeChecker.current = new CodeChecker(data.lesson.exampleCount)
+    codeChecker.current.setEditor(ace.edit('editor'))
+    codeChecker.current.setExamples(data.examples)
     
-    ace.edit('editor').setValue(data.initial.code)
-    ace.edit('editor').moveCursorTo(data.initial.cLine, data.initial.cPos);
-    ace.edit('editor').session.selection.clearSelection()
-    ace.edit('editor').setShowInvisibles(true)
+    codeChecker.current.setEditorState({
+      code: data.examples[0].initial.code,
+      cLine: data.examples[0].initial.cLine,
+      cPos: data.examples[0].initial.cPos
+    })
+
+    codeChecker.current.setDesiredState({
+      line: data.examples[0].expected.cLine,
+      pos: data.examples[0].expected.cPos
+    })
+
+    codeChecker.current.setCallback(() => {
+      console.log("Lesson done!!!!")
+    })
   }, []);
+
 
   var editing = false;
   function onChange(newContent){
@@ -50,7 +160,8 @@ function TutorialWindow() {
   }
 
   function onCursorChange(selection){
-    console.log(selection.cursor.row, selection.cursor.column)
+    if(editing){ return; }
+    codeChecker.current.codeUpdated()
   }
 
   return (
@@ -62,7 +173,7 @@ function TutorialWindow() {
         </div>
         <div>
           <div className="marker">
-            1/5
+            {exampleNum}/{lesson.exampleCount}
           </div>
         </div>
       </div>
