@@ -32,14 +32,14 @@
   font-size: 1.5rem;
   border: 0;
   border-radius: 10px;
-  padding: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  width: 15rem;
+  height: 5rem;
+  text-align: center;
 }
 
 .loginBoxes button:hover {
   cursor: pointer;
-  text-shadow: black;
+  text-shadow: 2px 2px black;
 }
 
 .body {
