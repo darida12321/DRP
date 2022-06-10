@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getLessonData} from "../firebase.js";
+import { getLessonData } from "../firebase.js";
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
@@ -36,7 +36,7 @@ function TutorialWindow(props) {
       });
     }
     fetchData();
-  }, []);
+  }, [props.chapter, props.lesson]);
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);

@@ -11,7 +11,7 @@ function ChapterView(props) {
     async function fetchData() {
       const chapterData = await getChapterData(props.chapter);
       const title = chapterData.title;
-      
+
       const lessonData = await getLessonData(props.chapter);
       const lessons = [];
       lessonData.forEach((lesson) => {
@@ -27,7 +27,7 @@ function ChapterView(props) {
       });
     }
     fetchData();
-  }, []);
+  }, [props.chapter, props.lesson]);
 
   return (
     <div className="chapter">
