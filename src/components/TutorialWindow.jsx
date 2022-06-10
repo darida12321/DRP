@@ -9,6 +9,8 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/keybinding-vim";
 import ace from "ace-builds/src-noconflict/ace";
 
+import '../styles/TutorialWindow.css'
+
 // TODO fetch data from a backend
 async function getLessonData() {
   const querySnapshot = await getDocs(collection(db, "vim/chapter1/lessons"));
