@@ -1,5 +1,6 @@
 .chapter {
   background: var(--blue-2);
+  color: var(--white);
   width: 15rem;
   height: calc(100% - 4rem);
   padding: 10px;
@@ -11,34 +12,32 @@
   align-items: center;
 }
 
-.chapter > h1 {
+.chapterNumber {
   font-size: 2.5rem;
-  color: var(--white);
-  margin: 0;
+  /* color: var(--white); */
+  margin: 2px;
   padding: 0;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 
-.chapter > h3 {
+.chapterTitle {
   font-size: 1.8rem;
-  color: var(--white);
-  margin: 0;
+  /* color: var(--white); */
+  margin: 4px;
   padding: 0;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 
-.chapter > div > div {
+.lessons-view * {
+  color: white;
+  text-decoration: none;
+}
+
+.lesson {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   height: 4rem;
-}
-
-.chapter > div > div > p {
-  color: var(--white);
-  font-size: 1.4rem;
-  margin: 0;
-  padding: 0;
 }
 
 .lesson-marker {
@@ -50,9 +49,15 @@
   z-index: 2;
 }
 
-.lessons-view * {
-  color: white;
-  text-decoration: none;
+/* .chapter > div > div > p {
+  color: var(--white);
+  font-size: 1.4rem;
+  margin: 0;
+  padding: 0;
+} */
+
+.link:hover > p {
+  color: var(--yellow-0);
 }
 
 *:not(:last-child) > .lesson-marker::after {
