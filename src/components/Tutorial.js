@@ -5,6 +5,8 @@ import NavBar from './NavBar'
 import ChapterView from './ChapterView'
 import TutorialWindow from './TutorialWindow'
 
+import '../styles/Tutorial.css';
+
 function Tutorial() {
   const { chapter, lesson } = useParams();
 

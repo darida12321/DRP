@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import '../styles/ChapterView.css'
+
 function ChapterView(props) {
   const [lessons, setLessons] = useState({})
 
