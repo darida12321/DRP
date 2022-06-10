@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -15,12 +16,19 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
+// Get Google Analytics data
 // const analytics = getAnalytics(app);
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
 
-// const querySnapshot = await getDocs(collection(db, "users"));
-// querySnapshot.forEach((doc) => {
-//   console.log(`${doc.id} => ${doc.data()}`);
-// });
+export async function getLessonData(chapter) {
+  const querySnapshot = await getDocs(collection(db, "vim/chapter" + chapter + "/lessons"));
+  if (!querySnapshot) return;
+
+  const lessonData = [];
+  querySnapshot.forEach((doc) => {
+    lessonData.push(doc.data());
+  });
+  return lessonData;
+}
