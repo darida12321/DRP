@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -22,8 +22,9 @@ export const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
 
-export async function getLessonData(chapter) {
-  const querySnapshot = await getDocs(collection(db, "vim/chapter" + chapter + "/lessons"));
+// Get documents in a given chapter in the vim collection (TODO: make generic for any collection)
+export async function getLessonData(chapterNum) {
+  const querySnapshot = await getDocs(collection(db, "vim/chapter" + chapterNum + "/lessons"));
   if (!querySnapshot) return;
 
   const lessonData = [];
@@ -31,4 +32,11 @@ export async function getLessonData(chapter) {
     lessonData.push(doc.data());
   });
   return lessonData;
+}
+
+export async function getChapterData(chapterNum) {
+  const docSnap = await getDoc(doc(db, "vim", "chapter" + chapterNum));
+  if (!docSnap.exists()) return;
+
+  return docSnap.data();
 }
