@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { db } from "../firebase.js";
-import { doc, collection, getDocs, setDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
@@ -9,7 +9,7 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import "ace-builds/src-noconflict/keybinding-vim";
 import ace from "ace-builds/src-noconflict/ace";
 
-import '../styles/TutorialWindow.css'
+import "../styles/TutorialWindow.css";
 
 // TODO fetch data from a backend
 async function getLessonData(chapter) {
@@ -168,8 +168,8 @@ function TutorialWindow(props) {
     async function fetchData() {
       const lessonIndex = props.lesson - 1;
       // Get lessons for chapter 1
-      const data = await getLessonData(1);
-      lessonData = data[lessonIndex];
+      const data = await getLessonData(props.chapter);
+      const lessonData = data[lessonIndex];
       setLesson({
         num: lessonData.num,
         title: lessonData.title,
