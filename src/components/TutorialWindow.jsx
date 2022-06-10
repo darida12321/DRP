@@ -178,6 +178,12 @@ function TutorialWindow() {
         cPos: data[0].examples[0].initial.cPos,
       });
 
+      console.log("EXAMPLE", data[0].examples[0])
+      codeChecker.current.setDesiredState({
+        line: data[0].examples[0].expected.cLine,
+        pos: data[0].examples[0].expected.cPos,
+      });
+
       codeChecker.current.setCallback(() => {
         console.log("Lesson done!!!!");
         setComplete(true);
