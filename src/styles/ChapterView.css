@@ -57,7 +57,7 @@
 } */
 
 .link:hover > p {
-  color: var(--yellow-0);
+  color: lightgrey;
 }
 
 *:not(:last-child) > .lesson-marker::after {
