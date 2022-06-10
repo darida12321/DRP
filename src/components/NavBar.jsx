@@ -6,6 +6,8 @@ import keyboardImg from '../images/keyboard-icon.svg'
 import moonImg from '../images/moon-icon.svg'
 import userImg from '../images/user-icon.svg'
 
+import '../styles/NavBar.css'
+
 function NavBar() {
   return (
     <nav>
