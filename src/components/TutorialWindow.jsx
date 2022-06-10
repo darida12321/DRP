@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { db } from "../firebase.js";
-import { collection, getDocs } from "firebase/firestore";
+import { doc, collection, getDocs, setDoc } from "firebase/firestore";
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
@@ -10,30 +10,29 @@ import "ace-builds/src-noconflict/keybinding-vim";
 import ace from "ace-builds/src-noconflict/ace";
 
 // TODO fetch data from a backend
-async function getLessonData() {
-  const querySnapshot = await getDocs(collection(db, "vim/chapter1/lessons"));
+async function getLessonData(chapter) {
+  const querySnapshot = await getDocs(collection(db, "vim/chapter" + chapter + "/lessons"));
+  if (!querySnapshot) return;
   let lessonData = [];
   querySnapshot.forEach((doc) => {
     console.log(doc.data());
     lessonData.push(doc.data());
   });
-  return lessonData;
 
-  // return {
-  //   lesson: {
-  //     num: 1,
-  //     title: "Moving with hjkl",
-  //     desc: "Use the H, J, K and L keys to move to the target.\n'H' - left, 'J' - down, 'K' - up, 'L' - right",
-  //     exampleCount: 3,
-  //   },
+  // await setDoc(doc(db, "vim/chapter1/lessons", "lesson1"), {
+  //   num: 1,
+  //   title: "Moving with hjkl",
+  //   description: "Use the H, J, K and L keys to move to the target.\n'H' - left, 'J' - down, 'K' - up, 'L' - right",
+  //   exampleCount: 3,
   //   examples: [
   //     {
   //       initial: {
-  //         code: "                      |\n  Move here: --> <--  |\n                |",
+  //         code: "                        |\n  Move here: > <  |\n                  |",
   //         cLine: 0,
   //         cPos: 0,
   //       },
   //       expected: {
+  //         code: "                        |\n  Move here: > <  |\n                  |",
   //         cLine: 1,
   //         cPos: 14,
   //       },
@@ -42,9 +41,10 @@ async function getLessonData() {
   //       initial: {
   //         code: "       Now here: > <   |\n                       |\n                       |",
   //         cLine: 1,
-  //         cPos: 14
+  //         cPos: 14,
   //       },
   //       expected: {
+  //         code: "       Now here: > <   |\n                       |\n                       |",
   //         cLine: 0,
   //         cPos: 18,
   //       },
@@ -56,12 +56,15 @@ async function getLessonData() {
   //         cPos: 18,
   //       },
   //       expected: {
+  //         code: "                          |\n                          |\n   > < and finally, there |",
   //         cLine: 2,
   //         cPos: 4,
   //       },
   //     },
   //   ],
-  // };
+  // });
+
+  return lessonData;
 }
 
 class CodeChecker {
@@ -153,29 +156,32 @@ class CodeChecker {
   }
 }
 
-function TutorialWindow() {
-  const [lesson, setLesson] = useState({})
-  const [exampleNum, setExampleNum] = useState(0)
-  const [complete, setComplete] = useState(false)
-  var codeChecker = useRef(null)
+function TutorialWindow(props) {
+  const [lesson, setLesson] = useState({});
+  const [exampleNum, setExampleNum] = useState(0);
+  const [complete, setComplete] = useState(false);
+  var codeChecker = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getLessonData();
+      const lessonIndex = props.lesson - 1;
+      // Get lessons for chapter 1
+      const data = await getLessonData(1);
+      lessonData = data[lessonIndex];
       setLesson({
-        num: data[0].num,
-        title: data[0].title,
-        desc: data[0].desc,
-        exampleCount: data[0].exampleCount,
+        num: lessonData.num,
+        title: lessonData.title,
+        desc: lessonData.desc,
+        exampleCount: lessonData.exampleCount,
       });
-      codeChecker.current = new CodeChecker(data[0].exampleCount);
+      codeChecker.current = new CodeChecker(lessonData.exampleCount);
       codeChecker.current.setEditor(ace.edit("editor"));
-      codeChecker.current.setExamples(data[0].examples);
+      codeChecker.current.setExamples(lessonData.examples);
 
       codeChecker.current.setEditorState({
-        code: data[0].examples[0].initial.code,
-        cLine: data[0].examples[0].initial.cLine,
-        cPos: data[0].examples[0].initial.cPos,
+        code: lessonData.examples[0].initial.code,
+        cLine: lessonData.examples[0].initial.cLine,
+        cPos: lessonData.examples[0].initial.cPos,
       });
 
       codeChecker.current.setCallback(() => {
