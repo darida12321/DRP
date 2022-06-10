@@ -1,0 +1,28 @@
+nav {
+  background: var(--blue-1);
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+nav > div {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  align-items: center;
+}
+
+nav > div > h1 {
+  font-size: 3.5rem;
+  line-height: 100%;
+}
+
+.icon {
+  height: 3rem;
+  margin: 5px;
+}
+
+.container {
+  height: 100%;
+}

@@ -10,9 +10,12 @@ import "ace-builds/src-noconflict/keybinding-vim";
 import ace from "ace-builds/src-noconflict/ace";
 import CodeChecker from '../js/CodeChecker';
 
+import "../styles/TutorialWindow.css";
+
 // TODO fetch data from a backend
-async function getLessonData() {
-  const querySnapshot = await getDocs(collection(db, "vim/chapter1/lessons"));
+async function getLessonData(chapter) {
+  const querySnapshot = await getDocs(collection(db, "vim/chapter" + chapter + "/lessons"));
+  if (!querySnapshot) return;
   let lessonData = [];
   querySnapshot.forEach((doc) => {
     lessonData.push(doc.data());
@@ -20,20 +23,23 @@ async function getLessonData() {
   return lessonData;
 }
 
-function TutorialWindow() {
-  const [lesson, setLesson] = useState({})
-  const [exampleNum, setExampleNum] = useState(0)
-  const [complete, setComplete] = useState(false)
-  var codeChecker = useRef(null)
+function TutorialWindow(props) {
+  const [lesson, setLesson] = useState({});
+  const [exampleNum, setExampleNum] = useState(0);
+  const [complete, setComplete] = useState(false);
+  var codeChecker = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getLessonData();
+      const lessonIndex = props.lesson - 1;
+      // Get lessons for chapter 1
+      const data = await getLessonData(props.chapter);
+      const lessonData = data[lessonIndex];
       setLesson({
-        num: data[0].num,
-        title: data[0].title,
-        description: data[0].description,
-        exampleCount: data[0].examples.length,
+        num: lessonData.num,
+        title: lessonData.title,
+        description: lessonData.desc,
+        exampleCount: lessonData.examples.length,
       });
 
       codeChecker.current = new CodeChecker(
