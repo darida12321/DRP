@@ -1,19 +1,23 @@
-nav {
-  background: var(--blue-1);
-  height: 4rem;
+#nav-bar {
+  background-color: var(--blue-1);
+  height: 50px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 0;
-}
-
-nav > div {
-  display: flex;
-  gap: 1em;
-  justify-content: center;
   align-items: center;
 }
 
-nav > div > h1 {
+#home,
+#logo,
+#menu {
+  gap: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: pink;
+}
+
+#name {
   font-size: 3.5rem;
   line-height: 100%;
 }
@@ -21,8 +25,4 @@ nav > div > h1 {
 .icon {
   height: 3rem;
   margin: 5px;
-}
-
-.container {
-  height: 100%;
 }
