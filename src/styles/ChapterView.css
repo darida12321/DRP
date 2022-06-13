@@ -1,10 +1,9 @@
-.chapter {
-  background: var(--blue-2);
-  color: var(--white);
+#chapter {
+  background: #eee;
+  color: #21242c;
+  box-sizing: border-box;
   width: 15rem;
   height: calc(100% - 4rem);
-  padding: 10px;
-  box-sizing: border-box;
   float: left;
   display: flex;
   flex-direction: column;
@@ -12,60 +11,61 @@
   align-items: center;
 }
 
-.chapterNumber {
-  font-size: 2.5rem;
-  /* color: var(--white); */
-  margin: 2px;
-  padding: 0;
-  /* margin-left: 10px; */
+#chapter h1 {
+  margin: 5px;
 }
 
-.chapterTitle {
-  font-size: 1.8rem;
-  /* color: var(--white); */
-  margin: 4px;
-  padding: 0;
-  /* margin-left: 10px; */
+#chapter h3 {
+  margin: 5px;
+  margin-bottom: 15px;
 }
 
-.lessons-view * {
-  color: white;
-  text-decoration: none;
+#lessons-view {
+  overflow: scroll;
 }
 
 .lesson {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  height: 4rem;
 }
 
-.lesson-marker {
-  border: 15px solid var(--blue-0);
-  border-radius: 15px;
-  width: 0;
-  height: 0;
-  margin-right: 5px;
+.lesson:last-child .chapter-line {
+  visibility: hidden;
+}
+
+.progress-bar {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.chapter-blob {
+  background: var(--blue-0);
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-left: 10px;
   z-index: 2;
 }
 
-/* .chapter > div > div > p {
-  color: var(--white);
-  font-size: 1.4rem;
-  margin: 0;
-  padding: 0;
-} */
-
-.link:hover > p {
-  color: lightgrey;
+.chapter-line {
+  background: var(--blue-0);
+  width: 5px;
+  height: 40px;
+  margin: -10px;
+  transform: translateY(5px);
 }
 
-*:not(:last-child) > .lesson-marker::after {
-  content: "";
-  display: block;
-  background: var(--blue-0);
-  border: 5px solid var(--blue-0);
-  transform: translate(-50%, 0);
-  width: 0;
-  height: 3rem;
+.link {
+  text-decoration: none;
+}
+
+.lesson-title {
+  color: #000;
+  transform: translateY(-10px);
+}
+
+.link:hover .lesson-title {
+  color: #444;
 }
