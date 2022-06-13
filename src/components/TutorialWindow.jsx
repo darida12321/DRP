@@ -65,19 +65,19 @@ function TutorialWindow(props) {
   }
 
   return (
-    <div className="tutorial">
+    <div id="tutorial">
       <div
-        className="textbox"
+        id="textbox"
         style={{ boxShadow: "inset 20px 0" + (complete ? boxShadowComplete : boxShadowDefault) }}
       >
-        <div>
-          <h1>
+        <div id="lesson-info">
+          <h1 id="lesson-title">
             Lesson {lesson.num}: {lesson.title}
           </h1>
-          <p>{lesson.description}</p>
+          <p id="lesson-desc">{lesson.description}</p>
         </div>
-        <div>
-          <div className="marker" style={{ background: complete ? boxShadowComplete : boxShadowDefault }}>
+        <div id="lesson-marker">
+          <div id="blob" style={{ background: complete ? boxShadowComplete : boxShadowDefault }}>
             {exampleNum}/{lesson.exampleCount}
           </div>
         </div>
