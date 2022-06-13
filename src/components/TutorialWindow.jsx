@@ -64,12 +64,11 @@ function TutorialWindow(props) {
     setExampleNum(codeChecker.current.codeUpdated());
   }
 
+  // style={{ boxShadow: "inset 20px 0" + (complete ? boxShadowComplete : boxShadowDefault) }}
+
   return (
     <div id="tutorial">
-      <div
-        id="textbox"
-        style={{ boxShadow: "inset 20px 0" + (complete ? boxShadowComplete : boxShadowDefault) }}
-      >
+      <div id="textbox">
         <div id="lesson-info">
           <h1 id="lesson-title">
             Lesson {lesson.num}: {lesson.title}
@@ -88,7 +87,7 @@ function TutorialWindow(props) {
         theme="chaos"
         name="editor"
         keyboardHandler="vim"
-        style={{ width: "80rem", height: "100%" }}
+        style={{ width: "65rem", height: " 20rem" }}
         fontSize={20}
         showPrintMargin={false}
         onChange={onChange}

@@ -1,69 +1,62 @@
 #tutorial {
-  background: var(--blue-4);
-  width: calc(100% - 15rem);
-  margin-left: 15rem;
-  height: calc(100% - 4rem);
-  box-sizing: border-box;
-  padding: 1.5rem;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  /* background-color: #f8f8f8; */
+  background-color: #1d2a35;
+  margin: 0;
 }
 
 #textbox {
-  background: #a6a8ac;
+  display: flex;
+  max-width: 80%;
+  color: #ddd;
+  text-align: center;
   border-radius: 15px;
-  box-shadow: inset 20px 0 var(--blue-0);
-  width: 80rem;
-  max-width: 90%;
-  margin-bottom: 2rem;
-  height: fit-content;
+  margin-bottom: 20px;
+  /* padding: 0 50px; */
+  /* box-shadow: inset 20px 0 var(--blue-0); */
+  /* height: fit-content; */
+}
+
+#lesson-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #lesson-title {
   margin: 10px 0;
-  font-size: 2.5rem;
-  color: var(--blue-0);
+  font-size: 38px;
+  font-weight: 900;
 }
+
 #lesson-desc {
   margin: 10px 0;
-  font-size: 1.9rem;
-}
-#lesson-info {
-  margin-left: 2rem;
-  float: left;
-  width: calc(100% - 14rem);
+  font-size: 20px;
 }
 
 #lesson-marker {
-  height: 100%;
-  margin-right: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  box-sizing: border-box;
-  float: right;
   display: flex;
-  justify-content: center;
   align-items: center;
+  margin-left: 50px;
 }
 
 #blob {
-  background: var(--blue-0);
-  flex: 0 0 10rem;
-  width: 10rem;
-  height: 10rem;
-  border-radius: 100%;
-  font-weight: 800;
-  font-size: 3rem;
-  text-align: center;
-  line-height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+  color: #000;
+  font-size: 33px;
+  font-weight: 900;
 }
 
 #editor {
-  width: 80rem;
-  max-width: 90%;
-  height: 100%;
+  align-self: center;
+  max-width: 80%;
   border-radius: 10px;
 }
 

@@ -5,23 +5,21 @@
   padding-right: 5px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
 }
 
 #chapter h1 {
   margin: 5px;
-  white-space: nowrap;
 }
 
 #chapter h3 {
   margin: 5px;
-  margin-bottom: 10px;
-  white-space: nowrap;
+  margin-bottom: 15px;
 }
 
 #lessons-view {
   overflow: scroll;
+  padding-top: 15px;
   padding-right: 20px;
 }
 
@@ -41,7 +39,7 @@
 }
 
 .chapter-blob {
-  background: var(--blue-0);
+  background: var(--blue-1);
   width: 25px;
   height: 25px;
   border-radius: 50%;
@@ -51,9 +49,9 @@
 }
 
 .chapter-line {
-  background: var(--blue-0);
+  background: var(--blue-1);
   width: 5px;
-  height: 40px;
+  height: 50px;
   margin: -10px;
   transform: translateY(5px);
 }
@@ -64,10 +62,9 @@
 
 .lesson-title {
   color: #ddd;
-  white-space: nowrap;
   transform: translateY(-10px);
 }
 
 .link:hover .lesson-title {
-  color: #bbb;
+  color: #aaa;
 }

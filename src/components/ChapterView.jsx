@@ -19,10 +19,6 @@ function ChapterView(props) {
           id: lesson.num,
           lesson: lesson.title,
         });
-        lessons.push({
-          id: lesson.num,
-          lesson: lesson.title,
-        });
       });
 
       setLessons({
