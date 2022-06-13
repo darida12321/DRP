@@ -3,10 +3,7 @@ import { db } from "../firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 
 import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-chaos";
-import "ace-builds/src-noconflict/ext-language_tools";
-import "ace-builds/src-noconflict/keybinding-vim";
 import ace from "ace-builds/src-noconflict/ace";
 import CodeChecker from '../js/CodeChecker';
 
@@ -38,17 +35,19 @@ function TutorialWindow(props) {
       setLesson({
         num: lessonData.num,
         title: lessonData.title,
-        description: lessonData.desc,
+        description: lessonData.description,
         exampleCount: lessonData.examples.length,
       });
 
       codeChecker.current = new CodeChecker(
-          ace.edit('editor'), data[0].examples, () => {
+          ace.edit('editor'), lessonData.editorSetup,
+          lessonData.examples, () => {
         console.log('Lesson done!!!')
         setComplete(true);
       });
 
     }
+
     fetchData();
   }, []);
 
@@ -98,10 +97,9 @@ function TutorialWindow(props) {
       </div>
       <AceEditor
         id="editor"
-        mode="java"
+        mode="text"
         theme="chaos"
         name="editor"
-        keyboardHandler="vim"
         style={{ width: "80rem", height: "100%" }}
         fontSize={20}
         showPrintMargin={false}

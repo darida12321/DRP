@@ -1,9 +1,16 @@
 
+import "ace-builds/src-noconflict/keybinding-vim";
+import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/mode-java";
+
 // Check code from an ace editor
 export default class CodeChecker {
   // Constructor defining the parameters
-  constructor(editor, examples, callback) {
+  constructor(editor, editorSetup, examples, callback) {
     this.editor = editor;
+
+    this.checking = editorSetup.checking
+    this.initializeEditor(editorSetup)
 
     this.examples = examples;
     this.exampleNum = 0;
@@ -12,8 +19,41 @@ export default class CodeChecker {
     this.callback = callback;
 
     this.setEditorState(examples[0].initial)
+    // Focus on the element
+    this.editor.textInput.getElement().focus()
   }
 
+  /* INITIALIZE ACE EDITOR */
+  // The main initialization function
+  initializeEditor(setup){
+    this.editor.setKeyboardHandler('ace/keyboard/' + setup.editorMode)
+    this.editor.session.setMode('ace/mode/' + setup.editorLanguage)
+
+    // Disable mouse input
+    if(!setup.mouseInput){
+        this.editor.on('mousedown', (e) => e.stop())
+        this.editor.on('dblclick', (e) => e.stop())
+        this.editor.on('tripleclick', (e) => e.stop())
+        this.editor.on('quadclick', (e) => e.stop())
+        this.editor.on('click', (e) => e.stop())
+        this.editor.on('mousemove', (e) => e.stop())
+        this.editor.container.addEventListener('contextmenu', (e) => {
+            e.preventDefault()
+        })
+    }
+
+    // Limit keyboard input
+    this.editor.container.addEventListener('keydown', (e) => {
+        const included = setup.keyboardKeys.includes(e.key)
+        console.log(setup.keyWhitelist)
+        if(included ^ !setup.keyWhitelist){
+            e.preventDefault()
+            e.stopPropagation()
+        }
+    }, true)
+  }
+
+  /* MONITOR THE STATE OF THE EXERCISE */
   // Set the state of the editor
   setEditorState(state) {
     this.editor.setValue(state.code);
@@ -39,9 +79,12 @@ export default class CodeChecker {
     const state = this.getEditorState();
     const expected = this.examples[this.exampleNum].expected
 
-    return state.code === expected.code 
-        && state.cLine === expected.cLine 
-        && state.cPos === expected.cPos
+    if(this.checking === 'cursor'){
+        return state.cLine === expected.cLine 
+            && state.cPos === expected.cPos
+    } else {
+        return state.code === expected.code 
+    }
   }
 
   // Call this when the code has updated
