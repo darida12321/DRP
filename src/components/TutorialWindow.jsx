@@ -1,24 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { db } from "../firebase.js";
-import { collection, getDocs } from "firebase/firestore";
+import { getLessonData } from "../firebase.js";
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-chaos";
 import ace from "ace-builds/src-noconflict/ace";
-import CodeChecker from '../js/CodeChecker';
+import CodeChecker from "../js/CodeChecker";
 
 import "../styles/TutorialWindow.css";
-
-// TODO fetch data from a backend
-async function getLessonData(chapter) {
-  const querySnapshot = await getDocs(collection(db, "vim/chapter" + chapter + "/lessons"));
-  if (!querySnapshot) return;
-  let lessonData = [];
-  querySnapshot.forEach((doc) => {
-    lessonData.push(doc.data());
-  });
-  return lessonData;
-}
 
 function TutorialWindow(props) {
   const [lesson, setLesson] = useState({});
@@ -45,11 +33,10 @@ function TutorialWindow(props) {
         console.log('Lesson done!!!')
         setComplete(true);
       });
-
     }
 
     fetchData();
-  }, []);
+  }, [props.chapter, props.lesson]);
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
@@ -90,7 +77,7 @@ function TutorialWindow(props) {
           <p>{lesson.description}</p>
         </div>
         <div>
-          <div className="marker" style={{ background: (complete ? boxShadowComplete : boxShadowDefault)}}>
+          <div className="marker" style={{ background: complete ? boxShadowComplete : boxShadowDefault }}>
             {exampleNum}/{lesson.exampleCount}
           </div>
         </div>
