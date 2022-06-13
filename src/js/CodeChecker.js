@@ -45,7 +45,6 @@ export default class CodeChecker {
     // Limit keyboard input
     this.editor.container.addEventListener('keydown', (e) => {
         const included = setup.keyboardKeys.includes(e.key)
-        console.log(setup.keyWhitelist)
         if(included ^ !setup.keyWhitelist){
             e.preventDefault()
             e.stopPropagation()
