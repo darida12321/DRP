@@ -1,6 +1,6 @@
 #chapter {
-  background-color: #eee;
-  color: #21242c;
+  background-color: #15202b;
+  color: #ddd;
   height: 100%;
   padding-right: 5px;
   display: flex;
@@ -22,6 +22,7 @@
 
 #lessons-view {
   overflow: scroll;
+  padding-right: 20px;
 }
 
 .lesson {
@@ -62,11 +63,11 @@
 }
 
 .lesson-title {
-  color: #000;
+  color: #ddd;
   white-space: nowrap;
   transform: translateY(-10px);
 }
 
 .link:hover .lesson-title {
-  color: #444;
+  color: #bbb;
 }
