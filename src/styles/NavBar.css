@@ -1,11 +1,12 @@
 #nav-bar {
-  background-color: #eee;
-  border-bottom: 10px solid var(--blue-1);
-  height: 50px;
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #eee;
+  height: 60px;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 5px solid var(--blue-1);
 }
 
 #home,
@@ -18,6 +19,7 @@
 
 #name {
   font-size: 40px;
+  font-weight: 400;
   line-height: 100%;
 }
 
