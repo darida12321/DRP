@@ -37,6 +37,7 @@ function ChapterView(props) {
     <div id="chapter">
       <h1>Chapter {props.chapter}</h1>
       <h3>{lessons.title && lessons.title}</h3>
+
       <div id="lessons-view">
         {lessons.lessons &&
           lessons.lessons.map((l) => (
@@ -45,6 +46,7 @@ function ChapterView(props) {
                 <div className="chapter-blob" />
                 <div className="chapter-line" />
               </div>
+
               <Link to={`/vim/${lessons.chapter}/${l.id}`} className="link">
                 <p className="lesson-title">{l.lesson}</p>
               </Link>

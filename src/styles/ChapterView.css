@@ -1,10 +1,8 @@
 #chapter {
-  background: #eee;
+  background-color: #eee;
   color: #21242c;
-  box-sizing: border-box;
-  width: 15rem;
-  height: calc(100% - 4rem);
-  float: left;
+  height: 100%;
+  padding-right: 5px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -13,11 +11,13 @@
 
 #chapter h1 {
   margin: 5px;
+  white-space: nowrap;
 }
 
 #chapter h3 {
   margin: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  white-space: nowrap;
 }
 
 #lessons-view {
@@ -63,6 +63,7 @@
 
 .lesson-title {
   color: #000;
+  white-space: nowrap;
   transform: translateY(-10px);
 }
 
