@@ -11,11 +11,13 @@ function Tutorial() {
   const { chapter, lesson } = useParams();
 
   return (
-    <div id="container">
+    <>
       <NavBar />
-      <ChapterView chapter={chapter} />
-      <TutorialWindow chapter={chapter} lesson={lesson} />
-    </div>
+      <div id="container">
+        <ChapterView chapter={chapter} />
+        <TutorialWindow chapter={chapter} lesson={lesson} />
+      </div>
+    </>
   );
 }
 
