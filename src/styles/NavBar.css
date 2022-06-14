@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: #eee;
-  height: 60px;
+  height: 30px;
   width: 100%;
   box-sizing: border-box;
   border-bottom: 5px solid var(--blue-1);
@@ -18,12 +18,18 @@
 }
 
 #name {
-  font-size: 40px;
+  font-size: 20px;
   font-weight: 400;
   line-height: 100%;
 }
 
 .icon {
-  height: 30px;
+  height: 15px;
   margin: 5px;
+  transition: 100ms;
+}
+
+.icon:hover {
+  height: 21px;
+  margin: 2px;
 }

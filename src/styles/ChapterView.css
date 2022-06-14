@@ -19,6 +19,7 @@
 
 #lessons-view {
   overflow: scroll;
+  height: 100%;
   padding-top: 15px;
   padding-right: 20px;
 }
