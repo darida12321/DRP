@@ -43,25 +43,14 @@ function TutorialWindow(props) {
   const boxShadowDefault = style.getPropertyValue("--blue-0");
   const boxShadowComplete = style.getPropertyValue("--green-2");
 
-  var editing = false;
-  function onChange(newContent) {
-    if (editing) {
-      return;
-    }
-    editing = true;
-    var currentPosition = ace.edit("editor").selection.getCursor();
-    const edited = newContent.replace("\t", "    ");
-    ace.edit("editor").setValue(edited);
-    ace.edit("editor").clearSelection();
-    ace.edit("editor").moveCursorTo(currentPosition.row, currentPosition.column);
-    editing = false;
+  function onChange() {
+    if(!codeChecker.current){ return }
+    codeChecker.current.onChange()
   }
 
-  function onCursorChange(selection) {
-    if (editing || !codeChecker.current) {
-      return;
-    }
-    setExampleNum(codeChecker.current.codeUpdated());
+  function onCursorChange() {
+    if(!codeChecker.current){ return }
+    codeChecker.current.onCursorChange()
   }
 
   return (

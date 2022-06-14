@@ -45,11 +45,25 @@ export default class CodeChecker {
     // Limit keyboard input
     this.editor.container.addEventListener('keydown', (e) => {
         const included = setup.keyboardKeys.includes(e.key)
-        if(included ^ !setup.keyWhitelist){
+        if(included ^ setup.keyWhitelist){
             e.preventDefault()
             e.stopPropagation()
         }
     }, true)
+
+    // Set the tab stop
+    this.editor.setOptions({
+        useSoftTabs: true,
+        navigateWithinSoftTabs: true
+    })
+  }
+
+  onChange() {
+    this.codeUpdated()
+  }
+
+  onCursorChange() {
+    this.codeUpdated()
   }
 
   /* MONITOR THE STATE OF THE EXERCISE */
