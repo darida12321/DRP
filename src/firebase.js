@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -40,3 +39,11 @@ export async function getChapterData(chapterNum) {
 
   return docSnap.data();
 }
+
+export async function submitLesson(chapterNum, lessonNum, lessonObj) {
+  console.log("submitting...");
+  const docRef = doc(db, "vim/chapter" + chapterNum + "/lessons", "lesson" + lessonNum);
+  await setDoc(docRef, lessonObj, { merge: true });
+}
+
+// export firebaseDoc()
