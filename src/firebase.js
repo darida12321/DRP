@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+// import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDFL2dtGW4m9pCgiCBP7ePpWDz5nzaXTqw",
@@ -16,12 +16,27 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 
-const analytics = getAnalytics(app);
+// Get Google Analytics data
+// const analytics = getAnalytics(app);
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
 
-// const querySnapshot = await getDocs(collection(db, "users"));
-// querySnapshot.forEach((doc) => {
-//   console.log(`${doc.id} => ${doc.data()}`);
-// });
+// Get documents in a given chapter in the vim collection (TODO: make generic for any collection)
+export async function getLessonData(chapterNum) {
+  const querySnapshot = await getDocs(collection(db, "vim/chapter" + chapterNum + "/lessons"));
+  if (!querySnapshot) return;
+
+  const lessonData = [];
+  querySnapshot.forEach((doc) => {
+    lessonData.push(doc.data());
+  });
+  return lessonData;
+}
+
+export async function getChapterData(chapterNum) {
+  const docSnap = await getDoc(doc(db, "vim", "chapter" + chapterNum));
+  if (!docSnap.exists()) return;
+
+  return docSnap.data();
+}
