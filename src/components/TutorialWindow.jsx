@@ -88,7 +88,7 @@ function TutorialWindow(props) {
         name="editor"
         keyboardHandler="vim"
         style={{ width: "65rem", height: " 20rem" }}
-        fontSize={20}
+        fontSize={"1.5vw"}
         showPrintMargin={false}
         onChange={onChange}
         onCursorChange={onCursorChange}
