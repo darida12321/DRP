@@ -1,4 +1,6 @@
 import React from 'react';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 // this is all absolutely fucking horrible
 
@@ -20,18 +22,12 @@ function Example(props) {
 
   const [state, setState] = React.useState(newExample())
 
-  const updateData = (o, k, v) => setState(
-    (prevState) => {
-      let newState = Object.assign({}, prevState);
-      newState[o][k] = v;
-      return newState;
-    }
-  );
-
-  React.useEffect(() => {
-    props.callback(props.id, state);
-  }, [props, state])
-  
+  const updateData = (o, k, v) => {
+    let newState = Object.assign({}, state);
+    newState[o][k] = v;
+    setState(newState);
+    props.callback(props.id, newState);
+  }
 
   return (
     <div id={props.id}>
@@ -119,6 +115,15 @@ function Submit() {
     return obj;
   }
 
+  const publishObj = async () => {
+    try {
+      const docRef = await addDoc(collection(db, 'lessons'), buildObj());
+      console.log('document written with id', docRef.id);
+    } catch (e) {
+      console.log('error occured publishing doc to firebase');
+    }
+  }
+
   return (
     <div>
       <div className = 'input'>
@@ -170,7 +175,7 @@ function Submit() {
         <h2>Examples</h2>
         {examples.map(
           (e, i) => (
-            <Example id={i} callback={updateExample}/>
+            <Example key={i} id={i} callback={updateExample}/>
           )
         )}<br/>
         <button onClick={() => {
@@ -181,7 +186,7 @@ function Submit() {
         }}>Click to remove latest example</button>
         <br/><br/>
         <button onClick={() => {
-          console.log(buildObj());
+          publishObj();
         }}> Click to submit </button><br/>
       </div>
       <div className='preview'>
