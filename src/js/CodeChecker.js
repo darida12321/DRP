@@ -6,7 +6,7 @@ import "ace-builds/src-noconflict/mode-java";
 // Check code from an ace editor
 export default class CodeChecker {
   // Constructor defining the parameters
-  constructor(editor, editorSetup, examples, callback) {
+  constructor(editor, editorSetup, examples, setExampleNum, callback) {
     this.editor = editor;
 
     this.checking = editorSetup.checking
@@ -16,6 +16,7 @@ export default class CodeChecker {
     this.exampleNum = 0;
     this.exampleCount = examples.length;
 
+    this.setExampleNum = setExampleNum;
     this.callback = callback;
 
     this.setEditorState(examples[0].initial)
@@ -105,7 +106,7 @@ export default class CodeChecker {
     if (this.goalReached()) {
       this.startNextExample();
     }
-    return this.exampleNum;
+    this.setExampleNum(this.exampleNum)
   }
 
   // Move on to the next example
