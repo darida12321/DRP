@@ -48,16 +48,16 @@ export default class CodeChecker {
     }
 
     // Limit keyboard input
-    this.editor.container.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' && e.shiftKey){
-        return;
-      }
-      const included = setup.selectedKeys.includes(e.key)
-      if(included ^ !setup.keyWhitelist){
-        e.preventDefault()
-        e.stopPropagation()
-      }
-    }, true)
+    //this.editor.container.addEventListener('keydown', (e) => {
+      //if(e.key === 'Enter' && e.shiftKey){
+        //return;
+      //}
+      //const included = setup.selectedKeys.includes(e.key)
+      //if(included ^ !setup.keyWhitelist){
+        //e.preventDefault()
+        //e.stopPropagation()
+      //}
+    //}, true)
 
     // Set the tab stop
     this.editor.setOptions({

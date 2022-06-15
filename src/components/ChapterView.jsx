@@ -38,12 +38,12 @@ function ChapterView(props) {
                 <div className="chapter-blob" />
                 <div className="chapter-line" />
               </div>
-              <a
-                onClick={() => {window.location.href=`/vim/${props.chapter}/${i + 1}`}}
-                className='link lesson-title'
-              >
-                {l}
-              </a>
+
+              <Link 
+                to={`/vim/${props.chapter}/${i + 1}`} 
+                className="link">
+                <p className="lesson-title">{l}</p>
+              </Link>
             </div>
           ))}
       </div>

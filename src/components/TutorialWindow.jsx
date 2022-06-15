@@ -42,7 +42,7 @@ function TutorialWindow(props) {
       if (e.key === "Enter" && e.shiftKey) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
         navigate(link, { replace: true });
-        window.location.reload();
+        //window.location.reload();
       }
     });
   }, [lessonData, exampleNum, completed, props, navigate]);
