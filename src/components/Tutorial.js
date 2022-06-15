@@ -1,21 +1,23 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
+import React from "react";
+import { useParams } from "react-router-dom";
 
-import NavBar from './NavBar'
-import ChapterView from './ChapterView'
-import TutorialWindow from './TutorialWindow'
+import NavBar from "./NavBar";
+import ChapterView from "./ChapterView";
+import TutorialWindow from "./TutorialWindow";
 
-import '../styles/Tutorial.css';
+import "../styles/Tutorial.css";
 
 function Tutorial() {
   const { chapter, lesson } = useParams();
 
   return (
-    <div className="container">
+    <>
       <NavBar />
-      <ChapterView chapter={chapter}/>
-      <TutorialWindow chapter={chapter} lesson={lesson}/>
-    </div>
+      <div id="container">
+        <ChapterView chapter={chapter} />
+        <TutorialWindow chapter={chapter} lesson={lesson} />
+      </div>
+    </>
   );
 }
 
