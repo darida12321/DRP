@@ -23,13 +23,13 @@ function TutorialWindow(props) {
       setLesson({
         num: lessonData.num,
         title: lessonData.title,
-        description: lessonData.description,
+        description: lessonData.lesson.description,
         exampleCount: lessonData.examples.length,
       });
 
       codeChecker.current = new CodeChecker(
         ace.edit("editor"),
-        lessonData.editorSetup,
+        lessonData.lesson.editorSetup,
         lessonData.examples,
         setExampleNum,
         () => {
