@@ -79,6 +79,7 @@ function Submit() {
   const [lesson, setLesson] = React.useState({});
   const [examples, setExamples] = React.useState([]);
   const [setup, setSetup] = React.useState({});
+  const [endpoint, setEndpoint] = React.useState({});
 
   const setData = (o, f) => {
     switch (o) {
@@ -86,6 +87,8 @@ function Submit() {
         return setLesson(f);
       case setup:
         return setSetup(f);
+      case endpoint:
+        return setEndpoint(f);
       default:
         return undefined;
     }
@@ -127,15 +130,8 @@ function Submit() {
   };
 
   const publishObj = async () => {
-    // try {
-    //   const docRef = await addDoc(collection(db, 'lessons'), buildObj());
-    //   console.log('document written with id', docRef.id);
-    // } catch (e) {
-    //   console.log('error occured publishing doc to firebase');
-    // }
-
-    const chapterNum = lesson.chapterNum;
-    const lessonNum = lesson.lessonNum;
+    const chapterNum = endpoint.chapterNum;
+    const lessonNum = endpoint.lessonNum;
     const data = buildObj();
 
     // console.log(chapterNum, lessonNum, data);
@@ -145,9 +141,12 @@ function Submit() {
   return (
     <div>
       <div className="input">
-        <input placeholder="chapter number" onChange={(e) => updateData(lesson, "chapterNum", e.target.value)}></input>
+        <input
+          placeholder="chapter number"
+          onChange={(e) => updateData(endpoint, "chapterNum", e.target.value)}
+        ></input>
         <h2>Lesson</h2>
-        <input placeholder="lesson number" onChange={(e) => updateData(lesson, "lessonNum", e.target.value)}></input>
+        <input placeholder="lesson number" onChange={(e) => updateData(endpoint, "lessonNum", e.target.value)}></input>
         <br />
         <input placeholder="title" onChange={(e) => updateData(lesson, "title", e.target.value)} />
         <br />
