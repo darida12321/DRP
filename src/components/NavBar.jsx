@@ -10,15 +10,15 @@ import '../styles/NavBar.css'
 
 function NavBar() {
   return (
-    <nav>
-      <div>
+    <nav id="nav-bar">
+      <div id="home">
         <img src={houseImg} className="icon" alt="" />
       </div>
-      <div>
+      <div id="logo">
         <img src={keyboardImg} className="icon" alt="" />
-        <h1>Website name</h1>
+        <h1 id="name">Website name</h1>
       </div>
-      <div>
+      <div id="menu">
         <img src={moonImg} className="icon" alt="" />
         <img src={gearImg} className="icon" alt="" />
         <img src={userImg} className="icon" alt="" />

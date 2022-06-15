@@ -41,9 +41,9 @@ export async function getChapterData(chapterNum) {
 }
 
 export async function submitLesson(chapterNum, lessonNum, lessonObj) {
-  console.log("submitting...");
   const docRef = doc(db, "vim/chapter" + chapterNum + "/lessons", "lesson" + lessonNum);
   await setDoc(docRef, lessonObj, { merge: true });
+  console.log("submitted chapter: " + chapterNum + ", lesson: " + lessonNum);
 }
 
 // export firebaseDoc()
