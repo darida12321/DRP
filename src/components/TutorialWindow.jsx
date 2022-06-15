@@ -29,7 +29,7 @@ function TutorialWindow(props) {
 
       codeChecker.current = new CodeChecker(
           ace.edit('editor'), lessonData.editorSetup,
-          lessonData.examples, () => {
+          lessonData.examples, setExampleNum, () => {
         console.log('Lesson done!!!')
         setComplete(true);
       });
