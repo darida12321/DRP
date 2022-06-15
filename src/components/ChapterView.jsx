@@ -30,16 +30,21 @@ function ChapterView(props) {
   }, [props.chapter, props.lesson]);
 
   return (
-    <div className="chapter">
-      <h1 className="chapterNumber">Chapter {props.chapter}</h1>
-      <h3 className="chapterTitle">{lessons.title && lessons.title}</h3>
-      <div className="lessons-view">
+    <div id="chapter">
+      <h1>Chapter {props.chapter}</h1>
+      <h3>{lessons.title && lessons.title}</h3>
+
+      <div id="lessons-view">
         {lessons.lessons &&
           lessons.lessons.map((l) => (
             <div className="lesson" key={l.id}>
-              <div className="lesson-marker"></div>
+              <div className="progress-bar">
+                <div className="chapter-blob" />
+                <div className="chapter-line" />
+              </div>
+
               <Link to={`/vim/${props.chapter}/${l.id}`} className="link">
-                <p>{l.lesson}</p>
+                <p className="lesson-title">{l.lesson}</p>
               </Link>
             </div>
           ))}

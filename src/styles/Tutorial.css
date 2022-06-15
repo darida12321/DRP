@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap");
-
 :root {
   --blue-0: #0646ad;
   --blue-1: #15448e;
@@ -31,8 +29,18 @@
 html,
 body,
 #root {
+  font-family: monospace;
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Roboto", sans-serif;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#container {
+  display: flex;
+  height: 100%;
+  width: 100%;
 }

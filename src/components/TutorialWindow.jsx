@@ -28,11 +28,15 @@ function TutorialWindow(props) {
       });
 
       codeChecker.current = new CodeChecker(
-          ace.edit('editor'), lessonData.editorSetup,
-          lessonData.examples, setExampleNum, () => {
-        console.log('Lesson done!!!')
-        setComplete(true);
-      });
+        ace.edit("editor"),
+        lessonData.editorSetup,
+        lessonData.examples,
+        setExampleNum,
+        () => {
+          console.log("Lesson done!!!");
+          setComplete(true);
+        }
+      );
     }
 
     fetchData();
@@ -44,29 +48,32 @@ function TutorialWindow(props) {
   const boxShadowComplete = style.getPropertyValue("--green-2");
 
   function onChange() {
-    if(!codeChecker.current){ return }
-    codeChecker.current.onChange()
+    if (!codeChecker.current) {
+      return;
+    }
+    codeChecker.current.onChange();
   }
 
   function onCursorChange() {
-    if(!codeChecker.current){ return }
-    codeChecker.current.onCursorChange()
+    if (!codeChecker.current) {
+      return;
+    }
+    codeChecker.current.onCursorChange();
   }
 
+  // style={{ boxShadow: "inset 20px 0" + (complete ? boxShadowComplete : boxShadowDefault) }}
+
   return (
-    <div className="tutorial">
-      <div
-        className="textbox"
-        style={{ boxShadow: "inset 20px 0" + (complete ? boxShadowComplete : boxShadowDefault) }}
-      >
-        <div>
-          <h1>
+    <div id="tutorial">
+      <div id="textbox">
+        <div id="lesson-info">
+          <h1 id="lesson-title">
             Lesson {lesson.num}: {lesson.title}
           </h1>
-          <p>{lesson.description}</p>
+          <p id="lesson-desc">{lesson.description}</p>
         </div>
-        <div>
-          <div className="marker" style={{ background: complete ? boxShadowComplete : boxShadowDefault }}>
+        <div id="lesson-marker">
+          <div id="blob" style={{ background: complete ? boxShadowComplete : boxShadowDefault }}>
             {exampleNum}/{lesson.exampleCount}
           </div>
         </div>
@@ -76,8 +83,9 @@ function TutorialWindow(props) {
         mode="text"
         theme="chaos"
         name="editor"
-        style={{ width: "80rem", height: "100%" }}
-        fontSize={20}
+        keyboardHandler="vim"
+        style={{ width: "65rem", height: " 20rem" }}
+        fontSize={"1.5vw"}
         showPrintMargin={false}
         onChange={onChange}
         onCursorChange={onCursorChange}

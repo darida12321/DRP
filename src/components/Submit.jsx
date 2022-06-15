@@ -79,6 +79,7 @@ function Submit() {
   const [lesson, setLesson] = React.useState({});
   const [examples, setExamples] = React.useState([]);
   const [setup, setSetup] = React.useState({});
+  const [endpoint, setEndpoint] = React.useState({});
 
   const setData = (o, f) => {
     switch (o) {
@@ -86,6 +87,8 @@ function Submit() {
         return setLesson(f);
       case setup:
         return setSetup(f);
+      case endpoint:
+        return setEndpoint(f);
       default:
         return undefined;
     }
@@ -127,37 +130,24 @@ function Submit() {
   };
 
   const publishObj = async () => {
-    // try {
-    //   const docRef = await addDoc(collection(db, 'lessons'), buildObj());
-    //   console.log('document written with id', docRef.id);
-    // } catch (e) {
-    //   console.log('error occured publishing doc to firebase');
-    // }
+    const chapterNum = endpoint.chapterNum;
+    const lessonNum = endpoint.lessonNum;
+    const data = buildObj();
 
-    // TODO: change all these to the correct values from state
-    const chapterNum = 1;
-    const lessonNum = 5;
-    const lesson = {
-      num: 0,
-      title: "test",
-      description: "test",
-      editorSetup: {
-        checking: true,
-        editorLanguage: "java",
-        editorMode: "vim",
-        keyWhitelist: false,
-        keyboardKeys: { mouseInput: false },
-      },
-      examples: [],
-    };
-
-    await submitLesson(chapterNum, lessonNum, lesson);
+    // console.log(chapterNum, lessonNum, data);
+    await submitLesson(chapterNum, lessonNum, data);
   };
 
   return (
     <div>
       <div className="input">
+        <input
+          placeholder="chapter number"
+          onChange={(e) => updateData(endpoint, "chapterNum", e.target.value)}
+        ></input>
         <h2>Lesson</h2>
+        <input placeholder="lesson number" onChange={(e) => updateData(endpoint, "lessonNum", e.target.value)}></input>
+        <br />
         <input placeholder="title" onChange={(e) => updateData(lesson, "title", e.target.value)} />
         <br />
         <textarea placeholder="description" onChange={(e) => updateData(lesson, "description", e.target.value)} />
