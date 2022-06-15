@@ -12,18 +12,15 @@ function ChapterView(props) {
       const chapterData = await getChapterData(props.chapter);
       const title = chapterData.title;
 
-      const lessonData = await getLessonData(props.chapter);
-      const lessons = [];
-      lessonData.forEach((lesson) => {
-        lessons.push({
-          id: lesson.num,
-          lesson: lesson.title,
-        });
+      const lessonResponse = await getLessonData(props.chapter);
+      const lessonData = [];
+      lessonResponse.forEach((lesson) => {
+        lessonData.push(lesson.lesson.title);
       });
 
       setLessons({
         title: title,
-        lessons: lessons,
+        lessonData: lessonData,
       });
     }
     fetchData();
@@ -35,8 +32,8 @@ function ChapterView(props) {
       <h3>{lessons.title && lessons.title}</h3>
 
       <div id="lessons-view">
-        {lessons.lessons &&
-          lessons.lessons.map((l, i) => (
+        {lessons.lessonData &&
+          lessons.lessonData.map((l, i) => (
             <div className="lesson" key={i}>
               <div className="progress-bar">
                 <div className="chapter-blob" />
@@ -44,7 +41,7 @@ function ChapterView(props) {
               </div>
 
               <Link to={`/vim/${props.chapter}/${i}}`} className="link">
-                <p className="lesson-title">{l.title}</p>
+                <p className="lesson-title">{l}</p>
               </Link>
             </div>
           ))}
