@@ -4,25 +4,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 30vw;
+  width: 25rem;
+  white-space: nowrap;
 }
 
 #chapter h1 {
-  margin: 5px;
-  font-size: 2.9vw;
+  margin: 0.5rem;
+  font-size: 3rem;
 }
 
 #chapter h3 {
-  margin: 5px;
-  margin-bottom: 10px;
-  font-size: 2vw;
+  margin: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
 }
 
 #lessons-view {
-  overflow: scroll;
+  overflow: auto;
   height: 100%;
-  padding-top: 10px;
-  padding-right: 20px;
+  padding-top: 1rem;
+  padding-right: 2rem;
 }
 
 .lesson {
@@ -42,19 +43,19 @@
 
 .chapter-blob {
   background: var(--blue-1);
-  width: 25px;
-  height: 25px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin-right: 1rem;
+  margin-left: 1rem;
   z-index: 2;
 }
 
 .chapter-line {
   background: var(--blue-1);
-  width: 5px;
-  height: 50px;
-  margin: -10px;
+  width: 0.4rem;
+  height: 4rem;
+  margin: -1rem;
   transform: translateY(5px);
 }
 
@@ -64,11 +65,15 @@
 
 .lesson-title {
   color: #ddd;
-  transform: translateY(-10px);
-  font-size: 10px;
+  transform: translateY(-1rem);
+  font-size: 1.25rem;
 }
 
-@media (min-width: 900px) {
+.link:hover .lesson-title {
+  color: #aaa;
+}
+
+/* @media (min-width: 900px) {
   .lesson-title {
     font-size: 15px;
   }
@@ -76,8 +81,4 @@
   #chapter {
     width: 300px;
   }
-}
-
-.link:hover .lesson-title {
-  color: #aaa;
-}
+} */

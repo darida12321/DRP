@@ -3,33 +3,35 @@
   justify-content: space-between;
   align-items: center;
   background-color: #eee;
-  height: 30px;
+  height: 2.5rem;
   width: 100%;
-  box-sizing: border-box;
-  border-bottom: 5px solid var(--blue-1);
+  /* box-sizing: border-box; */
+  border-bottom: 0.25rem solid var(--blue-1);
 }
 
 #home,
 #logo,
 #menu {
-  gap: 4px;
+  gap: 0.5rem;
   display: flex;
   align-items: center;
 }
 
 #name {
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: 400;
   line-height: 100%;
 }
 
 .icon {
-  height: 15px;
-  margin: 5px;
+  height: 1.25rem;
+  width: 1.25rem;
+  margin: 0.5rem;
   transition: 100ms;
 }
 
 .icon:hover {
-  height: 21px;
-  margin: 2px;
+  height: 1.75rem;
+  width: 1.75rem;
+  margin: 0;
 }

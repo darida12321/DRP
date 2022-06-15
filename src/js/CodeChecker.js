@@ -45,10 +45,13 @@ export default class CodeChecker {
 
     // Limit keyboard input
     this.editor.container.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' && e.shiftKey){
+          return;
+        }
         const included = setup.keyboardKeys.includes(e.key)
         if(included ^ setup.keyWhitelist){
-            e.preventDefault()
-            e.stopPropagation()
+          e.preventDefault()
+          e.stopPropagation()
         }
     }, true)
 

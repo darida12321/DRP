@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from 'react-router-dom'
 import { getLessonData } from "../firebase.js";
 
 import AceEditor from "react-ace";
@@ -9,6 +10,7 @@ import CodeChecker from "../js/CodeChecker";
 import "../styles/TutorialWindow.css";
 
 function TutorialWindow(props) {
+  const navigate = useNavigate()
   const [lesson, setLesson] = useState({});
   const [exampleNum, setExampleNum] = useState(0);
   const [complete, setComplete] = useState(false);
@@ -23,17 +25,16 @@ function TutorialWindow(props) {
       setLesson({
         num: lessonData.num,
         title: lessonData.title,
-        description: lessonData.description,
+        description: lessonData.lesson.description,
         exampleCount: lessonData.examples.length,
       });
 
       codeChecker.current = new CodeChecker(
         ace.edit("editor"),
-        lessonData.editorSetup,
+        lessonData.lesson.editorSetup,
         lessonData.examples,
         setExampleNum,
         () => {
-          console.log("Lesson done!!!");
           setComplete(true);
         }
       );
@@ -41,6 +42,16 @@ function TutorialWindow(props) {
 
     fetchData();
   }, [props.chapter, props.lesson]);
+
+  useEffect(() => {
+    document.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter' && e.shiftKey && complete){
+        const link = '/vim/' + props.chapter + '/' + (parseInt(props.lesson)+1)
+        navigate(link, { replace: true })
+        window.location.reload()
+      }
+    })
+  }, [props.chapter, props.lesson, complete, navigate])
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
@@ -84,7 +95,7 @@ function TutorialWindow(props) {
         theme="chaos"
         name="editor"
         keyboardHandler="vim"
-        style={{ width: "65rem", height: " 20rem" }}
+        style={{ width: "80%", height: "100%" }}
         fontSize={"1.5vw"}
         showPrintMargin={false}
         onChange={onChange}
