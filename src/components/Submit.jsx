@@ -155,7 +155,6 @@ function Submit() {
   return (
     <div>
       <div className="input">
-        <h2>Lesson</h2>
         <input
           placeholder="chapter number"
           onChange={(e) => updateData(endpoint, "chapterNum", e.target.value)}
@@ -163,6 +162,7 @@ function Submit() {
         <input placeholder="lesson number" onChange={(e) => updateData(endpoint, "lessonNum", e.target.value)}></input>
         <br />
         <button onClick={() => {fetchObj()}}>fetch data from index</button><br />
+        <h2>Lesson</h2>
         <input placeholder="title" onChange={(e) => updateData(lesson, "title", e.target.value)} value={ lesson.title || '' } />
         <br />
         <textarea placeholder="description" onChange={(e) => updateData(lesson, "description", e.target.value)} value={ lesson.description || ''}/>
@@ -201,7 +201,7 @@ function Submit() {
         <br />
         <h2>Examples</h2>
         {examples.map((e, i) => (
-          <Example key={i} id={i} callback={updateExample} val={examples[i]}/>
+          <Example key={i} id={i} callback={updateExample} val={e}/>
         ))}
         <br />
         <button
