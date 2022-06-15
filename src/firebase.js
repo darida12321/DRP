@@ -42,7 +42,7 @@ export async function getChapterData(chapterNum) {
 
 export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   const docRef = doc(db, "vim/chapter" + chapterNum + "/lessons", "lesson" + lessonNum);
-  await setDoc(docRef, lessonObj);
+  await setDoc(docRef, lessonObj, { merge: true });
   console.log("submitted chapter: " + chapterNum + ", lesson: " + lessonNum);
 }
 
