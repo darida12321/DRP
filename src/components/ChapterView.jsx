@@ -40,7 +40,7 @@ function ChapterView(props) {
                 <div className="chapter-line" />
               </div>
 
-              <Link to={`/vim/${props.chapter}/${i}}`} className="link">
+              <Link to={`/vim/${props.chapter}/${i + 1}`} className="link">
                 <p className="lesson-title">{l}</p>
               </Link>
             </div>
