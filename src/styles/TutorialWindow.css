@@ -3,16 +3,18 @@
   flex-direction: column;
   align-items: center;
   background-color: #1d2a35;
+  height: 100%;
+  width: 100%;
   margin: 0;
 }
 
 #textbox {
   display: flex;
-  max-width: 80%;
+  width: 80%;
   color: #ddd;
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 #lesson-info {
@@ -22,20 +24,20 @@
 }
 
 #lesson-title {
-  margin: 10px 0;
-  font-size: 3vw;
+  margin: 0.75rem 0;
+  font-size: 2.5rem;
   font-weight: 900;
 }
 
 #lesson-desc {
-  margin: 10px 0;
-  font-size: 2vw;
+  margin: 0.75rem 0;
+  font-size: 1.5rem;
 }
 
 #lesson-marker {
   display: flex;
   align-items: center;
-  margin-left: 50px;
+  margin-left: 3rem;
 }
 
 #blob {
@@ -43,19 +45,15 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  height: 9vw;
-  width: 9vw;
+  height: 9rem;
+  width: 9rem;
   color: #000;
-  font-size: 3vw;
+  font-size: 3rem;
   font-weight: 900;
 }
 
 #editor {
-  width: 65rem;
-  height: 20rem;
-  align-self: center;
-  max-width: 80%;
-  border-radius: 10px;
+  border-radius: 1rem;
 }
 
 .ace_cursor {
