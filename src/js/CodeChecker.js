@@ -1,6 +1,11 @@
 
-import "ace-builds/src-noconflict/keybinding-vim";
 import "ace-builds/src-noconflict/ext-language_tools";
+// All keybindings
+import "ace-builds/src-noconflict/keybinding-vim";
+import "ace-builds/src-noconflict/keybinding-emacs";
+import "ace-builds/src-noconflict/keybinding-sublime";
+import "ace-builds/src-noconflict/keybinding-vscode";
+// All used highlightings
 import "ace-builds/src-noconflict/mode-java";
 
 // Check code from an ace editor
