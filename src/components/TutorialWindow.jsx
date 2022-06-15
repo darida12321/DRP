@@ -84,7 +84,7 @@ function TutorialWindow(props) {
         theme="chaos"
         name="editor"
         keyboardHandler="vim"
-        style={{ width: "65rem", height: " 20rem" }}
+        style={{ width: "80%", height: "100%" }}
         fontSize={"1.5vw"}
         showPrintMargin={false}
         onChange={onChange}
