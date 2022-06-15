@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getLessonData } from "../firebase.js";
 
 import AceEditor from "react-ace";
@@ -40,15 +40,18 @@ function TutorialWindow(props) {
       );
     }
 
+    fetchData();
+  }, [props.chapter, props.lesson]);
+
+  useEffect(() => {
     document.addEventListener('keypress', (e) => {
       if(e.key === 'Enter' && e.shiftKey && complete){
         const link = '/vim/' + props.chapter + '/' + (parseInt(props.lesson)+1)
         navigate(link, { replace: true })
+        window.location.reload()
       }
     })
-    fetchData();
-  }, [props.chapter, props.lesson, complete]);
-
+  }, [props.chapter, props.lesson, complete, navigate])
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
