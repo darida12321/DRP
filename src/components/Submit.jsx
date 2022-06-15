@@ -1,5 +1,5 @@
 import React from "react";
-import { submitLesson } from "../firebase";
+import { submitLesson, getLessonData } from "../firebase";
 
 // this is all absolutely fucking horrible
 
@@ -19,7 +19,7 @@ function Example(props) {
     };
   };
 
-  const [state, setState] = React.useState(newExample());
+  const [state, setState] = React.useState(props.val.initial ? props.val : newExample());
 
   const updateData = (o, k, v) => {
     let newState = Object.assign({}, state);
@@ -36,6 +36,7 @@ function Example(props) {
         onChange={(e) => {
           updateData("initial", "code", e.target.value);
         }}
+        value={state.initial.code}
       />
       <br />
       <input
@@ -43,12 +44,14 @@ function Example(props) {
         onChange={(e) => {
           updateData("initial", "cLine", Number(e.target.value));
         }}
+        value={state.initial.cLine}
       />
       <input
         placeholder="initial cPos"
         onChange={(e) => {
           updateData("initial", "cPos", Number(e.target.value));
         }}
+        value={state.initial.cPos}
       />
       <br />
       <br />
@@ -57,6 +60,7 @@ function Example(props) {
         onChange={(e) => {
           updateData("expected", "code", e.target.value);
         }}
+        value={state.expected.code}
       />
       <br />
       <input
@@ -64,12 +68,14 @@ function Example(props) {
         onChange={(e) => {
           updateData("expected", "cLine", Number(e.target.value));
         }}
+        value={state.expected.cLine}
       />
       <input
         placeholder="expected cPos"
         onChange={(e) => {
           updateData("expected", "cPos", Number(e.target.value));
         }}
+        value={state.expected.cPos}
       />
     </div>
   );
@@ -138,30 +144,41 @@ function Submit() {
     await submitLesson(chapterNum, lessonNum, data);
   };
 
+  const fetchObj = async () => {
+    const remoteLessons = await getLessonData(endpoint.chapterNum);
+    const remoteData = remoteLessons[endpoint.lessonNum - 1];
+    setLesson(remoteData.lesson);
+    setSetup(remoteData.lesson.editorSetup);
+    setExamples(remoteData.examples);
+  }
+
   return (
     <div>
       <div className="input">
+        <h2>Lesson</h2>
         <input
           placeholder="chapter number"
           onChange={(e) => updateData(endpoint, "chapterNum", e.target.value)}
         ></input>
-        <h2>Lesson</h2>
         <input placeholder="lesson number" onChange={(e) => updateData(endpoint, "lessonNum", e.target.value)}></input>
         <br />
-        <input placeholder="title" onChange={(e) => updateData(lesson, "title", e.target.value)} />
+        <button onClick={() => {fetchObj()}}>fetch data from index</button><br />
+        <input placeholder="title" onChange={(e) => updateData(lesson, "title", e.target.value)} value={ lesson.title || '' } />
         <br />
-        <textarea placeholder="description" onChange={(e) => updateData(lesson, "description", e.target.value)} />
+        <textarea placeholder="description" onChange={(e) => updateData(lesson, "description", e.target.value)} value={ lesson.description || ''}/>
         <br />
-        <input placeholder="img" onChange={(e) => updateData(lesson, "img", e.target.value)} />
+        <input placeholder="img" onChange={(e) => updateData(lesson, "img", e.target.value)} value={ lesson.img || '' }/>
         <br />
         <h2>Editor Setup</h2>
-        <button id="mouseInput" type="checkbox" onClick={(e) => updateData(setup, "mouseInput", !setup.mouseInput)}>
+        <button 
+          id="mouseInput" 
+          onClick={(e) => updateData(setup, "mouseInput", !setup.mouseInput)}
+        >
           mouseInput: {setup.mouseInput ? "on" : "off"}
         </button>
         <br />
         <button
           id="keyboardInput"
-          type="checkbox"
           onClick={(e) => updateData(setup, "keyboardInput", !setup.keyboardInput)}
         >
           keyboardInput: {setup.keyboardInput ? "on" : "off"}
@@ -169,21 +186,22 @@ function Submit() {
         <br />
         <input
           placeholder="selectedKeys"
-          onChange={(e) => updateData(setup, "selectedKeys", e.target.value.split(" "))}
+          onChange={(e) => updateData(setup, "selectedKeys", e.target.value.split(","))}
+          value={setup.selectedKeys || ''}
         />
         <button id="whitelist" type="checkbox" onClick={(e) => updateData(setup, "whitelist", !setup.whitelist)}>
           {setup.whitelist ? "whitelist" : "blacklist"}
         </button>
         <br />
-        <input placeholder="checking" onChange={(e) => updateData(setup, "checking", e.target.value)} />
+        <input placeholder="checking" onChange={(e) => updateData(setup, "checking", e.target.value)} value={setup.checking || ''} />
         <br />
-        <input placeholder="editorMode" onChange={(e) => updateData(setup, "editorMode", e.target.value)} />
+        <input placeholder="editorMode" onChange={(e) => updateData(setup, "editorMode", e.target.value)} value={setup.editorMode || ''}/>
         <br />
-        <input placeholder="editorLanguage" onChange={(e) => updateData(setup, "editorLanguage", e.target.value)} />
+        <input placeholder="editorLanguage" onChange={(e) => updateData(setup, "editorLanguage", e.target.value)} value={setup.editorLanguage || ''}/>
         <br />
         <h2>Examples</h2>
         {examples.map((e, i) => (
-          <Example key={i} id={i} callback={updateExample} />
+          <Example key={i} id={i} callback={updateExample} val={examples[i]}/>
         ))}
         <br />
         <button
