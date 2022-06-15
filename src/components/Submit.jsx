@@ -134,30 +134,21 @@ function Submit() {
     //   console.log('error occured publishing doc to firebase');
     // }
 
-    // TODO: change all these to the correct values from state
-    const chapterNum = 1;
-    const lessonNum = 5;
-    const lesson = {
-      num: 0,
-      title: "test",
-      description: "test",
-      editorSetup: {
-        checking: true,
-        editorLanguage: "java",
-        editorMode: "vim",
-        keyWhitelist: false,
-        keyboardKeys: { mouseInput: false },
-      },
-      examples: [],
-    };
+    const chapterNum = lesson.chapterNum;
+    const lessonNum = lesson.lessonNum;
+    const data = buildObj();
 
-    await submitLesson(chapterNum, lessonNum, lesson);
+    // console.log(chapterNum, lessonNum, data);
+    await submitLesson(chapterNum, lessonNum, data);
   };
 
   return (
     <div>
       <div className="input">
+        <input placeholder="chapter number" onChange={(e) => updateData(lesson, "chapterNum", e.target.value)}></input>
         <h2>Lesson</h2>
+        <input placeholder="lesson number" onChange={(e) => updateData(lesson, "lessonNum", e.target.value)}></input>
+        <br />
         <input placeholder="title" onChange={(e) => updateData(lesson, "title", e.target.value)} />
         <br />
         <textarea placeholder="description" onChange={(e) => updateData(lesson, "description", e.target.value)} />
