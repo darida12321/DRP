@@ -6,7 +6,7 @@ import "ace-builds/src-noconflict/mode-java";
 // Check code from an ace editor
 export default class CodeChecker {
   // Constructor defining the parameters
-  constructor(editor, editorSetup, examples, setExampleNum, callback) {
+  constructor(editor, editorSetup, examples, setExampleNum) {
     this.editor = editor;
 
     this.checking = editorSetup.checking
@@ -17,7 +17,6 @@ export default class CodeChecker {
     this.exampleCount = examples.length;
 
     this.setExampleNum = setExampleNum;
-    this.callback = callback;
 
     this.setEditorState(examples[0].initial)
     // Focus on the element
@@ -45,14 +44,14 @@ export default class CodeChecker {
 
     // Limit keyboard input
     this.editor.container.addEventListener('keydown', (e) => {
-        if(e.key === 'Enter' && e.shiftKey){
-          return;
-        }
-        const included = setup.keyboardKeys.includes(e.key)
-        if(included ^ setup.keyWhitelist){
-          e.preventDefault()
-          e.stopPropagation()
-        }
+      if(e.key === 'Enter' && e.shiftKey){
+        return;
+      }
+      const included = setup.selectedKeys.includes(e.key)
+      if(included ^ !setup.keyWhitelist){
+        e.preventDefault()
+        e.stopPropagation()
+      }
     }, true)
 
     // Set the tab stop
@@ -120,8 +119,6 @@ export default class CodeChecker {
     this.exampleNum += 1;
     if (this.exampleNum < this.exampleCount) {
       this.setEditorState(this.examples[this.exampleNum].initial)
-    } else {
-      this.callback();
     }
   }
 }
