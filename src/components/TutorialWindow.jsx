@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Navigate, useNavigate } from 'react-router-dom'
 import { getLessonData } from "../firebase.js";
 
 import AceEditor from "react-ace";
@@ -9,6 +10,7 @@ import CodeChecker from "../js/CodeChecker";
 import "../styles/TutorialWindow.css";
 
 function TutorialWindow(props) {
+  const navigate = useNavigate()
   const [lesson, setLesson] = useState({});
   const [exampleNum, setExampleNum] = useState(0);
   const [complete, setComplete] = useState(false);
@@ -30,13 +32,19 @@ function TutorialWindow(props) {
       codeChecker.current = new CodeChecker(
           ace.edit('editor'), lessonData.editorSetup,
           lessonData.examples, setExampleNum, () => {
-        console.log('Lesson done!!!')
         setComplete(true);
       });
     }
 
+    document.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter' && e.shiftKey && complete){
+        const link = '/vim/' + props.chapter + '/' + (parseInt(props.lesson)+1)
+        navigate(link, { replace: true })
+      }
+    })
     fetchData();
-  }, [props.chapter, props.lesson]);
+  }, [props.chapter, props.lesson, complete]);
+
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
