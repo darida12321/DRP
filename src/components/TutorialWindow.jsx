@@ -55,19 +55,23 @@ function TutorialWindow(props) {
   // Return the document
   return (
     <div id="tutorial">
+      <div id="header">
+        <button id="prev-lesson">{"< Prev"}</button>
+        <h1 id="lesson-title">
+          Lesson {lessonData.num}: {lessonData.lesson && lessonData.lesson.title}
+        </h1>
+        <button id="next-lesson">{"Next >"}</button>
+      </div>
+
       <div id="textbox">
-        <div id="lesson-info">
-          <h1 id="lesson-title">
-            Lesson {lessonData.num}: {lessonData.lesson && lessonData.lesson.title}
-          </h1>
-          <p id="lesson-desc">{lessonData.lesson && lessonData.lesson.description}</p>
-        </div>
+        <p id="lesson-desc">{lessonData.lesson && lessonData.lesson.description}</p>
         <div id="lesson-marker">
           <div id="blob" style={{ background: completed() ? colorComplete : colorDefault }}>
             {exampleNum}/{lessonData.examples && lessonData.examples.length}
           </div>
         </div>
       </div>
+
       <CodeEditor lessonData={lessonData} setExampleNum={setExampleNum} />
     </div>
   );
