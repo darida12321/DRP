@@ -38,7 +38,7 @@ function ChapterView(props) {
           lessons.lessons.map((l) => (
             <div className="lesson" key={l.id}>
               <div className="lesson-marker"></div>
-              <Link to={`/vim/${lessons.chapter}/${l.id}`} className="link">
+              <Link to={`/vim/${props.chapter}/${l.id}`} className="link">
                 <p>{l.lesson}</p>
               </Link>
             </div>
