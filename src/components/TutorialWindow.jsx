@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { getLessonData } from "../firebase.js";
 
 import CodeEditor from "./CodeEditor";
@@ -25,6 +25,7 @@ function TutorialWindow(props) {
       const lessonIndex = props.lesson - 1;
       const data = await getLessonData(props.chapter);
       const lessonData = data[lessonIndex];
+      lessonData.lessonNum = data.length;
       setLessonData(lessonData);
     }
     fetchData();
@@ -49,18 +50,30 @@ function TutorialWindow(props) {
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
-  const colorDefault = style.getPropertyValue("--blue-0");
+  const colorDefault = style.getPropertyValue("--blue-1");
   const colorComplete = style.getPropertyValue("--green-2");
 
   // Return the document
   return (
     <div id="tutorial">
       <div id="header">
-        <button id="prev-lesson">{"< Prev"}</button>
+        <Link
+          id="prev-lesson"
+          style={{ visibility: props.lesson <= 1 ? "hidden" : "" }}
+          to={`/vim/${props.chapter}/${Number(props.lesson) - 1}`}
+        >
+          {"< Prev"}
+        </Link>
         <h1 id="lesson-title">
           Lesson {lessonData && lessonData.num}: {lessonData.lesson && lessonData.lesson.title}
         </h1>
-        <button id="next-lesson">{"Next >"}</button>
+        <Link
+          id="next-lesson"
+          style={{ visibility: props.lesson >= lessonData.lessonNum ? "hidden" : "" }}
+          to={`/vim/${props.chapter}/${Number(props.lesson) + 1}`}
+        >
+          {"Next >"}
+        </Link>
       </div>
 
       <div id="textbox">
