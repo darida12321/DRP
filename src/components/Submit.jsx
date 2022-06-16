@@ -21,6 +21,14 @@ function Example(props) {
 
   const [state, setState] = React.useState(props.val.initial ? props.val : newExample());
 
+  React.useEffect(() => {
+    setState(props.val);
+  }, [props.val])
+
+  const logState = () => {
+    console.log(state);
+  }
+
   const updateData = (o, k, v) => {
     let newState = Object.assign({}, state);
     newState[o][k] = v;
@@ -66,6 +74,7 @@ function Example(props) {
       <input
         placeholder="expected cLine"
         onChange={(e) => {
+          console.log(state);
           updateData("expected", "cLine", Number(e.target.value));
         }}
         value={state.expected.cLine}
