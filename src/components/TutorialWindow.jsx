@@ -58,7 +58,7 @@ function TutorialWindow(props) {
       <div id="header">
         <button id="prev-lesson">{"< Prev"}</button>
         <h1 id="lesson-title">
-          Lesson {lessonData.num}: {lessonData.lesson && lessonData.lesson.title}
+          Lesson {lessonData && lessonData.num}: {lessonData.lesson && lessonData.lesson.title}
         </h1>
         <button id="next-lesson">{"Next >"}</button>
       </div>
