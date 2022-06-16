@@ -22,12 +22,10 @@ function Example(props) {
   const [state, setState] = React.useState(props.val.initial ? props.val : newExample());
 
   React.useEffect(() => {
-    setState(props.val);
+    if (props.val.initial) {
+      setState(props.val);
+    }
   }, [props.val])
-
-  const logState = () => {
-    console.log(state);
-  }
 
   const updateData = (o, k, v) => {
     let newState = Object.assign({}, state);
