@@ -39,6 +39,9 @@ function TutorialWindow(props) {
     if (!completed()) {
       return;
     }
+    if (props.lesson >= lessonData.lessonNum) {
+      return;
+    }
     document.addEventListener("keypress", (e) => {
       if (e.key === "Enter" && e.shiftKey) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
