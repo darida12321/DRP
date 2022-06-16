@@ -65,7 +65,7 @@ function TutorialWindow(props) {
           {"< Prev"}
         </Link>
         <h1 id="lesson-title">
-          Lesson {lessonData && lessonData.num}: {lessonData.lesson && lessonData.lesson.title}
+          Lesson {props.lesson}: {lessonData.lesson && lessonData.lesson.title}
         </h1>
         <Link
           id="next-lesson"
