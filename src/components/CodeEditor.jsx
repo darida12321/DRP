@@ -8,6 +8,30 @@ import CodeChecker from "../js/CodeChecker";
 function CodeEditor(props) {
   var codeChecker = useRef(null);
 
+  // Check if a key is allowed to be pressed
+  useEffect(() => {
+    function filterKeypress(e){
+      if(Object.keys(props.lessonData).length === 0){
+        return
+      }
+      const setup = props.lessonData.lesson.editorSetup
+      if(e.key === 'Enter' && e.shiftKey){
+        return;
+      }
+      const included = setup.selectedKeys.includes(e.key)
+      if(included ^ !setup.keyWhitelist){
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    }
+    ace.edit('editor').container
+      .addEventListener('keydown', filterKeypress, true)
+    return () => {
+      ace.edit('editor').container
+        .removeEventListener('keydown', filterKeypress, true)
+    }
+  }, [props.lessonData])
+
   useEffect(() => {
     if(Object.keys(props.lessonData).length === 0){ return }
     codeChecker.current = new CodeChecker(

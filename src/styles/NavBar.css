@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #eee;
+  background-color: #0d1721;
   height: 2.5rem;
   width: 100%;
   /* box-sizing: border-box; */
@@ -15,6 +15,7 @@
   gap: 0.5rem;
   display: flex;
   align-items: center;
+  color: #eee;
 }
 
 #name {

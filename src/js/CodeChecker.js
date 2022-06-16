@@ -33,8 +33,10 @@ export default class CodeChecker {
   initializeEditor(setup){
     this.editor.setKeyboardHandler('ace/keyboard/' + setup.editorMode)
     this.editor.session.setMode('ace/mode/' + setup.editorLanguage)
+    this.editor.setDisplayIndentGuides(false)
 
     // Disable mouse input
+    // TODO: migrate this to CodeEditor and disable them on return
     if(!setup.mouseInput){
         this.editor.on('mousedown', (e) => e.stop())
         this.editor.on('dblclick', (e) => e.stop())
@@ -46,18 +48,6 @@ export default class CodeChecker {
             e.preventDefault()
         })
     }
-
-    // Limit keyboard input
-    this.editor.container.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' && e.shiftKey){
-        return;
-      }
-      const included = setup.selectedKeys.includes(e.key)
-      if(included ^ !setup.keyWhitelist){
-        e.preventDefault()
-        e.stopPropagation()
-      }
-    }, true)
 
     // Set the tab stop
     this.editor.setOptions({
