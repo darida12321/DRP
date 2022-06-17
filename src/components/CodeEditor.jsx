@@ -18,13 +18,13 @@ function CodeEditor(props) {
         return
       }
       const setup = props.lessonData.lesson.editorSetup
-      if(e.key === 'Enter' && e.shiftKey){
+      if(e.key === 'Enter' && (e.shiftKey || e.ctrlKey)){
         return;
       }
       const included = setup.selectedKeys.includes(e.key)
       if(included ^ !setup.keyWhitelist){
-        e.preventDefault()
-        e.stopPropagation()
+        //e.preventDefault()
+        //e.stopPropagation()
       }
     }
     ace.edit('editor').container

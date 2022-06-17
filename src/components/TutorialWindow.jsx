@@ -33,22 +33,25 @@ function TutorialWindow(props) {
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
-    if (Object.keys(lessonData).length === 0) {
-      return;
-    }
-    if (!completed()) {
-      return;
-    }
-    if (props.lesson >= lessonData.lessonNum) {
-      return;
-    }
-    document.addEventListener("keypress", (e) => {
-      if (e.key === "Enter" && e.shiftKey) {
+    function shortcutHandler(e) {
+      if (Object.keys(lessonData).length === 0) {
+        return;
+      }
+      if (e.key === "Enter" && e.shiftKey 
+          && props.lesson < lessonData.lessonNum) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
         navigate(link, { replace: true });
-        //window.location.reload();
       }
-    });
+      if (e.key === "\n" && e.ctrlKey 
+          && props.lesson > 1) {
+        const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) - 1);
+        navigate(link, { replace: true });
+      }
+    };
+    document.addEventListener("keypress", shortcutHandler);
+    return (() => {
+      document.removeEventListener('keypress', shortcutHandler)
+    })
   }, [lessonData, exampleNum, completed, props, navigate]);
 
   // Get style variables from style.css
