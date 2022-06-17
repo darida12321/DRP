@@ -45,7 +45,7 @@ function PuzzleWindow(props) {
         </h1>
         <Link
           id="next-lesson"
-          style={{ visibility: props.lesson >= props.lessonData && props.lessonData.lessonNum ? "hidden" : "" }}
+          style={{ visibility: props.lesson >= (props.lessonData && props.lessonData.lessonNum) ? "hidden" : "" }}
           to={`/vim/${props.chapter}/${Number(props.lesson) + 1}`}
         >
           {"Next >"}
