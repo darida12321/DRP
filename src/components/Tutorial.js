@@ -17,8 +17,8 @@ function Tutorial() {
       <div id="container">
         <ChapterView chapter={chapter} lesson={lesson}/>
         {
-        //<LessonWindow chapter={chapter} lesson={lesson} />
-        <PuzzleWindow chapter={chapter} lesson={lesson} />
+        <LessonWindow chapter={chapter} lesson={lesson} />
+        //<PuzzleWindow chapter={chapter} lesson={lesson} />
         }
       </div>
     </>
