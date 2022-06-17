@@ -8,7 +8,7 @@ import CodeChecker from "../js/CodeChecker";
 // props:
 // - lessonData: data for the lesson used
 // - setExampleNum: callback function for changing example
-function CodeEditor(props) {
+function LessonCodeEditor(props) {
   var codeChecker = useRef(null);
 
   // Check if a key is allowed to be pressed
@@ -85,4 +85,4 @@ function CodeEditor(props) {
   )
 }
 
-export default CodeEditor;
+export default LessonCodeEditor;

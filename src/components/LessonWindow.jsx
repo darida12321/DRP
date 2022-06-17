@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getLessonData } from "../firebase.js";
 
-import CodeEditor from "./CodeEditor";
+import CodeEditor from "./LessonCodeEditor";
 
 import "../styles/TutorialWindow.css";
 
-function TutorialWindow(props) {
+function LessonWindow(props) {
   const navigate = useNavigate();
   const [exampleNum, setExampleNum] = useState(0);
   const [lessonData, setLessonData] = useState({});
@@ -96,4 +96,4 @@ function TutorialWindow(props) {
   );
 }
 
-export default TutorialWindow;
+export default LessonWindow;

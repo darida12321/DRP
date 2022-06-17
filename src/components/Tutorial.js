@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import NavBar from "./NavBar";
 import ChapterView from "./ChapterView";
-//import TutorialWindow from "./TutorialWindow";
+import LessonWindow from "./LessonWindow";
 import PuzzleWindow from "./PuzzleWindow";
 
 import "../styles/Tutorial.css";
@@ -17,7 +17,7 @@ function Tutorial() {
       <div id="container">
         <ChapterView chapter={chapter} lesson={lesson}/>
         {
-        //<TutorialWindow chapter={chapter} lesson={lesson} />
+        //<LessonWindow chapter={chapter} lesson={lesson} />
         <PuzzleWindow chapter={chapter} lesson={lesson} />
         }
       </div>
