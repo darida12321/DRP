@@ -41,6 +41,7 @@ function CodeEditor(props) {
       ace.edit("editor"),
       props.lessonData.lesson.editorSetup,
       props.lessonData.examples,
+      props.lessonData.sandbox,
       props.setExampleNum
     );
   }, [props.lessonData, props.setExampleNum]);
