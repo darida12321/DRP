@@ -23,8 +23,8 @@ function LessonCodeEditor(props) {
       }
       const included = setup.selectedKeys.includes(e.key)
       if(included ^ !setup.keyWhitelist){
-        //e.preventDefault()
-        //e.stopPropagation()
+        e.preventDefault()
+        e.stopPropagation()
       }
     }
     ace.edit('editor').container
@@ -56,6 +56,7 @@ function LessonCodeEditor(props) {
     textInput.addEventListener('focusout', (e) => {
       textInput.focus()
     })
+    codeChecker.current.onChange();
   })
 
   function onChange() {
