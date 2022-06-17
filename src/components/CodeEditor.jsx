@@ -5,6 +5,9 @@ import "ace-builds/src-noconflict/theme-chaos";
 import ace from "ace-builds/src-noconflict/ace";
 import CodeChecker from "../js/CodeChecker";
 
+// props:
+// - lessonData: data for the lesson used
+// - setExampleNum: callback function for changing example
 function CodeEditor(props) {
   var codeChecker = useRef(null);
 
