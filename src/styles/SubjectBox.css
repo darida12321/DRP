@@ -1,0 +1,10 @@
+.subject {
+  width: 15rem;
+  height: 15rem;
+}
+
+.subjectName {
+  text-align: center;
+  color: white;
+  background-color: var(--blue-2);
+}

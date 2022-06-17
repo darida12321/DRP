@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import '../styles/SubjectBox.css';
+
 // used properties
 // - link: link to start of chapter
 // - subject: title of editor the course will teach you
