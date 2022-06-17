@@ -58,7 +58,7 @@ function LessonWindow(props) {
           {"< Prev"}
         </Link>
         <h1 id="lesson-title">
-          Lesson {props.lesson}: {props.lessonData.lesson && props.lessonData.lesson.title}
+          Lesson {props.lessonData.lessonCurr}: {props.lessonData.lesson && props.lessonData.lesson.title}
         </h1>
         <Link
           id="next-lesson"
