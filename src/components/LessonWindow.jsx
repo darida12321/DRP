@@ -1,44 +1,31 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { getLessonData } from "../firebase.js";
 
-import CodeEditor from "./LessonCodeEditor";
+import LessonCodeEditor from "./LessonCodeEditor";
 
 import "../styles/TutorialWindow.css";
 
 function LessonWindow(props) {
   const navigate = useNavigate();
   const [exampleNum, setExampleNum] = useState(0);
-  const [lessonData, setLessonData] = useState({});
 
   // Check if we finished all the examples
   const completed = useCallback(() => {
-    if (!lessonData.examples) {
+    if (!props.lessonData.examples) {
       return false;
     }
-    return lessonData.examples.length === exampleNum;
-  }, [exampleNum, lessonData]);
+    return props.lessonData.examples.length === exampleNum;
+  }, [exampleNum, props.lessonData]);
 
-  // Fetch the data when visiting page
-  useEffect(() => {
-    async function fetchData() {
-      const lessonIndex = props.lesson - 1;
-      const data = await getLessonData(props.chapter);
-      const lessonData = data[lessonIndex];
-      lessonData.lessonNum = data.length;
-      setLessonData(lessonData);
-    }
-    fetchData();
-  }, [props.lesson, props.chapter]);
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
     function shortcutHandler(e) {
-      if (Object.keys(lessonData).length === 0) {
+      if (Object.keys(props.lessonData).length === 0) {
         return;
       }
       if (e.key === "Enter" && e.shiftKey 
-          && props.lesson < lessonData.lessonNum) {
+          && props.lesson < props.lessonData.lessonNum) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
         navigate(link, { replace: true });
       }
@@ -52,7 +39,7 @@ function LessonWindow(props) {
     return (() => {
       document.removeEventListener('keypress', shortcutHandler)
     })
-  }, [lessonData, exampleNum, completed, props, navigate]);
+  }, [props.lessonData, exampleNum, completed, props, navigate]);
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
@@ -71,11 +58,11 @@ function LessonWindow(props) {
           {"< Prev"}
         </Link>
         <h1 id="lesson-title">
-          Lesson {props.lesson}: {lessonData.lesson && lessonData.lesson.title}
+          Lesson {props.lesson}: {props.lessonData.lesson && props.lessonData.lesson.title}
         </h1>
         <Link
           id="next-lesson"
-          style={{ visibility: props.lesson >= lessonData.lessonNum ? "hidden" : "" }}
+          style={{ visibility: props.lesson >= props.lessonData.lessonNum ? "hidden" : "" }}
           to={`/vim/${props.chapter}/${Number(props.lesson) + 1}`}
         >
           {"Next >"}
@@ -83,15 +70,15 @@ function LessonWindow(props) {
       </div>
 
       <div id="textbox">
-        <p id="lesson-desc">{lessonData.lesson && lessonData.lesson.description}</p>
+        <p id="lesson-desc">{props.lessonData.lesson && props.lessonData.lesson.description}</p>
         <div id="lesson-marker">
           <div id="blob" style={{ background: completed() ? colorComplete : colorDefault }}>
-            {exampleNum}/{lessonData.examples && lessonData.examples.length}
+            {exampleNum}/{props.lessonData.examples && props.lessonData.examples.length}
           </div>
         </div>
       </div>
 
-      <CodeEditor lessonData={lessonData} setExampleNum={setExampleNum} />
+      <LessonCodeEditor lessonData={props.lessonData} setExampleNum={setExampleNum} />
     </div>
   );
 }

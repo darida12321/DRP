@@ -30,6 +30,9 @@ function LessonCodeEditor(props) {
     ace.edit('editor').container
       .addEventListener('keydown', filterKeypress, true)
     return () => {
+      if(!document.getElementById('editor')){
+        return;
+      }
       ace.edit('editor').container
         .removeEventListener('keydown', filterKeypress, true)
     }
