@@ -92,6 +92,7 @@ function Submit() {
   const [lesson, setLesson] = React.useState({});
   const [examples, setExamples] = React.useState([]);
   const [setup, setSetup] = React.useState({});
+  const [sandbox, setSandbox] = React.useState({});
   const [endpoint, setEndpoint] = React.useState({});
 
   const setData = (o, f) => {
@@ -102,6 +103,8 @@ function Submit() {
         return setSetup(f);
       case endpoint:
         return setEndpoint(f);
+      case sandbox:
+        return setSandbox(f);
       default:
         return undefined;
     }
@@ -136,6 +139,7 @@ function Submit() {
   const buildObj = () => {
     let obj = {
       lesson: lesson,
+      sandbox: sandbox,
       examples: examples,
     };
     obj.lesson.editorSetup = setup;
@@ -226,6 +230,14 @@ function Submit() {
           Click to remove latest example
         </button>
         <br />
+        <h2>Sandbox</h2>
+        <textarea
+          placeholder='sandbox'
+          onChange={(e) => {
+            updateData(sandbox, 'text', e.target.value);
+          }}
+          value={sandbox.text || ''}
+        />
         <br />
         <button
           onClick={() => {
