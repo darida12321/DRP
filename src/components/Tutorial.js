@@ -14,7 +14,7 @@ function Tutorial() {
     <>
       <NavBar />
       <div id="container">
-        <ChapterView chapter={chapter} />
+        <ChapterView chapter={chapter} lesson={lesson}/>
         <TutorialWindow chapter={chapter} lesson={lesson} />
       </div>
     </>
