@@ -114,9 +114,10 @@ export default class CodeChecker {
     if (this.exampleNum < this.exampleCount) {
       this.setEditorState(this.examples[this.exampleNum].initial)
     }else {
+      if(!this.sandbox){ return; }
       const state = this.getEditorState();
       this.setEditorState({
-        code: this.sandbox,
+        code: this.sandbox.text,
         cLine: state.cLine,
         cPos: state.cPos
       })
