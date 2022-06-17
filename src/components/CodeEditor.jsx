@@ -42,6 +42,15 @@ function CodeEditor(props) {
     );
   }, [props.lessonData, props.setExampleNum]);
 
+  // Always keep focus on the editor
+  useEffect(() => {
+    const textInput = ace.edit('editor').textInput.getElement()
+    textInput.focus()
+    textInput.addEventListener('focusout', (e) => {
+      textInput.focus()
+    })
+  })
+
   function onChange() {
     if (!codeChecker.current) {
       return;

@@ -24,10 +24,8 @@ export default class CodeChecker {
     this.setExampleNum = setExampleNum;
 
     this.setEditorState(examples[0].initial)
-    // Focus on the element
-    this.editor.textInput.getElement().focus()
   }
-
+  
   /* INITIALIZE ACE EDITOR */
   // The main initialization function
   initializeEditor(setup){
