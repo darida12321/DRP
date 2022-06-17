@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { getLessonData } from "../firebase.js";
 
 import CodeEditor from "./CodeEditor";
+import hImg from "../images/h.png";
 
 import "../styles/TutorialWindow.css";
 

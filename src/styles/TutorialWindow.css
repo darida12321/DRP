@@ -68,6 +68,7 @@
 
 #lesson-marker {
   display: flex;
+  /* align-self: flex-end; */
   align-items: center;
   margin-left: 2rem;
 }
@@ -86,6 +87,7 @@
 
 #editor {
   border-radius: 1rem;
+  margin-bottom: 1rem;
 }
 
 .ace_cursor {
