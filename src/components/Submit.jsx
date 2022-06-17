@@ -21,6 +21,12 @@ function Example(props) {
 
   const [state, setState] = React.useState(props.val.initial ? props.val : newExample());
 
+  React.useEffect(() => {
+    if (props.val.initial) {
+      setState(props.val);
+    }
+  }, [props.val])
+
   const updateData = (o, k, v) => {
     let newState = Object.assign({}, state);
     newState[o][k] = v;
@@ -66,6 +72,7 @@ function Example(props) {
       <input
         placeholder="expected cLine"
         onChange={(e) => {
+          console.log(state);
           updateData("expected", "cLine", Number(e.target.value));
         }}
         value={state.expected.cLine}
@@ -85,6 +92,7 @@ function Submit() {
   const [lesson, setLesson] = React.useState({});
   const [examples, setExamples] = React.useState([]);
   const [setup, setSetup] = React.useState({});
+  const [sandbox, setSandbox] = React.useState({});
   const [endpoint, setEndpoint] = React.useState({});
 
   const setData = (o, f) => {
@@ -95,6 +103,8 @@ function Submit() {
         return setSetup(f);
       case endpoint:
         return setEndpoint(f);
+      case sandbox:
+        return setSandbox(f);
       default:
         return undefined;
     }
@@ -129,6 +139,7 @@ function Submit() {
   const buildObj = () => {
     let obj = {
       lesson: lesson,
+      sandbox: sandbox,
       examples: examples,
     };
     obj.lesson.editorSetup = setup;
@@ -147,6 +158,7 @@ function Submit() {
   const fetchObj = async () => {
     const remoteLessons = await getLessonData(endpoint.chapterNum);
     const remoteData = remoteLessons[endpoint.lessonNum - 1];
+    setSandbox(remoteData.sandbox);
     setLesson(remoteData.lesson);
     setSetup(remoteData.lesson.editorSetup);
     setExamples(remoteData.examples);
@@ -219,6 +231,14 @@ function Submit() {
           Click to remove latest example
         </button>
         <br />
+        <h2>Sandbox</h2>
+        <textarea
+          placeholder='sandbox'
+          onChange={(e) => {
+            updateData(sandbox, 'text', e.target.value);
+          }}
+          value={sandbox.text || ''}
+        />
         <br />
         <button
           onClick={() => {

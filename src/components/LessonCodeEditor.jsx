@@ -5,7 +5,10 @@ import "ace-builds/src-noconflict/theme-chaos";
 import ace from "ace-builds/src-noconflict/ace";
 import CodeChecker from "../js/CodeChecker";
 
-function CodeEditor(props) {
+// props:
+// - lessonData: data for the lesson used
+// - setExampleNum: callback function for changing example
+function LessonCodeEditor(props) {
   var codeChecker = useRef(null);
 
   // Check if a key is allowed to be pressed
@@ -15,7 +18,7 @@ function CodeEditor(props) {
         return
       }
       const setup = props.lessonData.lesson.editorSetup
-      if(e.key === 'Enter' && e.shiftKey){
+      if(e.key === 'Enter' && (e.shiftKey || e.ctrlKey)){
         return;
       }
       const included = setup.selectedKeys.includes(e.key)
@@ -27,6 +30,9 @@ function CodeEditor(props) {
     ace.edit('editor').container
       .addEventListener('keydown', filterKeypress, true)
     return () => {
+      if(!document.getElementById('editor')){
+        return;
+      }
       ace.edit('editor').container
         .removeEventListener('keydown', filterKeypress, true)
     }
@@ -38,9 +44,20 @@ function CodeEditor(props) {
       ace.edit("editor"),
       props.lessonData.lesson.editorSetup,
       props.lessonData.examples,
+      props.lessonData.sandbox,
       props.setExampleNum
     );
   }, [props.lessonData, props.setExampleNum]);
+
+  // Always keep focus on the editor
+  useEffect(() => {
+    const textInput = ace.edit('editor').textInput.getElement()
+    textInput.focus()
+    textInput.addEventListener('focusout', (e) => {
+      textInput.focus()
+    })
+    codeChecker.current.onChange();
+  })
 
   function onChange() {
     if (!codeChecker.current) {
@@ -72,4 +89,4 @@ function CodeEditor(props) {
   )
 }
 
-export default CodeEditor;
+export default LessonCodeEditor;
