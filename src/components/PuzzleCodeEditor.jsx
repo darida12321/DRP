@@ -99,8 +99,10 @@ function PuzzleCodeEditor(props) {
     if(!checkResult){
       return;
     }
-    setKeypresses(keypresses+1)
-    props.setKeypresses(keypresses+1)
+    if(!props.completed){
+      setKeypresses(keypresses+1)
+      props.setKeypresses(keypresses+1)
+    }
     const code = ace.edit('editor').getValue();
     const cursor = ace.edit('editor').getCursorPosition();
     const state = { 
@@ -112,8 +114,9 @@ function PuzzleCodeEditor(props) {
     if(state.code === expected.code
       && state.cLine === parseInt(expected.cLine)
       && state.cPos === parseInt(expected.cPos)){
-
-      console.log(`completed in ${keypresses+1} steps`)
+      if(keypresses < props.lessonData.puzzle.moves){
+        props.setCompleted(true)
+      }
     }
   }
 

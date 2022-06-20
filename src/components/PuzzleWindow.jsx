@@ -5,9 +5,17 @@ import "../styles/PuzzleWindow.css";
 import PuzzleCodeEditor from "./PuzzleCodeEditor";
 
 function PuzzleWindow(props) {
+  const [completed, setCompleted] = useState(false)
   const [keypresses, setKeypresses] = useState(0)
   const [solutionVisible, setSolutionVisible] = useState(false)
   const navigate = useNavigate();
+
+  // Reset variables when prop updates
+  useEffect(() => {
+    setCompleted(false)
+    setKeypresses(0)
+    setSolutionVisible(false);
+  }, [props])
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
@@ -32,8 +40,16 @@ function PuzzleWindow(props) {
     })
   }, [props.lessonData, props, navigate]);
 
+  // Get style variables from style.css
+  var style = getComputedStyle(document.body);
+  const cDefault = style.getPropertyValue("--blue-1");
+  const cComplete = style.getPropertyValue("--green-2");
+  const c = style.getPropertyValue("--green-2");
+
   const moves = props.lessonData.puzzle ? props.lessonData.puzzle.moves : 1
   const ratio = Math.min(keypresses/moves, 1)
+  const barColor = completed ? 'green' : 
+    (keypresses < moves ? 'blue' : 'red') 
 
   // Return the document
   return (
@@ -64,8 +80,9 @@ function PuzzleWindow(props) {
           <div id="keystroke-bar">
             <div id="keystroke-amount-bar"
             style={
-              {width: ratio*100+'%'}}></div>
-            <p>{keypresses}/{props.lessonData.puzzle && props.lessonData.puzzle.moves}</p>
+              {width: ratio*100+'%',
+              background: barColor}}></div>
+            <p>{Math.min(keypresses, moves)}/{moves}</p>
           </div>
         </div>
         <div id="solution-area">
@@ -81,13 +98,17 @@ function PuzzleWindow(props) {
           </div>
           <div id="solution" 
             style={{visibility: solutionVisible ? 'visible' : 'hidden'}}>
-            WWbj
+            {props.lessonData.puzzle && props.lessonData.puzzle.solution}
           </div>
         </div>
       </div>
 
-      <PuzzleCodeEditor lessonData={props.lessonData} setKeypresses={setKeypresses}/>
-
+      <PuzzleCodeEditor 
+        lessonData={props.lessonData} 
+        setKeypresses={setKeypresses}
+        completed={completed}
+        setCompleted={setCompleted}
+      />
     </div>
   );
 }
