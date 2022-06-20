@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Tutorial from "./components/Tutorial";
 import HomePage from "./components/HomePage";
 import Submit from "./components/Submit";
-import Signup from "./components/Signup";
+import Signup from "./components/Signin";
 
 function App() {
   return (
