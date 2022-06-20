@@ -64,6 +64,12 @@ export var uiConfig = {
       // User successfully signed in.
       // Return type determines whether we continue the redirect automatically
       // or whether we leave that to developer to handle.
+      console.log("success!");
+      // console.log(auth.currentUser);
+      console.log(authResult.user);
+      console.log(authResult.credential);
+      console.log(authResult.user.uid);
+      // console.log(redirectUrl);
       return true;
     },
     uiShown: function () {

@@ -3,7 +3,9 @@ import React from "react";
 //import { ui, uiConfig } from "../firebase";
 //import "firebaseui/dist/firebaseui.css";
 
-export default function Signup() {
+function Signup() {
+  ui.start("#firebaseui-auth-container", uiConfig);
+
   return (
     <div>
       <h1> signup </h1>
@@ -14,3 +16,4 @@ export default function Signup() {
 }
 
 //ui.start("#firebaseui-auth-container", uiConfig);
+export default Signup;
