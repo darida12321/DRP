@@ -43,13 +43,13 @@ function PuzzleWindow(props) {
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
   const cDefault = style.getPropertyValue("--blue-1");
-  const cComplete = style.getPropertyValue("--green-2");
-  const c = style.getPropertyValue("--green-2");
+  const cComplete = style.getPropertyValue("--green-1");
+  const cError = style.getPropertyValue("--red-1");
 
   const moves = props.lessonData.puzzle ? props.lessonData.puzzle.moves : 1
   const ratio = Math.min(keypresses/moves, 1)
-  const barColor = completed ? 'green' : 
-    (keypresses < moves ? 'blue' : 'red') 
+  const barColor = completed ? cComplete : 
+    (keypresses < moves ? cDefault : cError) 
 
   // Return the document
   return (
