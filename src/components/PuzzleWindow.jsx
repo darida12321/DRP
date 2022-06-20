@@ -32,7 +32,7 @@ function PuzzleWindow(props) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
         navigate(link, { replace: true });
       }
-      if (e.key === "\n" && e.ctrlKey 
+      if (e.key === "Enter" && e.ctrlKey 
           && props.lesson > 1) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) - 1);
         navigate(link, { replace: true });
