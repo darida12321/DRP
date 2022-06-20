@@ -113,7 +113,6 @@
   height: 0.5rem;
   border: solid #ddd;
   border-width: 0 0.2rem 0.2rem 0;
-  transform: translate(0, -0.2rem) rotate(45deg);
 }
 
 #solution {
@@ -126,4 +125,11 @@
   border-radius: 0.5rem;
   box-sizing: border-box;
   padding-top: 1rem;
+  transition: all 0.2s linear;
+}
+
+#solution[style*="visibility: hidden"] {
+  height: 1rem;
+  font-size: 0rem;
+  line-height: 0rem;
 }

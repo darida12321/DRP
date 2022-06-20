@@ -62,7 +62,12 @@ function PuzzleWindow(props) {
           <div id="solution-label"
             onClick={() => {setSolutionVisible(!solutionVisible)}}>
             <p>Solution</p>
-            <div id="arrow"></div>
+            <div id="arrow"
+              style={{transform: solutionVisible 
+                ? 'translate(0, -0.2rem) rotate(45deg)'
+                : 'translate(0, 0.2rem) rotate(-135deg)',
+              }}
+            ></div>
           </div>
           <div id="solution" 
             style={{visibility: solutionVisible ? 'visible' : 'hidden'}}>
