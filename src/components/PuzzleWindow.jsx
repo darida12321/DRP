@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import "../styles/TutorialWindow.css";
+import PuzzleCodeEditor from "./PuzzleCodeEditor";
 
 function PuzzleWindow(props) {
   const navigate = useNavigate();
@@ -55,6 +56,8 @@ function PuzzleWindow(props) {
       <div id="textbox">
         <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
       </div>
+
+      <PuzzleCodeEditor lessonData={props.lessonData}/>
 
     </div>
   );
