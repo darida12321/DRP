@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import "../styles/TutorialWindow.css";
+import "../styles/PuzzleWindow.css";
 import PuzzleCodeEditor from "./PuzzleCodeEditor";
 
 function PuzzleWindow(props) {

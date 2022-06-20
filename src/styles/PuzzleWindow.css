@@ -1,0 +1,95 @@
+#tutorial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #1d2a35;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: #ddd;
+  margin-bottom: 1rem;
+}
+
+#prev-lesson,
+#next-lesson {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--blue-1);
+  color: inherit;
+  height: 3rem;
+  width: 7.5rem;
+  border-radius: 1rem;
+  margin: 0.5rem 1rem;
+  padding: 0;
+  border: 0;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+#prev-lesson:hover,
+#next-lesson:hover {
+  background-color: #133d81;
+}
+
+#lesson-title {
+  margin: 0;
+  margin-top: 1rem;
+  align-self: flex-end;
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+#textbox {
+  display: flex;
+  background-color: #38444d;
+  color: #ddd;
+  width: 80%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem 2rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#lesson-desc {
+  margin: 0.75rem 0;
+  font-size: 1.5rem;
+}
+
+#lesson-marker {
+  display: flex;
+  /* align-self: flex-end; */
+  align-items: center;
+  margin-left: 2rem;
+}
+
+#blob {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  height: 7rem;
+  width: 7rem;
+  color: #000;
+  font-size: 2.5rem;
+  font-weight: 900;
+}
+
+#editor {
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ace_cursor {
+  color: blue;
+}

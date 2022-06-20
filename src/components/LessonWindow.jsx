@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import LessonCodeEditor from "./LessonCodeEditor";
 
-import "../styles/TutorialWindow.css";
+import "../styles/LessonWindow.css";
 
 function LessonWindow(props) {
   const navigate = useNavigate();
