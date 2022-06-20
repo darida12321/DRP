@@ -69,7 +69,7 @@ export var uiConfig = {
       var user = authResult.user;
       var isNewUser = authResult.additionalUserInfo.isNewUser;
 
-      addUser(true, user);
+      addUser(isNewUser, user);
 
       return false;
     },
