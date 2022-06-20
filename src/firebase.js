@@ -1,9 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
-import { /*getAuth,*/ GoogleAuthProvider } from "firebase/auth";
-// import firebase from "firebase/compat/app";
-//import * as firebaseui from "firebaseui";
-//import "firebaseui/dist/firebaseui.css";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -53,10 +52,10 @@ export async function submitLesson(chapterNum, lessonNum, lessonObj) {
 // export firebaseDoc()
 
 // Initialize FirebaseUI Authentication
-//const auth = getAuth(app);
+const auth = getAuth(app);
 
 // Initialize the FirebaseUI Widget using Firebase.
-//export var ui = new firebaseui.auth.AuthUI(auth);
+export var ui = new firebaseui.auth.AuthUI(auth);
 
 export var uiConfig = {
   callbacks: {
