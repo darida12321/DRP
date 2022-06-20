@@ -1,6 +1,6 @@
 import React from "react";
 
-//import { ui, uiConfig } from "../firebase";
+import { ui, uiConfig } from "../firebase";
 //import "firebaseui/dist/firebaseui.css";
 
 function Signup() {
