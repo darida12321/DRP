@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import gearImg from "../images/gear-icon.svg";
 import houseImg from "../images/house-icon.svg";
@@ -11,9 +12,9 @@ import "../styles/NavBar.css";
 function NavBar() {
   return (
     <nav id="nav-bar">
-      <div id="home" className="icon-box">
+      <Link id="home" className="icon-box" to="/">
         <img src={houseImg} className="icon" alt="" />
-      </div>
+      </Link>
 
       <div id="title">
         <div className="icon-box">
@@ -21,17 +22,17 @@ function NavBar() {
         </div>
         <h1 id="name">Website name</h1>
       </div>
-      
+
       <div id="menu">
         <div className="icon-box">
           <img src={moonImg} className="icon" alt="" />
         </div>
-        <div className="icon-box">
+        <div className="icon-box" to="">
           <img src={gearImg} className="icon" alt="" />
         </div>
-        <div className="icon-box">
+        <Link className="icon-box" to="/signup">
           <img src={userImg} className="icon" alt="" />
-        </div>
+        </Link>
       </div>
     </nav>
   );

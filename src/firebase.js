@@ -22,6 +22,9 @@ const app = initializeApp(firebaseConfig);
 // Get Google Analytics data
 // const analytics = getAnalytics(app);
 
+/* ------------------------------------------------------------------------------------------------- */
+// Database stuff below
+
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
@@ -49,6 +52,28 @@ export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   await setDoc(docRef, lessonObj, { merge: true });
   console.log("submitted chapter: " + chapterNum + ", lesson: " + lessonNum);
 }
+
+async function addUser(isNewUser, user) {
+  if (!isNewUser) {
+    window.location.replace("/vim/1/1");
+    return;
+  }
+
+  const docRef = doc(db, "users", user.uid);
+  const userObj = {
+    displayName: user.displayName,
+    email: user.email,
+  };
+  await setDoc(docRef, userObj, { merge: true });
+
+  window.location.replace("/vim/1/1");
+  console.log("added" + user.uid);
+}
+
+
+/* ------------------------------------------------------------------------------------------------- */
+// Authentication stuff below
+
 
 // Initialize FirebaseUI Authentication
 const auth = getAuth(app);
@@ -86,20 +111,3 @@ export var uiConfig = {
     GoogleAuthProvider.PROVIDER_ID,
   ],
 };
-
-async function addUser(isNewUser, user) {
-  if (!isNewUser) {
-    window.location.replace("/vim/1/1");
-    return;
-  }
-
-  const docRef = doc(db, "users", user.uid);
-  const userObj = {
-    displayName: user.displayName,
-    email: user.email,
-  };
-  await setDoc(docRef, userObj, { merge: true });
-
-  window.location.replace("/vim/1/1");
-  console.log("added" + user.uid);
-}
