@@ -100,6 +100,7 @@ function PuzzleCodeEditor(props) {
       return;
     }
     setKeypresses(keypresses+1)
+    props.setKeypresses(keypresses+1)
     const code = ace.edit('editor').getValue();
     const cursor = ace.edit('editor').getCursorPosition();
     const state = { 

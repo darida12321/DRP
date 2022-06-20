@@ -5,6 +5,7 @@ import "../styles/PuzzleWindow.css";
 import PuzzleCodeEditor from "./PuzzleCodeEditor";
 
 function PuzzleWindow(props) {
+  const [keypresses, setKeypresses] = useState(0)
   const [solutionVisible, setSolutionVisible] = useState(false)
   const navigate = useNavigate();
 
@@ -30,6 +31,9 @@ function PuzzleWindow(props) {
       document.removeEventListener('keypress', shortcutHandler)
     })
   }, [props.lessonData, props, navigate]);
+
+  const moves = props.lessonData.puzzle ? props.lessonData.puzzle.moves : 1
+  const ratio = Math.min(keypresses/moves, 1)
 
   // Return the document
   return (
@@ -57,6 +61,12 @@ function PuzzleWindow(props) {
       <div id="textbox">
         <div id="content">
           <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
+          <div id="keystroke-bar">
+            <div id="keystroke-amount-bar"
+            style={
+              {width: ratio*100+'%'}}></div>
+            <p>{keypresses}/{props.lessonData.puzzle && props.lessonData.puzzle.moves}</p>
+          </div>
         </div>
         <div id="solution-area">
           <div id="solution-label"
@@ -64,8 +74,8 @@ function PuzzleWindow(props) {
             <p>Solution</p>
             <div id="arrow"
               style={{transform: solutionVisible 
-                ? 'translate(0, -0.2rem) rotate(45deg)'
-                : 'translate(0, 0.2rem) rotate(-135deg)',
+                ? 'translate(0, 0.2rem) rotate(-135deg)'
+                : 'translate(0, -0.2rem) rotate(45deg)'
               }}
             ></div>
           </div>
@@ -76,7 +86,7 @@ function PuzzleWindow(props) {
         </div>
       </div>
 
-      <PuzzleCodeEditor lessonData={props.lessonData}/>
+      <PuzzleCodeEditor lessonData={props.lessonData} setKeypresses={setKeypresses}/>
 
     </div>
   );

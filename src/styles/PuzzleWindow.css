@@ -65,11 +65,34 @@
 #lesson-desc {
   margin: 0.75rem 0;
   font-size: 1.5rem;
+  margin-bottom: 3rem;
 }
 
 #content {
-  border: 1px solid red;
   width: calc(100% - 8rem);
+}
+
+#keystroke-bar {
+  width: 100%;
+  height: 2rem;
+  background: #1d2a35;
+  margin-top: -2rem;
+  border-radius: 5px;
+}
+
+#keystroke-amount-bar {
+  background: #15448e;
+  height: 100%;
+  border-radius: 5px;
+}
+
+#keystroke-bar > p {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  top: -2rem;
+  line-height: 2rem;
+  font-size: 1.3rem;
 }
 
 #solution-area {
@@ -117,10 +140,10 @@
 
 #solution {
   width: 100%;
-  height: 5rem;
+  height: 4.5rem;
   background: #38444d;
   font-size: 1.5rem;
-  line-height: 4rem;
+  line-height: 3.5rem;
   margin-top: -1rem;
   border-radius: 0.5rem;
   box-sizing: border-box;
