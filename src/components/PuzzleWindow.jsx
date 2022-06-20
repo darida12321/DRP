@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import "../styles/PuzzleWindow.css";
 import PuzzleCodeEditor from "./PuzzleCodeEditor";
 
 function PuzzleWindow(props) {
+  const [solutionVisible, setSolutionVisible] = useState(false)
   const navigate = useNavigate();
 
   // Set up the next lesson shortcut once examples are complete
@@ -54,7 +55,20 @@ function PuzzleWindow(props) {
       </div>
 
       <div id="textbox">
-        <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
+        <div id="content">
+          <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
+        </div>
+        <div id="solution-area">
+          <div id="solution-label"
+            onClick={() => {setSolutionVisible(!solutionVisible)}}>
+            <p>Solution</p>
+            <div id="arrow"></div>
+          </div>
+          <div id="solution" 
+            style={{visibility: solutionVisible ? 'visible' : 'hidden'}}>
+            WWbj
+          </div>
+        </div>
       </div>
 
       <PuzzleCodeEditor lessonData={props.lessonData}/>

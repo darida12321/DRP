@@ -48,6 +48,7 @@
   font-weight: 900;
 }
 
+/* -------------------------------------------------- */
 #textbox {
   display: flex;
   background-color: #38444d;
@@ -66,30 +67,63 @@
   font-size: 1.5rem;
 }
 
-#lesson-marker {
+#content {
+  border: 1px solid red;
+  width: calc(100% - 8rem);
+}
+
+#solution-area {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  background: #15202B;
+  width: 8rem;
+  margin: -1rem -2rem -1rem 2rem;
+  padding: 1rem 2rem;
+}
+
+#solution-label {
+  width: 100%;
+  height: 2rem;
+  margin: auto;
+  background: #15448e;
+  line-height: 2rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  position: relative;
+  z-index: 1;
   display: flex;
-  /* align-self: flex-end; */
+  justify-content: space-around;
   align-items: center;
-  margin-left: 2rem;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  cursor: pointer;
 }
 
-#blob {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  height: 7rem;
-  width: 7rem;
-  color: #000;
-  font-size: 2.5rem;
-  font-weight: 900;
+#solution-label:hover {
+  background: #133d81;
 }
 
-#editor {
-  border-radius: 1rem;
-  margin-bottom: 1rem;
+#solution-label > p {
+  margin: 0;
+  padding: 0;
 }
 
-.ace_cursor {
-  color: blue;
+#arrow {
+  width: 0.5rem;
+  height: 0.5rem;
+  border: solid #ddd;
+  border-width: 0 0.2rem 0.2rem 0;
+  transform: translate(0, -0.2rem) rotate(45deg);
+}
+
+#solution {
+  width: 100%;
+  height: 5rem;
+  background: #38444d;
+  font-size: 1.5rem;
+  line-height: 4rem;
+  margin-top: -1rem;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  padding-top: 1rem;
 }
