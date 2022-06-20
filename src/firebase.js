@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import * as firebaseui from "firebaseui";
+import { useNavigate } from "react-router-dom";
 import "firebaseui/dist/firebaseui.css";
 // import { getAnalytics } from "firebase/analytics";
 
@@ -49,8 +50,6 @@ export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   console.log("submitted chapter: " + chapterNum + ", lesson: " + lessonNum);
 }
 
-// export firebaseDoc()
-
 // Initialize FirebaseUI Authentication
 const auth = getAuth(app);
 
@@ -64,16 +63,18 @@ export var uiConfig = {
       // Return type determines whether we continue the redirect automatically
       // or whether we leave that to developer to handle.
       console.log("success!");
-      // console.log(auth.currentUser);
-      console.log(authResult.user);
-      console.log(authResult.credential);
-      console.log(authResult.user.uid);
-      // console.log(redirectUrl);
-      return true;
+      // console.log("user: \n", authResult.user);
+      // console.log("isNewUser: \n", authResult.additionalUserInfo.isNewUser);
+
+      var user = authResult.user;
+      var isNewUser = authResult.additionalUserInfo.isNewUser;
+
+      addUser(true, user);
+
+      return false;
     },
     uiShown: function () {
-      // The widget is rendered.
-      // Hide the loader.
+      // The widget is rendered -> Hide the loader.
       document.getElementById("loader").style.display = "none";
     },
   },
@@ -85,3 +86,20 @@ export var uiConfig = {
     GoogleAuthProvider.PROVIDER_ID,
   ],
 };
+
+async function addUser(isNewUser, user) {
+  if (!isNewUser) {
+    window.location.replace("/vim/1/1");
+    return;
+  }
+
+  const docRef = doc(db, "users", user.uid);
+  const userObj = {
+    displayName: user.displayName,
+    email: user.email,
+  };
+  await setDoc(docRef, userObj, { merge: true });
+
+  window.location.replace("/vim/1/1");
+  console.log("added" + user.uid);
+}
