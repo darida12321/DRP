@@ -17,7 +17,7 @@ import "ace-builds/src-noconflict/mode-java";
 // - lessonData: data for the lesson used
 function PuzzleCodeEditor(props) {
   const [checkResult, setCheckResult] = useState(false)
-  const [keypresses, setKeypresses] = useState(0)
+
 
   // Check if a key is allowed to be pressed
   useEffect(() => {
@@ -25,10 +25,17 @@ function PuzzleCodeEditor(props) {
       if(Object.keys(props.lessonData).length === 0){
         return
       }
-      const setup = props.lessonData.lesson.editorSetup
-      if(e.key === 'Enter' && (e.shiftKey || e.ctrlKey)){
+      if(e.key === 'Enter' && (e.shiftKey || e.ctrlKey || e.altKey)){
+        if(e.altKey){
+          const editor = ace.edit('editor')
+          const init = props.lessonData.puzzle.init
+          editor.setValue(init.code);
+          editor.moveCursorTo(init.cLine, init.cPos);
+          editor.session.selection.clearSelection();
+        }
         return;
       }
+      const setup = props.lessonData.lesson.editorSetup
       const included = setup.selectedKeys.includes(e.key)
       if(included ^ !setup.keyWhitelist){
         e.preventDefault()
@@ -45,6 +52,12 @@ function PuzzleCodeEditor(props) {
         .removeEventListener('keydown', filterKeypress, true)
     }
   }, [props.lessonData])
+
+  // Always keep focus on the editor
+  useEffect(() => {
+    const textInput = ace.edit('editor').textInput.getElement()
+    textInput.focus()
+  }, [])
 
   // Set up the editor settings
   useEffect(() => {
@@ -91,8 +104,7 @@ function PuzzleCodeEditor(props) {
       return;
     }
     if(!props.completed){
-      setKeypresses(keypresses+1)
-      props.setKeypresses(keypresses+1)
+      props.setKeypresses(props.keypresses+1)
     }
     const code = ace.edit('editor').getValue();
     const cursor = ace.edit('editor').getCursorPosition();
@@ -105,7 +117,7 @@ function PuzzleCodeEditor(props) {
     if(state.code === expected.code
       && state.cLine === parseInt(expected.cLine)
       && state.cPos === parseInt(expected.cPos)){
-      if(keypresses < props.lessonData.puzzle.moves){
+      if(props.keypresses < props.lessonData.puzzle.moves){
         props.setCompleted(true)
       }
     }

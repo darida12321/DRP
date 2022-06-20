@@ -23,6 +23,10 @@ function PuzzleWindow(props) {
       if (Object.keys(props.lessonData).length === 0) {
         return;
       }
+      if (e.key === 'Enter' && e.altKey){
+        setCompleted(false)
+        setKeypresses(0)
+      }
       if (e.key === "Enter" && e.shiftKey 
           && props.lesson < props.lessonData.lessonNum) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
@@ -34,9 +38,9 @@ function PuzzleWindow(props) {
         navigate(link, { replace: true });
       }
     };
-    document.addEventListener("keypress", shortcutHandler);
+    document.addEventListener("keydown", shortcutHandler);
     return (() => {
-      document.removeEventListener('keypress', shortcutHandler)
+      document.removeEventListener('keydown', shortcutHandler)
     })
   }, [props.lessonData, props, navigate]);
 
@@ -82,7 +86,7 @@ function PuzzleWindow(props) {
             style={
               {width: ratio*100+'%',
               background: barColor}}></div>
-            <p>{Math.min(keypresses, moves)}/{moves}</p>
+            <p>{Math.min(keypresses, moves)}/{moves} moves</p>
           </div>
         </div>
         <div id="solution-area">
@@ -105,6 +109,7 @@ function PuzzleWindow(props) {
 
       <PuzzleCodeEditor 
         lessonData={props.lessonData} 
+        keypresses={keypresses}
         setKeypresses={setKeypresses}
         completed={completed}
         setCompleted={setCompleted}

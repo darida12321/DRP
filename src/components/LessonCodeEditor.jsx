@@ -49,6 +49,11 @@ function LessonCodeEditor(props) {
     );
   }, [props.lessonData, props.setExampleNum]);
 
+  // Always keep focus on the editor
+  useEffect(() => {
+    const textInput = ace.edit('editor').textInput.getElement()
+    textInput.focus()
+  }, [])
 
   function onChange() {
     if (!codeChecker.current) {
