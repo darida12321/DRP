@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import * as firebaseui from "firebaseui";
-import { user } from "./js/State";
+import { useNavigate } from "react-router-dom";
 import "firebaseui/dist/firebaseui.css";
 // import { getAnalytics } from "firebase/analytics";
 
@@ -57,10 +57,10 @@ export async function submitLesson(chapterNum, lessonNum, lessonObj) {
 // User and Authentication functions below
 
 // Initialize FirebaseUI Authentication
-//const auth = getAuth(app);
+const auth = getAuth(app);
 
 // Initialize the FirebaseUI Widget using Firebase.
-//export var ui = new firebaseui.auth.AuthUI(auth);
+export var ui = new firebaseui.auth.AuthUI(auth);
 
 export var uiConfig = {
   callbacks: {
@@ -68,11 +68,19 @@ export var uiConfig = {
       // User successfully signed in.
       // Return type determines whether we continue the redirect automatically
       // or whether we leave that to developer to handle.
-      return true;
+      console.log("success!");
+      // console.log("user: \n", authResult.user);
+      // console.log("isNewUser: \n", authResult.additionalUserInfo.isNewUser);
+
+      var user = authResult.user;
+      var isNewUser = authResult.additionalUserInfo.isNewUser;
+
+      addUser(isNewUser, user);
+
+      return false;
     },
     uiShown: function () {
-      // The widget is rendered.
-      // Hide the loader.
+      // The widget is rendered -> Hide the loader.
       document.getElementById("loader").style.display = "none";
     },
   },
