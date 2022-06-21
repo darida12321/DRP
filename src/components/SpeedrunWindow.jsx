@@ -116,7 +116,7 @@ function SpeedrunWindow(props) {
         <div id="content">
           <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
         </div>
-        <div id="solution-area">
+        <div id="side-area">
           <div id="retry"
             onClick={reset}
           >Retry</div>
@@ -126,7 +126,7 @@ function SpeedrunWindow(props) {
               ? <img src={clockImgGreen} id="timer-icon" alt=""/>
               : <img src={clockImgBlue} id="timer-icon" alt=""/>
             }
-            <p>
+            <p id="time">
               {mins}:{secs}:{frac}
             </p>
           </div>

@@ -72,14 +72,13 @@
   width: calc(100% - 8rem);
 }
 
-#solution-area {
+#side-area {
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
   background: #15202B;
   width: 8rem;
   margin: -1rem -2rem -1rem 2rem;
   padding: 1rem 2rem;
-  cursor: pointer;
 }
 
 #retry {
@@ -89,8 +88,25 @@
   height: 2rem;
   line-height: 2rem;
   border-radius: 0.5rem;
+  cursor: pointer;
 }
 
 #retry:hover {
   background: #133d81;
+}
+
+#timer-area {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+#timer-icon {
+  width: 100%;
+}
+
+#time {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+  color: #ddd;
 }
