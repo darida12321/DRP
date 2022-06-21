@@ -3,25 +3,31 @@ import SubjectBox from './SubjectBox';
 import NavBar from './NavBar';
 
 import '../styles/homePage.css';
-import MoonImg from '../images/moon-icon.svg';
-import VimImg from '../images/Vimlogo.svg';
+import { useEffect } from 'react';
+import { getCourseData } from '../firebase';
 
-let courses = [
-  {
-    subject: 'Vim',
-    link: 'vim/1/1',
-    about: 'Lightweight, terminal-based text editor.',
-    image: VimImg,
-  },
-  {
-    subject: 'VSCode',
-    link: '/',
-    about: 'Lightweight, multiplatform graphical IDE.',
-    image: MoonImg,
+const images = require.context("../images", true);
+
+const buildObj = (data) => {
+  return {
+    subject: data.title,
+    link: (`/${data.id}/1/1`),
+    about: data.about,
+    image: images(`./${data.image}`),
   }
-]
+}
 
 function HomePage() {
+
+  let [courses, setCourses] = React.useState();
+
+  useEffect(() => {
+    async function getData() {
+      let remoteCourses = await getCourseData();
+      setCourses(remoteCourses.map(buildObj));
+    }
+    getData();
+  }, []);
 
   return (
     <div className = "main">
@@ -38,7 +44,7 @@ function HomePage() {
       <div className='courses'>
         <h1>Try our Free Courses!</h1>
           <div className='tutorialBoxes'>
-            { courses.map((e, i) => (
+            { courses && courses.map((e, i) => (
               <SubjectBox key={i} link={e.link} subject={e.subject} image={e.image} about={e.about}/>
             ))}
           </div>

@@ -47,7 +47,18 @@ export async function getChapterData(chapterNum) {
   return docSnap.data();
 }
 
-// Add a lesson to the database
+//todo make submissions for these
+// fetch Course Data from the firestore
+export async function getCourseData() {
+  const coursesRef = collection(db, 'courses');
+  const courses = await getDocs(coursesRef);
+  if (!courses) return;
+
+  return courses.docs.map((d) => d.data());
+}
+
+// needs to be made compatible with things that aren't vim
+// Add new Lesson to database
 export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   const docRef = doc(db, "vim/chapter" + chapterNum + "/lessons", "lesson" + lessonNum);
   await setDoc(docRef, lessonObj, { merge: true });
