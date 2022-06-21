@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import "../styles/ArtWindow.css";
+import photoshopTest from "../images/photoshop-test.png"
 
 function ArtWindow(props) {
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ function ArtWindow(props) {
         <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
       </div>
 
-      <div id="drawing-space"></div>
+      <img src={photoshopTest} alt="" id="drawing-space"></img>
     </div>
   );
 }
