@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-chaos";
 import ace from "ace-builds/src-noconflict/ace";
@@ -86,9 +86,16 @@ function SpeedrunCodeEditor(props) {
         useSoftTabs: true,
         navigateWithinSoftTabs: true
     })
-  }, [props.lessonData])
+
+    // Reset the timers
+    const setStart = props.setStartTime
+    setStart(null)
+  }, [props.lessonData, props.setStartTime])
 
   function onChange() {
+    if(props.startTime == null){
+      props.setStartTime(Date.now())
+    }
     const code = ace.edit('editor').getValue();
     const cursor = ace.edit('editor').getCursorPosition();
     const state = { 
@@ -100,7 +107,7 @@ function SpeedrunCodeEditor(props) {
     if(state.code === expected.code
       && state.cLine === parseInt(expected.cLine)
       && state.cPos === parseInt(expected.cPos)){
-      console.log('speedrun complete')
+      props.onCompletion()
     }
   }
 
