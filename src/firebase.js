@@ -1,9 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
-import { /*getAuth,*/ GoogleAuthProvider } from "firebase/auth";
-// import firebase from "firebase/compat/app";
-//import * as firebaseui from "firebaseui";
-//import "firebaseui/dist/firebaseui.css";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import * as firebaseui from "firebaseui";
+import { user } from "./js/State";
+import "firebaseui/dist/firebaseui.css";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -21,6 +21,9 @@ const app = initializeApp(firebaseConfig);
 
 // Get Google Analytics data
 // const analytics = getAnalytics(app);
+
+/* ------------------------------------------------------------------------------------------------- */
+// Database code below
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
@@ -50,7 +53,8 @@ export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   console.log("submitted chapter: " + chapterNum + ", lesson: " + lessonNum);
 }
 
-// export firebaseDoc()
+/* ------------------------------------------------------------------------------------------------- */
+// User and Authentication functions below
 
 // Initialize FirebaseUI Authentication
 //const auth = getAuth(app);
@@ -80,3 +84,31 @@ export var uiConfig = {
     GoogleAuthProvider.PROVIDER_ID,
   ],
 };
+
+async function addUser(isNewUser, user) {
+  if (isNewUser) {
+    const docRef = doc(db, "users", user.uid);
+    const userObj = {
+      displayName: user.displayName,
+      email: user.email,
+    };
+    await setDoc(docRef, userObj, { merge: true });
+    console.log("added" + user.uid);
+  }
+
+  await setUser(user.uid);
+  window.location.replace("/vim/1/1");
+}
+
+async function setUser(uid) {
+  window.localStorage.setItem("signedIn", true);
+  window.localStorage.setItem("uid", uid);
+
+  const docSnap = await getDoc(doc(db, "users", uid));
+  if (!docSnap.exists()) {
+    console.log("cannot find user");
+    return;
+  }
+
+  window.localStorage.setItem("userData", JSON.stringify(docSnap.data()));
+}
