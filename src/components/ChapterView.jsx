@@ -4,6 +4,9 @@ import { getLessonData, getChapterData } from "../firebase.js";
 
 import "../styles/ChapterView.css";
 
+// props:
+// - chapter: chapter number (from URL)
+// - lesson: lesson number (from URL)
 function ChapterView(props) {
   const [lessons, setLessons] = useState({});
 
@@ -35,13 +38,11 @@ function ChapterView(props) {
           lessons.lessonData.map((l, i) => (
             <div className="lesson" key={i}>
               <div className="progress-bar">
-                <div className="chapter-blob" />
-                <div className="chapter-line" />
+                <div className={completedBlob(i + 1)} />
+                <div className={completedLine(i + 1)} />
               </div>
 
-              <Link 
-                to={`/vim/${props.chapter}/${i + 1}`} 
-                className="link">
+              <Link to={`/vim/${props.chapter}/${i + 1}`} className="link">
                 <p className="lesson-title">{l}</p>
               </Link>
             </div>
@@ -49,6 +50,46 @@ function ChapterView(props) {
       </div>
     </div>
   );
+}
+
+var signedIn = window.localStorage.getItem("signedIn");
+var userData = JSON.parse(window.localStorage.getItem("userData"));
+console.log(signedIn, userData);
+
+function completedBlob(lessonNum) {
+  if (!signedIn) {
+    console.log("not signed in");
+    return "chapter-blob";
+  }
+
+  if (!userData.progress.chapter1["lesson" + String(lessonNum)]) {
+    console.log("not found");
+    return "chapter-blob";
+  }
+
+  if (userData.progress.chapter1["lesson" + String(lessonNum)]) {
+    return "chapter-blob-completed";
+  } else {
+    return "chapter-blob";
+  }
+}
+
+function completedLine(lessonNum) {
+  if (!signedIn) {
+    console.log("not signed in");
+    return "chapter-line";
+  }
+
+  if (!userData.progress.chapter1["lesson" + String(lessonNum + 1)]) {
+    console.log("not found");
+    return "chapter-line";
+  }
+
+  if (userData.progress.chapter1["lesson" + String(lessonNum + 1)]) {
+    return "chapter-line-completed";
+  } else {
+    return "chapter-line";
+  }
 }
 
 export default ChapterView;
