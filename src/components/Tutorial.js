@@ -7,6 +7,7 @@ import ChapterView from "./ChapterView";
 import LessonWindow from "./LessonWindow";
 import PuzzleWindow from "./PuzzleWindow";
 import SpeedrunWindow from "./SpeedrunWindow";
+import ArtWindow from "./ArtWindow";
 
 import "../styles/Tutorial.css";
 
@@ -38,14 +39,18 @@ function Tutorial() {
     <>
       <NavBar />
       <div id="container">
-        <ChapterView chapter={chapter} lesson={lesson} signedIn={signedIn} userData={userData} />
-        {lessonData.format === "lesson" ? (
-          <LessonWindow chapter={chapter} lesson={lesson} lessonData={lessonData} setUserData={setUserData} />
-        ) : lessonData.format === "puzzle" ? (
-          <PuzzleWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        ) : lessonData.format === "speedrun" ? (
-          <SpeedrunWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        ) : null}
+        <ChapterView chapter={chapter} lesson={lesson} />
+        {
+        (lessonData.format === 'lesson')
+          ? <LessonWindow chapter={chapter} lesson={lesson} lessonData={lessonData} signedIn={signedIn} userData={userData}/>
+        : (lessonData.format === 'puzzle')
+          ? <PuzzleWindow chapter={chapter} lesson={lesson} lessonData={lessonData} setUserData={setUserData}/>
+        : (lessonData.format === 'speedrun')
+          ? <SpeedrunWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+        : (lessonData.format === 'art')
+          ? <ArtWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+        : null
+        }
       </div>
     </>
   );
