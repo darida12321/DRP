@@ -2,7 +2,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import * as firebaseui from "firebaseui";
-import { useNavigate } from "react-router-dom";
 import "firebaseui/dist/firebaseui.css";
 // import { getAnalytics } from "firebase/analytics";
 
@@ -119,4 +118,8 @@ async function setUser(uid) {
   }
 
   window.localStorage.setItem("userData", JSON.stringify(docSnap.data()));
+}
+
+export function signOut() {
+  window.localStorage.clear()
 }
