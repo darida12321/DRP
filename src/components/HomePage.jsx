@@ -4,6 +4,22 @@ import NavBar from './NavBar';
 
 import '../styles/homePage.css';
 import MoonImg from '../images/moon-icon.svg';
+import VimImg from '../images/Vimlogo.svg';
+
+let courses = [
+  {
+    subject: 'Vim',
+    link: 'vim/1/1',
+    about: 'Lightweight, terminal-based text editor.',
+    image: VimImg,
+  },
+  {
+    subject: 'VSCode',
+    link: '/',
+    about: 'Lightweight, multiplatform graphical IDE.',
+    image: MoonImg,
+  }
+]
 
 function HomePage() {
 
@@ -22,7 +38,9 @@ function HomePage() {
       <div className='courses'>
         <h1>Try our Free Courses!</h1>
           <div className='tutorialBoxes'>
-            <SubjectBox link='/' subject='whatever' image={MoonImg} about='sussy'/>
+            { courses.map((e, i) => (
+              <SubjectBox key={i} link={e.link} subject={e.subject} image={e.image} about={e.about}/>
+            ))}
           </div>
       </div>
     </div>
