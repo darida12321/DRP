@@ -22,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 /* ------------------------------------------------------------------------------------------------- */
-// Database code below
+/* Database code below */
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
@@ -39,6 +39,7 @@ export async function getLessonData(chapterNum) {
   return lessonData;
 }
 
+// Get chapter title
 export async function getChapterData(chapterNum) {
   const docSnap = await getDoc(doc(db, "vim", "chapter" + chapterNum));
   if (!docSnap.exists()) return;
@@ -46,6 +47,7 @@ export async function getChapterData(chapterNum) {
   return docSnap.data();
 }
 
+// Add a lesson to the database
 export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   const docRef = doc(db, "vim/chapter" + chapterNum + "/lessons", "lesson" + lessonNum);
   await setDoc(docRef, lessonObj, { merge: true });
@@ -53,7 +55,7 @@ export async function submitLesson(chapterNum, lessonNum, lessonObj) {
 }
 
 /* ------------------------------------------------------------------------------------------------- */
-// User and Authentication functions below
+/* User and Authentication functions below */
 
 // Initialize FirebaseUI Authentication
 const auth = getAuth(app);
@@ -65,16 +67,10 @@ export var uiConfig = {
   callbacks: {
     signInSuccessWithAuthResult: function (authResult, redirectUrl) {
       // User successfully signed in.
-      // Return type determines whether we continue the redirect automatically
-      // or whether we leave that to developer to handle.
-      console.log("success!");
-      // console.log("user: \n", authResult.user);
-      // console.log("isNewUser: \n", authResult.additionalUserInfo.isNewUser);
-
       var user = authResult.user;
       var isNewUser = authResult.additionalUserInfo.isNewUser;
 
-      addUser(isNewUser, user);
+      setUser(isNewUser, user);
 
       return false;
     },
@@ -92,32 +88,37 @@ export var uiConfig = {
   ],
 };
 
-async function addUser(isNewUser, user) {
-  if (isNewUser) {
-    const docRef = doc(db, "users", user.uid);
-    const userObj = {
-      displayName: user.displayName,
-      email: user.email,
-    };
-    await setDoc(docRef, userObj, { merge: true });
-    console.log("added" + user.uid);
+// Sets state to indicate a user is signed in
+async function setUser(isNewUser, user) {
+  if (true) {
+    await addUser(user);
   }
 
-  await setUser(user.uid);
-  window.history.go(-1);
-}
-
-async function setUser(uid) {
   window.localStorage.setItem("signedIn", true);
-  window.localStorage.setItem("uid", uid);
+  window.localStorage.setItem("uid", user.uid);
 
-  const docSnap = await getDoc(doc(db, "users", uid));
+  const docSnap = await getDoc(doc(db, "users", user.uid));
   if (!docSnap.exists()) {
     console.log("cannot find user");
     return;
   }
 
   window.localStorage.setItem("userData", JSON.stringify(docSnap.data()));
+  window.history.go(-1);
+}
+
+// Add a new user to the database
+async function addUser(user) {
+  const docRef = doc(db, "users", user.uid);
+  const userObj = {
+    displayName: user.displayName,
+    email: user.email,
+    progress: {
+      chapter1: {},
+    },
+  };
+  await setDoc(docRef, userObj, { merge: true });
+  console.log("added" + user.uid);
 }
 
 export function signOut() {

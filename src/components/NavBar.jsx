@@ -19,9 +19,6 @@ function NavBar() {
     setUserData(JSON.parse(window.localStorage.getItem("userData")));
   }, []);
 
-  console.log(signedIn);
-  console.log(window.localStorage.getItem("signedIn"));
-
   return (
     <nav id="nav-bar">
       <Link id="home" className="icon-box" to="/">
@@ -46,7 +43,7 @@ function NavBar() {
           if (signedIn) {
             return (
               <div className="dropdown">
-                <span>{userData.email}</span>
+                <span>{userData.displayName}</span>
                 <div className="dropdown-content">
                   <Link
                     to=""
@@ -61,7 +58,7 @@ function NavBar() {
             );
           } else {
             return (
-              <Link className="icon-box" to="/signup">
+              <Link className="icon-box" to="/signin">
                 <img src={userImg} className="icon" alt="" />
               </Link>
             );
