@@ -90,7 +90,7 @@ export var uiConfig = {
 
 // Sets state to indicate a user is signed in
 async function setUser(isNewUser, user) {
-  if (isNewUser) {
+  if (true) {
     await addUser(user);
   }
 
@@ -113,7 +113,9 @@ async function addUser(user) {
   const userObj = {
     displayName: user.displayName,
     email: user.email,
-    progress: {},
+    progress: {
+      chapter1: {},
+    },
   };
   await setDoc(docRef, userObj, { merge: true });
   console.log("added" + user.uid);
