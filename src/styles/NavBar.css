@@ -5,34 +5,39 @@
   background-color: #0d1721;
   height: 2.5rem;
   width: 100%;
-  /* box-sizing: border-box; */
   border-bottom: 0.25rem solid var(--blue-1);
 }
 
-#home,
-#logo,
-#menu {
-  gap: 0.5rem;
+#menu,
+#title {
   display: flex;
   align-items: center;
+  justify-content: center;
   color: #eee;
+}
+
+.icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 #name {
   font-size: 2rem;
   font-weight: 400;
-  line-height: 100%;
 }
 
 .icon {
-  height: 1.25rem;
-  width: 1.25rem;
-  margin: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 1rem;
   transition: 100ms;
 }
 
 .icon:hover {
-  height: 1.75rem;
-  width: 1.75rem;
-  margin: 0;
+  width: 2rem;
+  height: 2rem;
+  margin: 0.5rem;
 }

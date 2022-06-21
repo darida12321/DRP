@@ -20,6 +20,7 @@ function Tutorial() {
       const data = await getLessonData(chapter);
       const lessonData = data[lessonIndex];
       lessonData.lessonNum = data.length;
+      lessonData.lessonCurr = lesson;
       setLessonData(lessonData);
     }
     fetchData();
@@ -33,7 +34,7 @@ function Tutorial() {
         {
         (lessonData.format === 'lesson')
         ? <LessonWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        : <PuzzleWindow chapter={chapter} lesson={lesson} />
+        : <PuzzleWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
         }
       </div>
     </>

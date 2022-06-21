@@ -1,47 +1,59 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { getLessonData } from "../firebase.js";
 
-import "../styles/TutorialWindow.css";
+import "../styles/PuzzleWindow.css";
+import PuzzleCodeEditor from "./PuzzleCodeEditor";
 
 function PuzzleWindow(props) {
+  const [completed, setCompleted] = useState(false)
+  const [keypresses, setKeypresses] = useState(0)
+  const [solutionVisible, setSolutionVisible] = useState(false)
   const navigate = useNavigate();
-  const [lessonData, setLessonData] = useState({});
 
-  // Fetch the data when visiting page
+  // Reset variables when prop updates
   useEffect(() => {
-    async function fetchData() {
-      const lessonIndex = props.lesson - 1;
-      const data = await getLessonData(props.chapter);
-      const lessonData = data[lessonIndex];
-      lessonData.lessonNum = data.length;
-      setLessonData(lessonData);
-    }
-    fetchData();
-  }, [props.lesson, props.chapter]);
+    setCompleted(false)
+    setKeypresses(0)
+    setSolutionVisible(false);
+  }, [props])
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
     function shortcutHandler(e) {
-      if (Object.keys(lessonData).length === 0) {
+      if (Object.keys(props.lessonData).length === 0) {
         return;
       }
+      if (e.key === 'Enter' && e.altKey){
+        setCompleted(false)
+        setKeypresses(0)
+      }
       if (e.key === "Enter" && e.shiftKey 
-          && props.lesson < lessonData.lessonNum) {
+          && props.lesson < props.lessonData.lessonNum) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
         navigate(link, { replace: true });
       }
-      if (e.key === "\n" && e.ctrlKey 
+      if (e.key === "Enter" && e.ctrlKey 
           && props.lesson > 1) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) - 1);
         navigate(link, { replace: true });
       }
     };
-    document.addEventListener("keypress", shortcutHandler);
+    document.addEventListener("keydown", shortcutHandler);
     return (() => {
-      document.removeEventListener('keypress', shortcutHandler)
+      document.removeEventListener('keydown', shortcutHandler)
     })
-  }, [lessonData, props, navigate]);
+  }, [props.lessonData, props, navigate]);
+
+  // Get style variables from style.css
+  var style = getComputedStyle(document.body);
+  const cDefault = style.getPropertyValue("--blue-1");
+  const cComplete = style.getPropertyValue("--green-1");
+  const cError = style.getPropertyValue("--red-1");
+
+  const moves = props.lessonData.puzzle ? props.lessonData.puzzle.moves : 1
+  const ratio = Math.min(keypresses/moves, 1)
+  const barColor = completed ? cComplete : 
+    (keypresses < moves ? cDefault : cError) 
 
   // Return the document
   return (
@@ -55,11 +67,11 @@ function PuzzleWindow(props) {
           {"< Prev"}
         </Link>
         <h1 id="lesson-title">
-          Lesson {props.lesson}: {lessonData.lesson && lessonData.lesson.title}
+          Lesson {props.lessonData && props.lessonData.lessonCurr}: {props.lessonData && props.lessonData.lesson && props.lessonData.lesson.title}
         </h1>
         <Link
           id="next-lesson"
-          style={{ visibility: props.lesson >= lessonData.lessonNum ? "hidden" : "" }}
+          style={{ visibility: props.lesson >= (props.lessonData && props.lessonData.lessonNum) ? "hidden" : "" }}
           to={`/vim/${props.chapter}/${Number(props.lesson) + 1}`}
         >
           {"Next >"}
@@ -67,9 +79,41 @@ function PuzzleWindow(props) {
       </div>
 
       <div id="textbox">
-        <p id="lesson-desc">{lessonData.lesson && lessonData.lesson.description}</p>
+        <div id="content">
+          <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
+          <div id="keystroke-bar">
+            <div id="keystroke-amount-bar"
+            style={
+              {width: ratio*100+'%',
+              background: barColor}}></div>
+            <p>{Math.min(keypresses, moves)}/{moves} moves</p>
+          </div>
+        </div>
+        <div id="solution-area">
+          <div id="solution-label"
+            onClick={() => {setSolutionVisible(!solutionVisible)}}>
+            <p>Solution</p>
+            <div id="arrow"
+              style={{transform: solutionVisible 
+                ? 'translate(0, 0.2rem) rotate(-135deg)'
+                : 'translate(0, -0.2rem) rotate(45deg)'
+              }}
+            ></div>
+          </div>
+          <div id="solution" 
+            style={{visibility: solutionVisible ? 'visible' : 'hidden'}}>
+            {props.lessonData.puzzle && props.lessonData.puzzle.solution}
+          </div>
+        </div>
       </div>
 
+      <PuzzleCodeEditor 
+        lessonData={props.lessonData} 
+        keypresses={keypresses}
+        setKeypresses={setKeypresses}
+        completed={completed}
+        setCompleted={setCompleted}
+      />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 import LessonCodeEditor from "./LessonCodeEditor";
 
-import "../styles/TutorialWindow.css";
+import "../styles/LessonWindow.css";
 
 function LessonWindow(props) {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ function LessonWindow(props) {
           {"< Prev"}
         </Link>
         <h1 id="lesson-title">
-          Lesson {props.lesson}: {props.lessonData.lesson && props.lessonData.lesson.title}
+          Lesson {props.lessonData.lessonCurr}: {props.lessonData.lesson && props.lessonData.lesson.title}
         </h1>
         <Link
           id="next-lesson"

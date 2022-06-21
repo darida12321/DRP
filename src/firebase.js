@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { /*getAuth,*/ GoogleAuthProvider } from "firebase/auth";
+// import firebase from "firebase/compat/app";
+//import * as firebaseui from "firebaseui";
+//import "firebaseui/dist/firebaseui.css";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -13,13 +17,13 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
 // Get Google Analytics data
 // const analytics = getAnalytics(app);
 
 // Initialize Cloud Firestore and get a reference to the service
-export const db = getFirestore(app);
+const db = getFirestore(app);
 
 // Get documents in a given chapter in the vim collection (TODO: make generic for any collection)
 export async function getLessonData(chapterNum) {
@@ -47,3 +51,32 @@ export async function submitLesson(chapterNum, lessonNum, lessonObj) {
 }
 
 // export firebaseDoc()
+
+// Initialize FirebaseUI Authentication
+//const auth = getAuth(app);
+
+// Initialize the FirebaseUI Widget using Firebase.
+//export var ui = new firebaseui.auth.AuthUI(auth);
+
+export var uiConfig = {
+  callbacks: {
+    signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+      // User successfully signed in.
+      // Return type determines whether we continue the redirect automatically
+      // or whether we leave that to developer to handle.
+      return true;
+    },
+    uiShown: function () {
+      // The widget is rendered.
+      // Hide the loader.
+      document.getElementById("loader").style.display = "none";
+    },
+  },
+  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+  signInFlow: "popup",
+  signInSuccessUrl: "/",
+  signInOptions: [
+    // Leave the lines as is for the providers you want to offer your users.
+    GoogleAuthProvider.PROVIDER_ID,
+  ],
+};
