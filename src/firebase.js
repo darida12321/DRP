@@ -104,7 +104,7 @@ async function addUser(isNewUser, user) {
   }
 
   await setUser(user.uid);
-  window.location.replace("/vim/1/1");
+  window.history.go(-1);
 }
 
 async function setUser(uid) {
@@ -121,5 +121,6 @@ async function setUser(uid) {
 }
 
 export function signOut() {
-  window.localStorage.clear()
+  window.localStorage.clear();
+  window.location.reload();
 }

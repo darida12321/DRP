@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { signOut } from "../firebase";
 
 import gearImg from "../images/gear-icon.svg";
 import houseImg from "../images/house-icon.svg";
@@ -10,6 +11,17 @@ import userImg from "../images/user-icon.svg";
 import "../styles/NavBar.css";
 
 function NavBar() {
+  const [signedIn, setSignedIn] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    setSignedIn(window.localStorage.getItem("signedIn"));
+    setUserData(JSON.parse(window.localStorage.getItem("userData")));
+  }, []);
+
+  console.log(signedIn);
+  console.log(window.localStorage.getItem("signedIn"));
+
   return (
     <nav id="nav-bar">
       <Link id="home" className="icon-box" to="/">
@@ -30,9 +42,31 @@ function NavBar() {
         <div className="icon-box" to="">
           <img src={gearImg} className="icon" alt="" />
         </div>
-        <Link className="icon-box" to="/signup">
-          <img src={userImg} className="icon" alt="" />
-        </Link>
+        {(() => {
+          if (signedIn) {
+            return (
+              <div className="dropdown">
+                <span>{userData.email}</span>
+                <div className="dropdown-content">
+                  <Link
+                    to=""
+                    onClick={() => {
+                      signOut();
+                    }}
+                  >
+                    Logout
+                  </Link>
+                </div>
+              </div>
+            );
+          } else {
+            return (
+              <Link className="icon-box" to="/signup">
+                <img src={userImg} className="icon" alt="" />
+              </Link>
+            );
+          }
+        })()}
       </div>
     </nav>
   );
