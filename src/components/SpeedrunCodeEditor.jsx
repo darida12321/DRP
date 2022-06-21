@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-chaos";
 import ace from "ace-builds/src-noconflict/ace";
@@ -15,9 +15,7 @@ import "ace-builds/src-noconflict/mode-java";
 
 // props:
 // - lessonData: data for the lesson used
-function PuzzleCodeEditor(props) {
-  const [checkResult, setCheckResult] = useState(false)
-
+function SpeedrunCodeEditor(props) {
 
   // Check if a key is allowed to be pressed
   useEffect(() => {
@@ -26,13 +24,6 @@ function PuzzleCodeEditor(props) {
         return
       }
       if(e.key === 'Enter' && (e.shiftKey || e.ctrlKey || e.altKey)){
-        if(e.altKey){
-          const editor = ace.edit('editor')
-          const init = props.lessonData.puzzle.init
-          editor.setValue(init.code.replace('\\n', '\n'));
-          editor.moveCursorTo(init.cLine, init.cPos);
-          editor.session.selection.clearSelection();
-        }
         return;
       }
       const setup = props.lessonData.lesson.editorSetup
@@ -96,15 +87,14 @@ function PuzzleCodeEditor(props) {
         navigateWithinSoftTabs: true
     })
 
-    setCheckResult(true)
-  }, [props.lessonData])
+    // Reset the timers
+    const setStart = props.setStartTime
+    setStart(null)
+  }, [props.lessonData, props.setStartTime])
 
   function onChange() {
-    if(!checkResult){
-      return;
-    }
-    if(!props.completed){
-      props.setKeypresses(props.keypresses+1)
+    if(props.startTime == null){
+      props.setStartTime(Date.now())
     }
     const code = ace.edit('editor').getValue();
     const cursor = ace.edit('editor').getCursorPosition();
@@ -117,9 +107,7 @@ function PuzzleCodeEditor(props) {
     if(state.code === expected.code.replace('\\n', '\n')
       && state.cLine === parseInt(expected.cLine)
       && state.cPos === parseInt(expected.cPos)){
-      if(props.keypresses < props.lessonData.puzzle.moves){
-        props.setCompleted(true)
-      }
+      props.onCompletion()
     }
   }
 
@@ -139,4 +127,4 @@ function PuzzleCodeEditor(props) {
   )
 }
 
-export default PuzzleCodeEditor;
+export default SpeedrunCodeEditor;

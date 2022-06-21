@@ -1,9 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
-import { /*getAuth,*/ GoogleAuthProvider } from "firebase/auth";
-// import firebase from "firebase/compat/app";
-//import * as firebaseui from "firebaseui";
-//import "firebaseui/dist/firebaseui.css";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -22,6 +21,9 @@ const app = initializeApp(firebaseConfig);
 // Get Google Analytics data
 // const analytics = getAnalytics(app);
 
+/* ------------------------------------------------------------------------------------------------- */
+/* Database code below */
+
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
@@ -37,6 +39,7 @@ export async function getLessonData(chapterNum) {
   return lessonData;
 }
 
+// Get chapter title
 export async function getChapterData(chapterNum) {
   const docSnap = await getDoc(doc(db, "vim", "chapter" + chapterNum));
   if (!docSnap.exists()) return;
@@ -45,6 +48,7 @@ export async function getChapterData(chapterNum) {
 }
 
 //todo make submissions for these
+// fetch Course Data from the firestore
 export async function getCourseData() {
   const coursesRef = collection(db, 'courses');
   const courses = await getDocs(coursesRef);
@@ -54,31 +58,35 @@ export async function getCourseData() {
 }
 
 // needs to be made compatible with things that aren't vim
+// Add new Lesson to database
 export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   const docRef = doc(db, "vim/chapter" + chapterNum + "/lessons", "lesson" + lessonNum);
   await setDoc(docRef, lessonObj, { merge: true });
   console.log("submitted chapter: " + chapterNum + ", lesson: " + lessonNum);
 }
 
-// export firebaseDoc()
+/* ------------------------------------------------------------------------------------------------- */
+/* User and Authentication functions below */
 
 // Initialize FirebaseUI Authentication
-//const auth = getAuth(app);
+const auth = getAuth(app);
 
 // Initialize the FirebaseUI Widget using Firebase.
-//export var ui = new firebaseui.auth.AuthUI(auth);
+export var ui = new firebaseui.auth.AuthUI(auth);
 
 export var uiConfig = {
   callbacks: {
     signInSuccessWithAuthResult: function (authResult, redirectUrl) {
       // User successfully signed in.
-      // Return type determines whether we continue the redirect automatically
-      // or whether we leave that to developer to handle.
-      return true;
+      var user = authResult.user;
+      var isNewUser = authResult.additionalUserInfo.isNewUser;
+
+      setUser(isNewUser, user);
+
+      return false;
     },
     uiShown: function () {
-      // The widget is rendered.
-      // Hide the loader.
+      // The widget is rendered -> Hide the loader.
       document.getElementById("loader").style.display = "none";
     },
   },
@@ -90,3 +98,41 @@ export var uiConfig = {
     GoogleAuthProvider.PROVIDER_ID,
   ],
 };
+
+// Sets state to indicate a user is signed in
+async function setUser(isNewUser, user) {
+  if (true) {
+    await addUser(user);
+  }
+
+  window.localStorage.setItem("signedIn", true);
+  window.localStorage.setItem("uid", user.uid);
+
+  const docSnap = await getDoc(doc(db, "users", user.uid));
+  if (!docSnap.exists()) {
+    console.log("cannot find user");
+    return;
+  }
+
+  window.localStorage.setItem("userData", JSON.stringify(docSnap.data()));
+  window.history.go(-1);
+}
+
+// Add a new user to the database
+async function addUser(user) {
+  const docRef = doc(db, "users", user.uid);
+  const userObj = {
+    displayName: user.displayName,
+    email: user.email,
+    progress: {
+      chapter1: {},
+    },
+  };
+  await setDoc(docRef, userObj, { merge: true });
+  console.log("added" + user.uid);
+}
+
+export function signOut() {
+  window.localStorage.clear();
+  window.location.reload();
+}

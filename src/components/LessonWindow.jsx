@@ -5,6 +5,10 @@ import LessonCodeEditor from "./LessonCodeEditor";
 
 import "../styles/LessonWindow.css";
 
+// props:
+// - chapter: chapter number (from URL)
+// - lesson: lesson number (from URL)
+// - lessonData: information about the lesson from database
 function LessonWindow(props) {
   const navigate = useNavigate();
   const [exampleNum, setExampleNum] = useState(0);
@@ -17,6 +21,15 @@ function LessonWindow(props) {
     return props.lessonData.examples.length === exampleNum;
   }, [exampleNum, props.lessonData]);
 
+  useEffect(() => {
+    if (completed()) {
+      if (window.localStorage.getItem("signedIn")) {
+        const userData = JSON.parse(window.localStorage.getItem("userData"));
+        userData.progress.chapter1["lesson" + props.lesson] = true;
+        window.localStorage.setItem("userData", JSON.stringify(userData));
+      }
+    }
+  });
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
@@ -24,21 +37,19 @@ function LessonWindow(props) {
       if (Object.keys(props.lessonData).length === 0) {
         return;
       }
-      if (e.key === "Enter" && e.shiftKey 
-          && props.lesson < props.lessonData.lessonNum) {
+      if (e.key === "Enter" && e.shiftKey && props.lesson < props.lessonData.lessonNum) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
         navigate(link, { replace: true });
       }
-      if (e.key === "\n" && e.ctrlKey 
-          && props.lesson > 1) {
+      if (e.key === "\n" && e.ctrlKey && props.lesson > 1) {
         const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) - 1);
         navigate(link, { replace: true });
       }
-    };
+    }
     document.addEventListener("keypress", shortcutHandler);
-    return (() => {
-      document.removeEventListener('keypress', shortcutHandler)
-    })
+    return () => {
+      document.removeEventListener("keypress", shortcutHandler);
+    };
   }, [props.lessonData, exampleNum, completed, props, navigate]);
 
   // Get style variables from style.css

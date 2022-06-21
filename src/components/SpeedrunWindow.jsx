@@ -1,23 +1,48 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import ace from "ace-builds/src-noconflict/ace";
 
-import "../styles/PuzzleWindow.css";
-import PuzzleCodeEditor from "./PuzzleCodeEditor";
+import "../styles/SpeedrunWindow.css";
+import clockImgBlue from "../images/clock-icon-blue.svg";
+import clockImgGreen from "../images/clock-icon-green.svg";
+import SpeedrunCodeEditor from "./SpeedrunCodeEditor";
 
-function PuzzleWindow(props) {
+function SpeedrunWindow(props) {
   const [completed, setCompleted] = useState(false)
-  const [keypresses, setKeypresses] = useState(0)
-  const [solutionVisible, setSolutionVisible] = useState(false)
+  const [startTime, setStartTime] = useState(null)
+  const [currTime, setCurrTime] = useState(Date.now())
   const navigate = useNavigate();
 
   // Reset variables when prop updates
   useEffect(() => {
     setCompleted(false)
-    setKeypresses(0)
-    setSolutionVisible(false);
   }, [props])
+
+  const reset = useCallback(() => {
+    const editor = ace.edit('editor')
+    const init = props.lessonData.puzzle.init
+    editor.setValue(init.code.replace('\\n', '\n'));
+    editor.moveCursorTo(init.cLine, init.cPos);
+    editor.session.selection.clearSelection();
+
+    setCompleted(false)
+    setStartTime(null)
+
+    const textInput = ace.edit('editor').textInput.getElement()
+    textInput.focus()
+  }, [props.lessonData.puzzle.init])
+
+  // Update the current time
+  useEffect(() => {
+    if(completed){
+      return
+    }
+    const timer = setInterval(() => {
+      setCurrTime(Date.now());
+    }, 30);
+    return () => clearInterval(timer)
+  }, [completed]);
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
@@ -26,8 +51,7 @@ function PuzzleWindow(props) {
         return;
       }
       if (e.key === 'Enter' && e.altKey){
-        setCompleted(false)
-        setKeypresses(0)
+        reset()
       }
       if (e.key === "Enter" && e.shiftKey 
           && props.lesson < props.lessonData.lessonNum) {
@@ -44,33 +68,26 @@ function PuzzleWindow(props) {
     return (() => {
       document.removeEventListener('keydown', shortcutHandler)
     })
-  }, [props.lessonData, props, navigate]);
+  }, [reset, props.lessonData, props, navigate]);
 
-  function reset() {
-    const editor = ace.edit('editor')
-    const init = props.lessonData.puzzle.init
-    editor.setValue(init.code.replace('\\n', '\n'));
-    editor.moveCursorTo(init.cLine, init.cPos);
-    editor.session.selection.clearSelection();
-
-    setCompleted(false)
-    setKeypresses(0)
-
-
-    const textInput = ace.edit('editor').textInput.getElement()
-    textInput.focus()
+  function onCompletion() {
+    console.log('speedrun complete')
+    setCompleted(true)
   }
 
   // Get style variables from style.css
-  var style = getComputedStyle(document.body);
-  const cDefault = style.getPropertyValue("--blue-1");
-  const cComplete = style.getPropertyValue("--green-1");
-  const cError = style.getPropertyValue("--red-1");
+  //var style = getComputedStyle(document.body);
+  //const cDefault = style.getPropertyValue("--blue-1");
+  //const cComplete = style.getPropertyValue("--green-1");
+  //const cError = style.getPropertyValue("--red-1");
+  const diff = currTime - startTime
+  var mins = startTime ? Math.floor(diff/1000/60 % 100).toString() : '0'
+  var secs = startTime ? Math.floor(diff/1000 % 60).toString() : '0'
+  var frac = startTime ? Math.floor(diff % 100).toString() : '0'
 
-  const moves = props.lessonData.puzzle ? props.lessonData.puzzle.moves : 1
-  const ratio = Math.min(keypresses/moves, 1)
-  const barColor = completed ? cComplete : 
-    (keypresses < moves ? cDefault : cError) 
+  mins = mins.length === 1 ? '0'+mins : mins 
+  secs = secs.length === 1 ? '0'+secs : secs 
+  frac = frac.length === 1 ? '0'+frac : frac 
 
   // Return the document
   return (
@@ -98,44 +115,32 @@ function PuzzleWindow(props) {
       <div id="textbox">
         <div id="content">
           <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
-          <div id="keystroke-bar">
-            <div id="keystroke-amount-bar"
-            style={
-              {width: ratio*100+'%',
-              background: barColor}}></div>
-            <p>{Math.min(keypresses, moves)}/{moves} moves</p>
-          </div>
         </div>
-        <div id="solution-area">
+        <div id="side-area">
           <div id="retry"
             onClick={reset}
           >Retry</div>
-          <div id="solution-label"
-            onClick={() => {setSolutionVisible(!solutionVisible)}}>
-            <p>Solution</p>
-            <div id="arrow"
-              style={{transform: solutionVisible 
-                ? 'translate(0, 0.2rem) rotate(-135deg)'
-                : 'translate(0, -0.2rem) rotate(45deg)'
-              }}
-            ></div>
-          </div>
-          <div id="solution" 
-            style={{visibility: solutionVisible ? 'visible' : 'hidden'}}>
-            {props.lessonData.puzzle && props.lessonData.puzzle.solution}
+          <div id="timer-area">
+            {
+              completed
+              ? <img src={clockImgGreen} id="timer-icon" alt=""/>
+              : <img src={clockImgBlue} id="timer-icon" alt=""/>
+            }
+            <p id="time">
+              {mins}:{secs}:{frac}
+            </p>
           </div>
         </div>
       </div>
 
-      <PuzzleCodeEditor 
+      <SpeedrunCodeEditor 
         lessonData={props.lessonData} 
-        keypresses={keypresses}
-        setKeypresses={setKeypresses}
-        completed={completed}
-        setCompleted={setCompleted}
+        startTime={startTime}
+        setStartTime={setStartTime}
+        onCompletion={onCompletion}
       />
     </div>
   );
 }
 
-export default PuzzleWindow;
+export default SpeedrunWindow;
