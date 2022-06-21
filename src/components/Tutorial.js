@@ -7,6 +7,7 @@ import ChapterView from "./ChapterView";
 import LessonWindow from "./LessonWindow";
 import PuzzleWindow from "./PuzzleWindow";
 import SpeedrunWindow from "./SpeedrunWindow";
+import ArtWindow from "./ArtWindow";
 
 import "../styles/Tutorial.css";
 
@@ -39,6 +40,8 @@ function Tutorial() {
           ? <PuzzleWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
         : (lessonData.format === 'speedrun')
           ? <SpeedrunWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+        : (lessonData.format === 'art')
+          ? <ArtWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
         : null
         }
       </div>
