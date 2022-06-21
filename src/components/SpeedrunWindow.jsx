@@ -4,6 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 import ace from "ace-builds/src-noconflict/ace";
 
 import "../styles/SpeedrunWindow.css";
+import clockImgBlue from "../images/clock-icon-blue.svg";
+import clockImgGreen from "../images/clock-icon-green.svg";
 import SpeedrunCodeEditor from "./SpeedrunCodeEditor";
 
 function SpeedrunWindow(props) {
@@ -33,11 +35,14 @@ function SpeedrunWindow(props) {
 
   // Update the current time
   useEffect(() => {
+    if(completed){
+      return
+    }
     const timer = setInterval(() => {
       setCurrTime(Date.now());
     }, 30);
     return () => clearInterval(timer)
-  }, []);
+  }, [completed]);
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
@@ -75,6 +80,14 @@ function SpeedrunWindow(props) {
   //const cDefault = style.getPropertyValue("--blue-1");
   //const cComplete = style.getPropertyValue("--green-1");
   //const cError = style.getPropertyValue("--red-1");
+  const diff = currTime - startTime
+  var mins = startTime ? Math.floor(diff/1000/60 % 100).toString() : '0'
+  var secs = startTime ? Math.floor(diff/1000 % 60).toString() : '0'
+  var frac = startTime ? Math.floor(diff % 100).toString() : '0'
+
+  mins = mins.length === 1 ? '0'+mins : mins 
+  secs = secs.length === 1 ? '0'+secs : secs 
+  frac = frac.length === 1 ? '0'+frac : frac 
 
   // Return the document
   return (
@@ -102,14 +115,21 @@ function SpeedrunWindow(props) {
       <div id="textbox">
         <div id="content">
           <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
-          <h1>{currTime}</h1>
-          <h1>{startTime}</h1>
-          <div id="timer">{completed ? 'asd' : 'jahgld'}</div>
         </div>
         <div id="solution-area">
           <div id="retry"
             onClick={reset}
           >Retry</div>
+          <div id="timer-area">
+            {
+              completed
+              ? <img src={clockImgGreen} id="timer-icon" alt=""/>
+              : <img src={clockImgBlue} id="timer-icon" alt=""/>
+            }
+            <p>
+              {mins}:{secs}:{frac}
+            </p>
+          </div>
         </div>
       </div>
 
