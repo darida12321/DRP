@@ -58,7 +58,7 @@ function SpeedrunCodeEditor(props) {
     const editor = ace.edit('editor')
 
     const init = props.lessonData.puzzle.init
-    editor.setValue(init.code);
+    editor.setValue(init.code.replace('\\n', '\n'));
     editor.moveCursorTo(init.cLine, init.cPos);
     editor.session.selection.clearSelection();
     
@@ -104,7 +104,7 @@ function SpeedrunCodeEditor(props) {
       cPos: cursor.column 
     };
     const expected = props.lessonData.puzzle.expected
-    if(state.code === expected.code
+    if(state.code === expected.code.replace('\\n', '\n')
       && state.cLine === parseInt(expected.cLine)
       && state.cPos === parseInt(expected.cPos)){
       props.onCompletion()

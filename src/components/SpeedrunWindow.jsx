@@ -22,7 +22,7 @@ function SpeedrunWindow(props) {
   const reset = useCallback(() => {
     const editor = ace.edit('editor')
     const init = props.lessonData.puzzle.init
-    editor.setValue(init.code);
+    editor.setValue(init.code.replace('\\n', '\n'));
     editor.moveCursorTo(init.cLine, init.cPos);
     editor.session.selection.clearSelection();
 
