@@ -44,6 +44,16 @@ export async function getChapterData(chapterNum) {
   return docSnap.data();
 }
 
+//todo make submissions for these
+export async function getCourseData() {
+  const coursesRef = collection(db, 'courses');
+  const courses = await getDocs(coursesRef);
+  if (!courses) return;
+
+  return courses.docs.map((d) => d.data());
+}
+
+// needs to be made compatible with things that aren't vim
 export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   const docRef = doc(db, "vim/chapter" + chapterNum + "/lessons", "lesson" + lessonNum);
   await setDoc(docRef, lessonObj, { merge: true });
