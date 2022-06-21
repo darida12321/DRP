@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
+import ace from "ace-builds/src-noconflict/ace";
+
 import "../styles/PuzzleWindow.css";
 import PuzzleCodeEditor from "./PuzzleCodeEditor";
 
@@ -43,6 +45,22 @@ function PuzzleWindow(props) {
       document.removeEventListener('keydown', shortcutHandler)
     })
   }, [props.lessonData, props, navigate]);
+
+  function reset() {
+    console.log('hello, reset pressed')
+
+    const editor = ace.edit('editor')
+    const init = props.lessonData.puzzle.init
+    editor.setValue(init.code);
+    editor.moveCursorTo(init.cLine, init.cPos);
+    editor.session.selection.clearSelection();
+
+    setCompleted(false)
+    setKeypresses(0)
+
+    const textInput = ace.edit('editor').textInput.getElement()
+    textInput.focus()
+  }
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
@@ -90,6 +108,9 @@ function PuzzleWindow(props) {
           </div>
         </div>
         <div id="solution-area">
+          <div id="retry"
+            onClick={reset}
+          >Retry</div>
           <div id="solution-label"
             onClick={() => {setSolutionVisible(!solutionVisible)}}>
             <p>Solution</p>
