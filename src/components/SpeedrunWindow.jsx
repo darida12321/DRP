@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import ace from "ace-builds/src-noconflict/ace";
@@ -14,6 +14,19 @@ function SpeedrunWindow(props) {
   useEffect(() => {
     setCompleted(false)
   }, [props])
+
+  const reset = useCallback(() => {
+    const editor = ace.edit('editor')
+    const init = props.lessonData.puzzle.init
+    editor.setValue(init.code);
+    editor.moveCursorTo(init.cLine, init.cPos);
+    editor.session.selection.clearSelection();
+
+    setCompleted(false)
+
+    const textInput = ace.edit('editor').textInput.getElement()
+    textInput.focus()
+  }, [props.lessonData.puzzle.init])
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
@@ -39,27 +52,14 @@ function SpeedrunWindow(props) {
     return (() => {
       document.removeEventListener('keydown', shortcutHandler)
     })
-  }, [props.lessonData, props, navigate]);
+  }, [reset, props.lessonData, props, navigate]);
 
-  function reset() {
-    const editor = ace.edit('editor')
-    const init = props.lessonData.puzzle.init
-    editor.setValue(init.code);
-    editor.moveCursorTo(init.cLine, init.cPos);
-    editor.session.selection.clearSelection();
-
-    setCompleted(false)
-
-
-    const textInput = ace.edit('editor').textInput.getElement()
-    textInput.focus()
-  }
 
   // Get style variables from style.css
-  var style = getComputedStyle(document.body);
-  const cDefault = style.getPropertyValue("--blue-1");
-  const cComplete = style.getPropertyValue("--green-1");
-  const cError = style.getPropertyValue("--red-1");
+  //var style = getComputedStyle(document.body);
+  //const cDefault = style.getPropertyValue("--blue-1");
+  //const cComplete = style.getPropertyValue("--green-1");
+  //const cError = style.getPropertyValue("--red-1");
 
   // Return the document
   return (
