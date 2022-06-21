@@ -54,6 +54,13 @@ export async function submitLesson(chapterNum, lessonNum, lessonObj) {
   console.log("submitted chapter: " + chapterNum + ", lesson: " + lessonNum);
 }
 
+// Set user progress
+export async function setProgress(userData) {
+  const uid = window.localStorage.getItem("uid");
+  const docRef = doc(db, "users", uid);
+  await setDoc(docRef, userData, { merge: true });
+}
+
 /* ------------------------------------------------------------------------------------------------- */
 /* User and Authentication functions below */
 
@@ -90,7 +97,7 @@ export var uiConfig = {
 
 // Sets state to indicate a user is signed in
 async function setUser(isNewUser, user) {
-  if (true) {
+  if (isNewUser) {
     await addUser(user);
   }
 

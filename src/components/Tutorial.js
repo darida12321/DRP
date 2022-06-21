@@ -12,7 +12,14 @@ import "../styles/Tutorial.css";
 
 function Tutorial() {
   const { chapter, lesson } = useParams();
-  const [lessonData, setLessonData] = useState({})
+  const [lessonData, setLessonData] = useState({});
+  const [signedIn, setSignedIn] = useState({});
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    setSignedIn(window.localStorage.getItem("signedIn"));
+    setUserData(JSON.parse(window.localStorage.getItem("userData")));
+  }, []);
 
   // Fetch the data when visiting page
   useEffect(() => {
@@ -31,16 +38,14 @@ function Tutorial() {
     <>
       <NavBar />
       <div id="container">
-        <ChapterView chapter={chapter} lesson={lesson} />
-        {
-        (lessonData.format === 'lesson')
-          ? <LessonWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        : (lessonData.format === 'puzzle')
-          ? <PuzzleWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        : (lessonData.format === 'speedrun')
-          ? <SpeedrunWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        : null
-        }
+        <ChapterView chapter={chapter} lesson={lesson} signedIn={signedIn} userData={userData} />
+        {lessonData.format === "lesson" ? (
+          <LessonWindow chapter={chapter} lesson={lesson} lessonData={lessonData} setUserData={setUserData} />
+        ) : lessonData.format === "puzzle" ? (
+          <PuzzleWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+        ) : lessonData.format === "speedrun" ? (
+          <SpeedrunWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+        ) : null}
       </div>
     </>
   );
