@@ -8,6 +8,8 @@ import SpeedrunCodeEditor from "./SpeedrunCodeEditor";
 
 function SpeedrunWindow(props) {
   const [completed, setCompleted] = useState(false)
+  const [startTime, setStartTime] = useState(null)
+  const [currTime, setCurrTime] = useState(Date.now())
   const navigate = useNavigate();
 
   // Reset variables when prop updates
@@ -23,10 +25,19 @@ function SpeedrunWindow(props) {
     editor.session.selection.clearSelection();
 
     setCompleted(false)
+    setStartTime(null)
 
     const textInput = ace.edit('editor').textInput.getElement()
     textInput.focus()
   }, [props.lessonData.puzzle.init])
+
+  // Update the current time
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrTime(Date.now());
+    }, 30);
+    return () => clearInterval(timer)
+  }, []);
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
@@ -54,6 +65,10 @@ function SpeedrunWindow(props) {
     })
   }, [reset, props.lessonData, props, navigate]);
 
+  function onCompletion() {
+    console.log('speedrun complete')
+    setCompleted(true)
+  }
 
   // Get style variables from style.css
   //var style = getComputedStyle(document.body);
@@ -87,6 +102,9 @@ function SpeedrunWindow(props) {
       <div id="textbox">
         <div id="content">
           <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
+          <h1>{currTime}</h1>
+          <h1>{startTime}</h1>
+          <div id="timer">{completed ? 'asd' : 'jahgld'}</div>
         </div>
         <div id="solution-area">
           <div id="retry"
@@ -97,8 +115,9 @@ function SpeedrunWindow(props) {
 
       <SpeedrunCodeEditor 
         lessonData={props.lessonData} 
-        completed={completed}
-        setCompleted={setCompleted}
+        startTime={startTime}
+        setStartTime={setStartTime}
+        onCompletion={onCompletion}
       />
     </div>
   );
