@@ -35,14 +35,19 @@
   visibility: hidden;
 }
 
+.lesson:last-child .chapter-line-completed {
+  visibility: hidden;
+}
+
 .progress-bar {
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
-.chapter-blob {
-  background: var(--blue-1);
+.chapter-blob,
+.chapter-blob-completed {
+  background-color: var(--blue-1);
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
@@ -51,12 +56,21 @@
   z-index: 2;
 }
 
-.chapter-line {
-  background: var(--blue-1);
+.chapter-blob-completed {
+  background-color: var(--green-2);
+}
+
+.chapter-line,
+.chapter-line-completed {
+  background-color: var(--blue-1);
   width: 0.4rem;
   height: 4rem;
   margin: -1rem;
   transform: translateY(5px);
+}
+
+.chapter-line-completed {
+  background-color: var(--green-2);
 }
 
 .link {

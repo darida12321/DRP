@@ -1,12 +1,10 @@
 #root {
-  background: white;
-  color: black;
+  color: #ddd;
 }
 
 .banner {
-  background-color: #404040;
-  color: white;
-  height: 30rem;
+  background-color: #151c22;
+  height: 47rem;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -19,31 +17,33 @@
   font-size: 10rem;
 }
 
-.loginBoxes {
-  display: flex;
-  justify-content: flex-end;
-  padding: 20px;
-}
-
-.loginBoxes button {
-  background-color: #2b5ccf;
-  color: white;
-  font-weight: bold;
-  font-size: 1.5rem;
-  border: 0;
-  border-radius: 10px;
-  width: 15rem;
-  height: 5rem;
+.courses {
+  background-color: #151c22;
   text-align: center;
 }
 
-.loginBoxes button:hover {
-  cursor: pointer;
-  text-shadow: 2px 2px black;
+.courses > h1 {
+  display: inline-block;
+  font-size: 3rem;
+}
+
+.tutorialBoxes {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
 
 .body {
-  font-size: 15px;
+  background-color: #1d2a35;
+}
+
+.bodyContent {
+  font-size: 2rem;
   width: 50%;
   margin: auto;
+  padding: 20px;
+}
+
+.bodyContent > p {
+  font-size: 1.5rem;
 }

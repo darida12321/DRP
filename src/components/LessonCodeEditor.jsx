@@ -53,11 +53,7 @@ function LessonCodeEditor(props) {
   useEffect(() => {
     const textInput = ace.edit('editor').textInput.getElement()
     textInput.focus()
-    textInput.addEventListener('focusout', (e) => {
-      textInput.focus()
-    })
-    codeChecker.current.onChange();
-  })
+  }, [])
 
   function onChange() {
     if (!codeChecker.current) {
