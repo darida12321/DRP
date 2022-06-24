@@ -38,7 +38,7 @@ function LessonWindow(props) {
       }
     }
     save();
-  }, [completed()]);
+  }, [completed(), props]);
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
