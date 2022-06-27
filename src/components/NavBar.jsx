@@ -46,6 +46,7 @@ function NavBar() {
                 <span>{userData.displayName}</span>
                 <div className="dropdown-content">
                   <Link
+                    className="logout"
                     to=""
                     onClick={() => {
                       signOut();

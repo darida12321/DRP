@@ -13,7 +13,15 @@ import "../styles/Tutorial.css";
 
 function Tutorial() {
   const { course, chapter, lesson } = useParams();
-  const [lessonData, setLessonData] = useState({})
+  const [lessonData, setLessonData] = useState({});
+  const [signedIn, setSignedIn] = useState({});
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    setSignedIn(window.localStorage.getItem("signedIn"));
+    setUserData(JSON.parse(window.localStorage.getItem("userData")));
+  }, []);
+
 
   // Fetch the data when visiting page
   useEffect(() => {
@@ -32,18 +40,16 @@ function Tutorial() {
     <>
       <NavBar />
       <div id="container">
-        <ChapterView course={course} chapter={chapter} lesson={lesson} />
-        {
-        (lessonData.format === 'lesson')
-          ? <LessonWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        : (lessonData.format === 'puzzle')
-          ? <PuzzleWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        : (lessonData.format === 'speedrun')
-          ? <SpeedrunWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        : (lessonData.format === 'art')
-          ? <ArtWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
-        : null
-        }
+        <ChapterView course={course} chapter={chapter} lesson={lesson} signedIn={signedIn} userData={userData} />
+        {lessonData.format === "lesson" ? (
+          <LessonWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} setUserData={setUserData} />
+        ) : lessonData.format === "puzzle" ? (
+          <PuzzleWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
+        ) : lessonData.format === "speedrun" ? (
+          <SpeedrunWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
+        ) : lessonData.format === "art" ? (
+          <ArtWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
+        ) : null}
       </div>
     </>
   );

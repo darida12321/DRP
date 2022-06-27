@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { setProgress } from "../firebase";
 
 import LessonCodeEditor from "./LessonCodeEditor";
 
@@ -10,6 +11,7 @@ import "../styles/LessonWindow.css";
 // - chapter: chapter number (from URL)
 // - lesson: lesson number (from URL)
 // - lessonData: information about the lesson from database
+// - setUserData: function to set state in parent
 function LessonWindow(props) {
   const navigate = useNavigate();
   const [exampleNum, setExampleNum] = useState(0);
@@ -25,14 +27,21 @@ function LessonWindow(props) {
   }, [exampleNum, props.lessonData]);
 
   useEffect(() => {
-    if (completed()) {
-      if (window.localStorage.getItem("signedIn")) {
-        const userData = JSON.parse(window.localStorage.getItem("userData"));
-        userData.progress.chapter1["lesson" + props.lesson] = true;
-        window.localStorage.setItem("userData", JSON.stringify(userData));
+    async function save() {
+      if (completed()) {
+        if (window.localStorage.getItem("signedIn")) {
+          const userData = JSON.parse(window.localStorage.getItem("userData"));
+          userData.progress.chapter1["lesson" + props.lesson] = true;
+          window.localStorage.setItem("userData", JSON.stringify(userData));
+          await setProgress(userData);
+
+          props.setUserData(userData);
+          console.log("set lesson " + props.lesson + " to true");
+        }
       }
     }
-  });
+    save();
+  }, [completed()]);
 
   // Set up the next lesson shortcut once examples are complete
   useEffect(() => {
