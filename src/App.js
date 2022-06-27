@@ -11,7 +11,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/vim/:chapter/:lesson" element={<Tutorial />} />
+        <Route path="/:course/:chapter/:lesson" element={<Tutorial />} />
         <Route path="/submitLesson" element={<Submit />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="*" element={<h1>404 not found</h1>} />
