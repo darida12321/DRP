@@ -156,7 +156,7 @@ function Submit() {
   };
 
   const fetchObj = async () => {
-    const remoteLessons = await getLessonData(endpoint.chapterNum);
+    const remoteLessons = await getLessonData('vim', endpoint.chapterNum);
     const remoteData = remoteLessons[endpoint.lessonNum - 1];
     setSandbox(remoteData.sandbox);
     setLesson(remoteData.lesson);

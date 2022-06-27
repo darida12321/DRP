@@ -12,10 +12,10 @@ function ChapterView(props) {
 
   useEffect(() => {
     async function fetchData() {
-      const chapterData = await getChapterData(props.chapter);
+      const chapterData = await getChapterData(props.course, props.chapter);
       const title = chapterData.title;
 
-      const lessonResponse = await getLessonData(props.chapter);
+      const lessonResponse = await getLessonData(props.course, props.chapter);
       const lessonData = [];
       lessonResponse.forEach((lesson) => {
         lessonData.push(lesson.lesson.title);
@@ -27,7 +27,7 @@ function ChapterView(props) {
       });
     }
     fetchData();
-  }, [props.chapter, props.lesson]);
+  }, [props.chapter, props.lesson, props.course]);
 
   return (
     <div id="chapter">
@@ -42,7 +42,7 @@ function ChapterView(props) {
                 <div className={completedLine(i + 1)} />
               </div>
 
-              <Link to={`/vim/${props.chapter}/${i + 1}`} className="link">
+              <Link to={`/${props.course}/${props.chapter}/${i + 1}`} className="link">
                 <p className="lesson-title">{l}</p>
               </Link>
             </div>

@@ -12,27 +12,27 @@ import ArtWindow from "./ArtWindow";
 import "../styles/Tutorial.css";
 
 function Tutorial() {
-  const { chapter, lesson } = useParams();
+  const { course, chapter, lesson } = useParams();
   const [lessonData, setLessonData] = useState({})
 
   // Fetch the data when visiting page
   useEffect(() => {
     async function fetchData() {
       const lessonIndex = lesson - 1;
-      const data = await getLessonData(chapter);
+      const data = await getLessonData(course, chapter);
       const lessonData = data[lessonIndex];
       lessonData.lessonNum = data.length;
       lessonData.lessonCurr = lesson;
       setLessonData(lessonData);
     }
     fetchData();
-  }, [chapter, lesson]);
+  }, [course, chapter, lesson]);
 
   return (
     <>
       <NavBar />
       <div id="container">
-        <ChapterView chapter={chapter} lesson={lesson} />
+        <ChapterView course={course} chapter={chapter} lesson={lesson} />
         {
         (lessonData.format === 'lesson')
           ? <LessonWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />

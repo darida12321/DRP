@@ -28,8 +28,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Get documents in a given chapter in the vim collection (TODO: make generic for any collection)
-export async function getLessonData(chapterNum) {
-  const querySnapshot = await getDocs(collection(db, "vim/chapter" + chapterNum + "/lessons"));
+export async function getLessonData(courseId, chapterNum) {
+  const querySnapshot = await getDocs(collection(db, courseId + "/chapter" + chapterNum + "/lessons"));
   if (!querySnapshot) return;
 
   const lessonData = [];
@@ -40,8 +40,8 @@ export async function getLessonData(chapterNum) {
 }
 
 // Get chapter title
-export async function getChapterData(chapterNum) {
-  const docSnap = await getDoc(doc(db, "vim", "chapter" + chapterNum));
+export async function getChapterData(courseId, chapterNum) {
+  const docSnap = await getDoc(doc(db, courseId, "chapter" + chapterNum));
   if (!docSnap.exists()) return;
 
   return docSnap.data();
