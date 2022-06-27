@@ -59,8 +59,12 @@ export async function getCourseData() {
 
 // needs to be made compatible with things that aren't vim
 // Add new Lesson to database
-export async function submitLesson(chapterNum, lessonNum, lessonObj) {
-  const docRef = doc(db, "vim/chapter" + chapterNum + "/lessons", "lesson" + lessonNum);
+export async function submitLesson(courseId, chapterNum, lessonNum, lessonObj) {
+  const docRef = doc(db, `${courseId}/chapter` + chapterNum + "/lessons", "lesson" + lessonNum);
+  if (!docRef) {
+    console.log("wasn't able to make obj:" + JSON.stringify(lessonObj));
+    return;
+  }
   await setDoc(docRef, lessonObj, { merge: true });
   console.log("submitted chapter: " + chapterNum + ", lesson: " + lessonNum);
 }
