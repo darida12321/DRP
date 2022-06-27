@@ -48,8 +48,9 @@
   font-weight: 900;
 }
 
-#textbox {
+#lesson-textbox {
   display: flex;
+  justify-content: space-between;
   background-color: #38444d;
   color: #ddd;
   width: 80%;

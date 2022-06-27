@@ -90,7 +90,7 @@ function LessonWindow(props) {
         </Link>
       </div>
 
-      <div id="textbox">
+      <div id="lesson-textbox">
         <p id="lesson-desc">{props.lessonData.lesson && props.lessonData.lesson.description}</p>
         <div id="lesson-marker">
           <div id="blob" style={{ background: completed() ? colorComplete : colorDefault }}>
