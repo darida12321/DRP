@@ -6,12 +6,15 @@ import LessonCodeEditor from "./LessonCodeEditor";
 import "../styles/LessonWindow.css";
 
 // props:
+// - course: course id (from URL)
 // - chapter: chapter number (from URL)
 // - lesson: lesson number (from URL)
 // - lessonData: information about the lesson from database
 function LessonWindow(props) {
   const navigate = useNavigate();
   const [exampleNum, setExampleNum] = useState(0);
+  const prevLesson = `/${props.course}/${props.chapter}/${Number(props.lesson) - 1}`;
+  const nextLesson = `/${props.course}/${props.chapter}/${Number(props.lesson) + 1}`;
 
   // Check if we finished all the examples
   const completed = useCallback(() => {
@@ -38,19 +41,17 @@ function LessonWindow(props) {
         return;
       }
       if (e.key === "Enter" && e.shiftKey && props.lesson < props.lessonData.lessonNum) {
-        const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
-        navigate(link, { replace: true });
+        navigate(nextLesson, { replace: true });
       }
-      if (e.key === "\n" && e.ctrlKey && props.lesson > 1) {
-        const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) - 1);
-        navigate(link, { replace: true });
+      if (e.key === "Enter" && e.ctrlKey && props.lesson > 1) {
+        navigate(prevLesson, { replace: true });
       }
     }
     document.addEventListener("keypress", shortcutHandler);
     return () => {
       document.removeEventListener("keypress", shortcutHandler);
     };
-  }, [props.lessonData, exampleNum, completed, props, navigate]);
+  }, [props.lessonData, exampleNum, completed, props, navigate, prevLesson, nextLesson]);
 
   // Get style variables from style.css
   var style = getComputedStyle(document.body);
@@ -64,7 +65,7 @@ function LessonWindow(props) {
         <Link
           id="prev-lesson"
           style={{ visibility: props.lesson <= 1 ? "hidden" : "" }}
-          to={`/vim/${props.chapter}/${Number(props.lesson) - 1}`}
+          to={prevLesson}
         >
           {"< Prev"}
         </Link>
@@ -74,7 +75,7 @@ function LessonWindow(props) {
         <Link
           id="next-lesson"
           style={{ visibility: props.lesson >= props.lessonData.lessonNum ? "hidden" : "" }}
-          to={`/vim/${props.chapter}/${Number(props.lesson) + 1}`}
+          to={nextLesson}
         >
           {"Next >"}
         </Link>

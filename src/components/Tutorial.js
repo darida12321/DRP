@@ -35,13 +35,13 @@ function Tutorial() {
         <ChapterView course={course} chapter={chapter} lesson={lesson} />
         {
         (lessonData.format === 'lesson')
-          ? <LessonWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+          ? <LessonWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
         : (lessonData.format === 'puzzle')
-          ? <PuzzleWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+          ? <PuzzleWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
         : (lessonData.format === 'speedrun')
-          ? <SpeedrunWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+          ? <SpeedrunWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
         : (lessonData.format === 'art')
-          ? <ArtWindow chapter={chapter} lesson={lesson} lessonData={lessonData} />
+          ? <ArtWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
         : null
         }
       </div>

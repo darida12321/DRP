@@ -14,12 +14,12 @@ function ArtWindow(props) {
       }
       if (e.key === "Enter" && e.shiftKey 
           && props.lesson < props.lessonData.lessonNum) {
-        const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) + 1);
+        const link = `/${props.course}/${props.chapter}/${Number(props.lesson) + 1}`;
         navigate(link, { replace: true });
       }
       if (e.key === "Enter" && e.ctrlKey 
           && props.lesson > 1) {
-        const link = "/vim/" + props.chapter + "/" + (parseInt(props.lesson) - 1);
+        const link = `/${props.course}/${props.chapter}/${Number(props.lesson) - 1}`;
         navigate(link, { replace: true });
       }
     };
@@ -36,7 +36,7 @@ function ArtWindow(props) {
         <Link
           id="prev-lesson"
           style={{ visibility: props.lesson <= 1 ? "hidden" : "" }}
-          to={`/vim/${props.chapter}/${Number(props.lesson) - 1}`}
+          to={`/${props.course}/${props.chapter}/${Number(props.lesson) - 1}`}
         >
           {"< Prev"}
         </Link>
@@ -46,7 +46,7 @@ function ArtWindow(props) {
         <Link
           id="next-lesson"
           style={{ visibility: props.lesson >= (props.lessonData && props.lessonData.lessonNum) ? "hidden" : "" }}
-          to={`/vim/${props.chapter}/${Number(props.lesson) + 1}`}
+          to={`/${props.course}/${props.chapter}/${Number(props.lesson) + 1}`}
         >
           {"Next >"}
         </Link>
