@@ -97,7 +97,7 @@ function PuzzleWindow(props) {
 
       <div id="textbox">
         <div id="content">
-          <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
+          <p id="puzzle-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
           <div id="keystroke-bar">
             <div id="keystroke-amount-bar"
             style={
