@@ -31,7 +31,7 @@ function PuzzleWindow(props) {
       }
       if (e.key === "Enter" && e.shiftKey 
           && props.lesson < props.lessonData.lessonNum) {
-        const link = `/${props.course}/${props.chapter}/${Number(props.lesson) - 1}`;
+        const link = `/${props.course}/${props.chapter}/${Number(props.lesson) + 1}`;
         navigate(link, { replace: true });
       }
       if (e.key === "Enter" && e.ctrlKey 
