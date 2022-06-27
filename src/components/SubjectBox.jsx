@@ -21,13 +21,20 @@ function SubjectBox(props) {
             <p>{props.about}</p>
           </div>
         </div>
-        <div className = 'getStarted'>
-          <Link to={props.link}>
-            <button onClick = {() => {}}>
-              <p>Get Started</p>
-            </button>
-          </Link>
-        </div>
+        { props.unavailable ? (
+            <div className = 'comingSoon'>
+              <p>Coming Soon!</p>
+            </div>
+          ) : (
+            <div className = 'getStarted'>
+              <Link to={props.link}>
+                <button onClick = {() => {}}>
+                  <p>Get Started</p>
+                </button>
+              </Link>
+            </div>
+          )
+        }
       </div>
     </div>
   );

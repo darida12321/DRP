@@ -14,6 +14,7 @@ const buildObj = (data) => {
     link: (`/${data.id}/1/1`),
     about: data.about,
     image: images(`./${data.image}`),
+    unavailable: data.unavailable,
   }
 }
 
@@ -45,7 +46,7 @@ function HomePage() {
         <h1>Try our Free Courses!</h1>
           <div className='tutorialBoxes'>
             { courses && courses.map((e, i) => (
-              <SubjectBox key={i} link={e.link} subject={e.subject} image={e.image} about={e.about}/>
+              <SubjectBox key={i} link={e.link} subject={e.subject} image={e.image} about={e.about} unavailable={e.unavailable}/>
             ))}
           </div>
       </div>
