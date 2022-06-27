@@ -34,12 +34,12 @@ function HomePage() {
     <div className = "main">
       <NavBar/>
       <div className = "banner">
-        <h1>Website Name</h1>
+        <h1>Shortcutter</h1>
       </div>
       <div className = 'body'>
         <div className = 'bodyContent'>
-          <h2>Content</h2>
-          <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum exercitationem maxime magni impedit aperiam. Dolores et consectetur reiciendis velit hic sit, voluptatum consequatur necessitatibus cum laborum obcaecati aliquam exercitationem deserunt.</p>
+          <h2>About Us!</h2>
+          <p>Shortcutter is a project made by 3 people with a single purpose: helping the average person learn keyboard shortcuts for their editor of choice! <br/><br/> Whether you're an experienced developer, a budding author, or a stressed-out student who needs to get better at Excel, we have your back. Our simple, intuitive, and expertly-crafted lessons will turn you into an editing wizard.</p>
         </div>
       </div>
       <div className='courses'>

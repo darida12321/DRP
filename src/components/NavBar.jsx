@@ -29,7 +29,7 @@ function NavBar() {
         <div className="icon-box">
           <img src={keyboardImg} className="icon" alt="" />
         </div>
-        <h1 id="name">Website name</h1>
+        <h1 id="name">Shortcutter</h1>
       </div>
 
       <div id="menu">
