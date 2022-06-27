@@ -1,5 +1,5 @@
 import React from "react";
-import { submitLesson, getLessonData } from "../firebase";
+import { submitLesson, getLessonData, getCourseData } from "../firebase";
 
 // this is all absolutely fucking horrible
 
@@ -89,11 +89,21 @@ function Example(props) {
 }
 
 function Submit() {
+  const [courses, setCourses] = React.useState([]);
+  React.useEffect(() => {
+    async function fetchData() {
+      const data = await getCourseData();
+      setCourses(data);
+    }
+    fetchData();
+  }, []);
+
   const [lesson, setLesson] = React.useState({});
   const [examples, setExamples] = React.useState([]);
   const [setup, setSetup] = React.useState({});
   const [sandbox, setSandbox] = React.useState({});
   const [endpoint, setEndpoint] = React.useState({});
+  const [course, setCourse] = React.useState('vim');
 
   const setData = (o, f) => {
     switch (o) {
@@ -152,11 +162,11 @@ function Submit() {
     const data = buildObj();
 
     // console.log(chapterNum, lessonNum, data);
-    await submitLesson(chapterNum, lessonNum, data);
+    await submitLesson(course, chapterNum, lessonNum, data);
   };
 
   const fetchObj = async () => {
-    const remoteLessons = await getLessonData('vim', endpoint.chapterNum);
+    const remoteLessons = await getLessonData(course, endpoint.chapterNum);
     const remoteData = remoteLessons[endpoint.lessonNum - 1];
     setSandbox(remoteData.sandbox);
     setLesson(remoteData.lesson);
@@ -167,6 +177,16 @@ function Submit() {
   return (
     <div>
       <div className="input">
+        <select name="course" id="courseSelect" onChange={(e) => {
+          console.log(e.target.value);
+          setCourse(e.target.value);
+        }}>
+          { courses.map((c, i) => (
+            <option key={i} value={c.id}>
+              {c.title}
+            </option>
+          ))}
+        </select>
         <input
           placeholder="chapter number"
           onChange={(e) => updateData(endpoint, "chapterNum", e.target.value)}
@@ -242,7 +262,7 @@ function Submit() {
         <br />
         <button
           onClick={() => {
-            publishObj(1, 5);
+            publishObj();
           }}
         >
           {" "}
