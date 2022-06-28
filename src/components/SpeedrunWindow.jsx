@@ -104,7 +104,7 @@ function SpeedrunWindow(props) {
   const diff = currTime - startTime;
   var mins = startTime ? Math.floor((diff / 1000 / 60) % 100).toString() : "0";
   var secs = startTime ? Math.floor((diff / 1000) % 60).toString() : "0";
-  var frac = startTime ? Math.floor(diff % 100).toString() : "0";
+  var frac = startTime ? Math.floor((diff / 10) % 100).toString() : "0";
 
   mins = mins.length === 1 ? "0" + mins : mins;
   secs = secs.length === 1 ? "0" + secs : secs;
