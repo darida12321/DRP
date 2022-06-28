@@ -162,8 +162,9 @@ function SpeedrunWindow(props) {
             {leaderboard &&
               leaderboard.map((e, i) => (
                 <div className="leaderboard-entry" key={i}>
+                  <div>{i + 1 + ". "}</div>
                   <div>{e.user}</div>
-                  <div>{e.time}</div>
+                  <div>{e.time + "ms"}</div>
                 </div>
               ))}
           </div>
