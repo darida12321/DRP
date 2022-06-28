@@ -162,11 +162,20 @@ function SpeedrunWindow(props) {
             {leaderboard &&
               leaderboard.map((e, i) => (
                 <div className="leaderboard-entry" key={i}>
-                  <div>{i + 1 + ". "}</div>
-                  <div>{e.user}</div>
-                  <div>{e.time + "ms"}</div>
+                  <div className="leaderboard-num">{i + 1 + ". "}</div>
+                  <div className="leaderboard-user">{e.user}</div>
+                  <div className="leaderboard-time">{e.time + "ms"}</div>
                 </div>
-              ))}
+            ))}
+            {leaderboard && 
+              [...Array(10 - leaderboard.length)].map((e, i) => (
+                <div className="leaderboard-entry" key={i}>
+                  <div className="leaderboard-num">{leaderboard.length + i + 1 + ". "}</div>
+                  <div className="leaderboard-user">-</div>
+                  <div className="leaderboard-time">{"- ms"}</div>
+                </div>
+              ))
+            }
           </div>
         </div>
       </div>

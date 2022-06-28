@@ -61,11 +61,7 @@
   color: #ddd;
   border-radius: 1rem;
   width: 100%;
-  /* margin-top: 1rem;
-  margin-bottom: 2rem;
-  padding: 1rem 2rem; */
   text-align: center;
-  /* box-sizing: border-box; */
 }
 
 #lesson-desc {
@@ -118,6 +114,10 @@
 }
 
 #leaderboard {
+  margin: 1rem;
+  margin-bottom: 2rem;
+  background: #15202b;
+  border-radius: 1rem;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -125,8 +125,25 @@
   text-align: center;
 }
 
+#leaderboard > h3 {
+  margin: 0.7rem;
+  color: #ddd;
+}
+
 .leaderboard-entry {
   display: flex;
-  justify-content: space-evenly;
-  /* background-color: pink; */
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 1rem;
+  font-size: 0.9rem;
+}
+
+.leaderboard-num {
+  width: 1rem;
+}
+.leaderboard-user {
+  width: 8rem;
+}
+.leaderboard-time {
+  width: 4rem;
 }
