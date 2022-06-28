@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db, addEntry } from "../firebase";
+import { setProgress } from "../firebase";
 
 import ace from "ace-builds/src-noconflict/ace";
 
@@ -28,7 +29,7 @@ function SpeedrunWindow(props) {
   // Reset variables when prop updates
   useEffect(() => {
     setCompleted(false);
-  }, [props]);
+  }, [props.lesson, props.chapter]);
 
   const reset = useCallback(() => {
     const editor = ace.edit("editor");
@@ -90,11 +91,28 @@ function SpeedrunWindow(props) {
 
   function onCompletion() {
     console.log("speedrun complete in" + diff + "ms");
+    setCompleted(true);
     if (signedIn) {
       addEntry(leaderboard, userData, diff);
     }
-    setCompleted(true);
   }
+
+  useEffect(() => {
+    async function save() {
+      if (completed) {
+        if (window.localStorage.getItem("signedIn")) {
+          const userData = JSON.parse(window.localStorage.getItem("userData"));
+          userData.progress.chapter1["lesson" + props.lesson] = true;
+          window.localStorage.setItem("userData", JSON.stringify(userData));
+
+          await setProgress(userData);
+          props.setUserData(userData);
+          console.log("set lesson " + props.lesson + " to true");
+        }
+      }
+    }
+    save();
+  }, [completed]);
 
   // Get style variables from style.css
   //var style = getComputedStyle(document.body);
@@ -166,16 +184,15 @@ function SpeedrunWindow(props) {
                   <div className="leaderboard-user">{e.user}</div>
                   <div className="leaderboard-time">{e.time + "ms"}</div>
                 </div>
-            ))}
-            {leaderboard && 
+              ))}
+            {leaderboard &&
               [...Array(10 - leaderboard.length)].map((e, i) => (
                 <div className="leaderboard-entry" key={i}>
                   <div className="leaderboard-num">{leaderboard.length + i + 1 + ". "}</div>
                   <div className="leaderboard-user">-</div>
                   <div className="leaderboard-time">{"- ms"}</div>
                 </div>
-              ))
-            }
+              ))}
           </div>
         </div>
       </div>

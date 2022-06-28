@@ -83,6 +83,8 @@ export async function addEntry(leaderboard, userData, time) {
     time: time,
   };
 
+  
+
   const newLeaderboard = leaderboard.concat(newEntry);
   newLeaderboard.sort((a, b) => {
     return a.time - b.time;

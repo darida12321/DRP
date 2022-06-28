@@ -22,7 +22,6 @@ function Tutorial() {
     setUserData(JSON.parse(window.localStorage.getItem("userData")));
   }, []);
 
-
   // Fetch the data when visiting page
   useEffect(() => {
     async function fetchData() {
@@ -42,11 +41,29 @@ function Tutorial() {
       <div id="container">
         <ChapterView course={course} chapter={chapter} lesson={lesson} signedIn={signedIn} userData={userData} />
         {lessonData.format === "lesson" ? (
-          <LessonWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} setUserData={setUserData} />
+          <LessonWindow
+            course={course}
+            chapter={chapter}
+            lesson={lesson}
+            lessonData={lessonData}
+            setUserData={setUserData}
+          />
         ) : lessonData.format === "puzzle" ? (
-          <PuzzleWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
+          <PuzzleWindow
+            course={course}
+            chapter={chapter}
+            lesson={lesson}
+            lessonData={lessonData}
+            setUserData={setUserData}
+          />
         ) : lessonData.format === "speedrun" ? (
-          <SpeedrunWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
+          <SpeedrunWindow
+            course={course}
+            chapter={chapter}
+            lesson={lesson}
+            lessonData={lessonData}
+            setUserData={setUserData}
+          />
         ) : lessonData.format === "art" ? (
           <ArtWindow course={course} chapter={chapter} lesson={lesson} lessonData={lessonData} />
         ) : null}
