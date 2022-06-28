@@ -22,7 +22,7 @@ function LessonCodeEditor(props) {
         return;
       }
       const included = setup.selectedKeys.includes(e.key)
-      if(included ^ !setup.keyWhitelist){
+      if(included ^ setup.whitelist){
         e.preventDefault()
         e.stopPropagation()
       }
