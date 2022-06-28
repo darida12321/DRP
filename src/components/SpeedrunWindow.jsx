@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db, addEntry } from "../firebase";
+import { setProgress } from "../firebase";
 
 import ace from "ace-builds/src-noconflict/ace";
 
@@ -9,39 +12,48 @@ import clockImgGreen from "../images/clock-icon-green.svg";
 import SpeedrunCodeEditor from "./SpeedrunCodeEditor";
 
 function SpeedrunWindow(props) {
-  const [completed, setCompleted] = useState(false)
-  const [startTime, setStartTime] = useState(null)
-  const [currTime, setCurrTime] = useState(Date.now())
+  const [completed, setCompleted] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [currTime, setCurrTime] = useState(Date.now());
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [signedIn, setSignedIn] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    setSignedIn(window.localStorage.getItem("signedIn"));
+    setUserData(JSON.parse(window.localStorage.getItem("userData")));
+  }, []);
+
   const navigate = useNavigate();
 
   // Reset variables when prop updates
   useEffect(() => {
-    setCompleted(false)
-  }, [props])
+    setCompleted(false);
+  }, [props.lesson, props.chapter]);
 
   const reset = useCallback(() => {
-    const editor = ace.edit('editor')
-    const init = props.lessonData.puzzle.init
-    editor.setValue(init.code.replace('\\n', '\n'));
+    const editor = ace.edit("editor");
+    const init = props.lessonData.puzzle.init;
+    editor.setValue(init.code.replace("\\n", "\n"));
     editor.moveCursorTo(init.cLine, init.cPos);
     editor.session.selection.clearSelection();
 
-    setCompleted(false)
-    setStartTime(null)
+    setCompleted(false);
+    setStartTime(null);
 
-    const textInput = ace.edit('editor').textInput.getElement()
-    textInput.focus()
-  }, [props.lessonData.puzzle.init])
+    const textInput = ace.edit("editor").textInput.getElement();
+    textInput.focus();
+  }, [props.lessonData.puzzle.init]);
 
   // Update the current time
   useEffect(() => {
-    if(completed){
-      return
+    if (completed) {
+      return;
     }
     const timer = setInterval(() => {
       setCurrTime(Date.now());
     }, 30);
-    return () => clearInterval(timer)
+    return () => clearInterval(timer);
   }, [completed]);
 
   // Set up the next lesson shortcut once examples are complete
@@ -50,44 +62,71 @@ function SpeedrunWindow(props) {
       if (Object.keys(props.lessonData).length === 0) {
         return;
       }
-      if (e.key === 'Enter' && e.altKey){
-        reset()
+      if (e.key === "Enter" && e.altKey) {
+        reset();
       }
-      if (e.key === "Enter" && e.shiftKey 
-          && props.lesson < props.lessonData.lessonNum) {
+      if (e.key === "Enter" && e.shiftKey && props.lesson < props.lessonData.lessonNum) {
         const link = `/${props.course}/${props.chapter}/${Number(props.lesson) + 1}`;
         navigate(link, { replace: true });
       }
-      if (e.key === "Enter" && e.ctrlKey 
-          && props.lesson > 1) {
+      if (e.key === "Enter" && e.ctrlKey && props.lesson > 1) {
         const link = `/${props.course}/${props.chapter}/${Number(props.lesson) - 1}`;
         navigate(link, { replace: true });
       }
-    };
+    }
     document.addEventListener("keydown", shortcutHandler);
-    return (() => {
-      document.removeEventListener('keydown', shortcutHandler)
-    })
+    return () => {
+      document.removeEventListener("keydown", shortcutHandler);
+    };
   }, [reset, props.lessonData, props, navigate]);
 
+  // set up leaderboard values to update in realtime
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "vim", "leaderboard"), (doc) => {
+      const times = doc.data().times;
+      setLeaderboard(times);
+    });
+    return () => unsub();
+  }, []);
+
   function onCompletion() {
-    console.log('speedrun complete')
-    setCompleted(true)
+    console.log("speedrun complete in" + diff + "ms");
+    setCompleted(true);
+    if (signedIn) {
+      addEntry(leaderboard, userData, diff);
+    }
   }
+
+  useEffect(() => {
+    async function save() {
+      if (completed) {
+        if (window.localStorage.getItem("signedIn")) {
+          const userData = JSON.parse(window.localStorage.getItem("userData"));
+          userData.progress.chapter1["lesson" + props.lesson] = true;
+          window.localStorage.setItem("userData", JSON.stringify(userData));
+
+          await setProgress(userData);
+          props.setUserData(userData);
+          console.log("set lesson " + props.lesson + " to true");
+        }
+      }
+    }
+    save();
+  }, [completed]);
 
   // Get style variables from style.css
   //var style = getComputedStyle(document.body);
   //const cDefault = style.getPropertyValue("--blue-1");
   //const cComplete = style.getPropertyValue("--green-1");
   //const cError = style.getPropertyValue("--red-1");
-  const diff = currTime - startTime
-  var mins = startTime ? Math.floor(diff/1000/60 % 100).toString() : '0'
-  var secs = startTime ? Math.floor(diff/1000 % 60).toString() : '0'
-  var frac = startTime ? Math.floor(diff % 100).toString() : '0'
+  const diff = currTime - startTime;
+  var mins = startTime ? Math.floor((diff / 1000 / 60) % 100).toString() : "0";
+  var secs = startTime ? Math.floor((diff / 1000) % 60).toString() : "0";
+  var frac = startTime ? Math.floor((diff / 10) % 100).toString() : "0";
 
-  mins = mins.length === 1 ? '0'+mins : mins 
-  secs = secs.length === 1 ? '0'+secs : secs 
-  frac = frac.length === 1 ? '0'+frac : frac 
+  mins = mins.length === 1 ? "0" + mins : mins;
+  secs = secs.length === 1 ? "0" + secs : secs;
+  frac = frac.length === 1 ? "0" + frac : frac;
 
   // Return the document
   return (
@@ -101,7 +140,8 @@ function SpeedrunWindow(props) {
           {"< Prev"}
         </Link>
         <h1 id="lesson-title">
-          Lesson {props.lessonData && props.lessonData.lessonCurr}: {props.lessonData && props.lessonData.lesson && props.lessonData.lesson.title}
+          Lesson {props.lessonData && props.lessonData.lessonCurr}:{" "}
+          {props.lessonData && props.lessonData.lesson && props.lessonData.lesson.title}
         </h1>
         <Link
           id="next-lesson"
@@ -112,29 +152,53 @@ function SpeedrunWindow(props) {
         </Link>
       </div>
 
-      <div id="textbox">
-        <div id="content">
-          <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
+      <div id="speedrun-desc">
+        <div id="textbox">
+          <div id="content">
+            <p id="lesson-desc">{props.lessonData && props.lessonData.lesson && props.lessonData.lesson.description}</p>
+          </div>
+          <div id="side-area">
+            <div id="retry" onClick={reset}>
+              Retry
+            </div>
+            <div id="timer-area">
+              {completed ? (
+                <img src={clockImgGreen} id="timer-icon" alt="" />
+              ) : (
+                <img src={clockImgBlue} id="timer-icon" alt="" />
+              )}
+              <p id="time">
+                {mins}:{secs}:{frac}
+              </p>
+            </div>
+          </div>
         </div>
-        <div id="side-area">
-          <div id="retry"
-            onClick={reset}
-          >Retry</div>
-          <div id="timer-area">
-            {
-              completed
-              ? <img src={clockImgGreen} id="timer-icon" alt=""/>
-              : <img src={clockImgBlue} id="timer-icon" alt=""/>
-            }
-            <p id="time">
-              {mins}:{secs}:{frac}
-            </p>
+
+        <div id="leaderboard">
+          <h3>Leaderboard</h3>
+          <div>
+            {leaderboard &&
+              leaderboard.map((e, i) => (
+                <div className="leaderboard-entry" key={i}>
+                  <div className="leaderboard-num">{i + 1 + ". "}</div>
+                  <div className="leaderboard-user">{e.user}</div>
+                  <div className="leaderboard-time">{e.time + "ms"}</div>
+                </div>
+              ))}
+            {leaderboard &&
+              [...Array(10 - leaderboard.length)].map((e, i) => (
+                <div className="leaderboard-entry" key={i}>
+                  <div className="leaderboard-num">{leaderboard.length + i + 1 + ". "}</div>
+                  <div className="leaderboard-user">-</div>
+                  <div className="leaderboard-time">{"- ms"}</div>
+                </div>
+              ))}
           </div>
         </div>
       </div>
 
-      <SpeedrunCodeEditor 
-        lessonData={props.lessonData} 
+      <SpeedrunCodeEditor
+        lessonData={props.lessonData}
         startTime={startTime}
         setStartTime={setStartTime}
         onCompletion={onCompletion}

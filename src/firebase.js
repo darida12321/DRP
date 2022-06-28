@@ -25,7 +25,7 @@ const app = initializeApp(firebaseConfig);
 /* Database code below */
 
 // Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
+export const db = getFirestore(app);
 
 // Get documents in a given chapter in the vim collection (TODO: make generic for any collection)
 export async function getLessonData(courseId, chapterNum) {
@@ -50,7 +50,7 @@ export async function getChapterData(courseId, chapterNum) {
 //todo make submissions for these
 // fetch Course Data from the firestore
 export async function getCourseData() {
-  const coursesRef = collection(db, 'courses');
+  const coursesRef = collection(db, "courses");
   const courses = await getDocs(coursesRef);
   if (!courses) return;
 
@@ -74,6 +74,26 @@ export async function setProgress(userData) {
   const uid = window.localStorage.getItem("uid");
   const docRef = doc(db, "users", uid);
   await setDoc(docRef, userData, { merge: true });
+}
+
+// Add entry to speedrun leaderboard
+export async function addEntry(leaderboard, userData, time) {
+  const newEntry = {
+    user: userData.displayName,
+    time: time,
+  };
+
+  
+
+  const newLeaderboard = leaderboard.concat(newEntry);
+  newLeaderboard.sort((a, b) => {
+    return a.time - b.time;
+  });
+
+  const data = { times: newLeaderboard.slice(0, 10) };
+
+  const docRef = doc(db, "vim", "leaderboard");
+  await setDoc(docRef, data, { merge: true });
 }
 
 /* ------------------------------------------------------------------------------------------------- */

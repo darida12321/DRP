@@ -49,17 +49,19 @@
 }
 
 /* -------------------------------------------------- */
+#speedrun-desc {
+  display: flex;
+  width: 80%;
+  box-sizing: border-box;
+}
+
 #textbox {
   display: flex;
   background-color: #38444d;
   color: #ddd;
-  width: 80%;
   border-radius: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-  padding: 1rem 2rem;
+  width: 100%;
   text-align: center;
-  box-sizing: border-box;
 }
 
 #lesson-desc {
@@ -75,7 +77,7 @@
 #side-area {
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
-  background: #15202B;
+  background: #15202b;
   width: 8rem;
   margin: -1rem -2rem -1rem 2rem;
   padding: 1rem 2rem;
@@ -109,4 +111,39 @@
   padding: 0;
   font-size: 1.5rem;
   color: #ddd;
+}
+
+#leaderboard {
+  margin: 1rem;
+  margin-bottom: 2rem;
+  background: #15202b;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 20%;
+  text-align: center;
+}
+
+#leaderboard > h3 {
+  margin: 0.7rem;
+  color: #ddd;
+}
+
+.leaderboard-entry {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 1rem;
+  font-size: 0.9rem;
+}
+
+.leaderboard-num {
+  width: 1rem;
+}
+.leaderboard-user {
+  width: 8rem;
+}
+.leaderboard-time {
+  width: 4rem;
 }
